@@ -52,3 +52,6 @@ vim.cmd [[set iskeyword+=-]]
 vim.g.netrw_banner = 0
 vim.g.netrw_mouse = 2
 
+if vim.g.neovide then
+  vim.o.guifont = "OperatorMonoSSmLig Nerd Font Light:h17"
+end

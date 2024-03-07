@@ -1,7 +1,7 @@
 local M = {
   "nvim-telescope/telescope.nvim",
-  dependencies = { 
-    { 
+  dependencies = {
+    {
       "nvim-telescope/telescope-fzf-native.nvim",
       build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
       lazy = true,
@@ -13,7 +13,7 @@ local M = {
 }
 
 function M.config()
-  local wk = require "which-key"
+  local wk = require("which-key")
   wk.register {
     ["<leader>bb"] = { "<cmd>Telescope buffers previewer=false<cr>", "Find" },
     ["<leader>fb"] = { "<cmd>Telescope git_branches<cr>", "Checkout branch" },
@@ -26,8 +26,8 @@ function M.config()
     ["<leader>fr"] = { "<cmd>Telescope oldfiles<cr>", "Recent File" },
   }
 
-  local icons = require "oathkeeper.icons"
-  local actions = require "telescope.actions"
+  local icons = require("oathkeeper.icons")
+  local actions = require("telescope.actions")
 
 
   require("telescope").setup {

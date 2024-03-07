@@ -108,6 +108,7 @@ function M.config()
       }),
     },
     formatting = {
+      expandable_indicator = false,
       fields = { "kind", "abbr", "menu" },
       format = function(entry, vim_item)
         vim_item.kind = icons.kind[vim_item.kind]
