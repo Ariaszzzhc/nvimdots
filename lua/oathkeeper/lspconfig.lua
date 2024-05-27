@@ -62,8 +62,8 @@ function M.config()
     },
   }
 
-  local lspconfig = require "lspconfig"
-  local icons = require "oathkeeper.icons"
+  local lspconfig = require("lspconfig")
+  local icons = require("oathkeeper.icons")
 
   local servers = {
     "lua_ls",
@@ -76,6 +76,7 @@ function M.config()
     "bashls",
     "jsonls",
     "yamlls",
+    "zls"
   }
 
   local default_diagnostic_config = {
