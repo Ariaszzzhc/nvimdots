@@ -5,7 +5,7 @@ local M = {
 }
 
 M.config = function()
-  local icons = require "oathkeeper.icons"
+  local icons = require "user.ui.icons"
 
   local wk = require "which-key"
   wk.register {

@@ -1,33 +1,7 @@
-LAZY_PLUGIN_SPEC = {}
+require("user.config.mappings")
+require("user.config.options")
+require("user.config.autocmd")
 
-function spec(item)
-  table.insert(LAZY_PLUGIN_SPEC, { import = item })
+if not vim.g.vscode then
+  require("user.plugin")
 end
-
-require("oathkeeper.mappings")
-require("oathkeeper.options")
-require("oathkeeper.autocmd")
-spec("oathkeeper.colorscheme")
-spec("oathkeeper.whichkey")
-spec("oathkeeper.telescope")
-spec("oathkeeper.treesitter")
-spec("oathkeeper.lspconfig")
-spec("oathkeeper.cmp")
-spec("oathkeeper.schemastore")
-spec("oathkeeper.autopairs")
-spec("oathkeeper.comment")
-spec("oathkeeper.lualine")
-spec("oathkeeper.neogit")
-spec("oathkeeper.alpha")
-spec("oathkeeper.nvimtree")
-spec("oathkeeper.devicons")
-spec("oathkeeper.navic")
-spec("oathkeeper.breadcrumbs")
-spec("oathkeeper.none-ls")
-spec("oathkeeper.gitsigns")
-spec("oathkeeper.illuminate")
-spec("oathkeeper.copilot")
-spec("oathkeeper.indentline")
-spec("oathkeeper.trouble")
-require("oathkeeper.lazy")
-

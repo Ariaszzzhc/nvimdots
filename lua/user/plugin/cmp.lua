@@ -53,7 +53,7 @@ function M.config()
     return col == 0 or vim.fn.getline("."):sub(col, col):match "%s"
   end
 
-  local icons = require "oathkeeper.icons"
+  local icons = require "user.ui.icons"
 
   cmp.setup {
     snippet = {

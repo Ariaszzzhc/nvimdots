@@ -5,7 +5,7 @@ local M = {
 
 function M.config()
   local dashboard = require "alpha.themes.dashboard"
-  local icons = require "oathkeeper.icons"
+  local icons = require "user.ui.icons"
 
   local function button(sc, txt, keybind, keybind_opts)
     local b = dashboard.button(sc, txt, keybind, keybind_opts)

@@ -26,7 +26,7 @@ function M.config()
     ["<leader>fr"] = { "<cmd>Telescope oldfiles<cr>", "Recent File" },
   }
 
-  local icons = require("oathkeeper.icons")
+  local icons = require("user.ui.icons")
   local actions = require("telescope.actions")
 
 

@@ -5,7 +5,7 @@ local M = {
 }
 
 function M.config()
-  local icons = require "oathkeeper.icons"
+  local icons = require "user.ui.icons"
 
   require("ibl").setup {
     indent = { char = icons.ui.LineMiddle },

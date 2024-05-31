@@ -9,7 +9,7 @@ function M.config()
     ["<leader>e"] = { "<cmd>NvimTreeToggle<CR>", "Explorer" },
   }
 
-  local icons = require "oathkeeper.icons"
+  local icons = require "user.ui.icons"
 
   require("nvim-tree").setup {
     hijack_netrw = false,

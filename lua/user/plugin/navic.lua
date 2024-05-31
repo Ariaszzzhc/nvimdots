@@ -3,7 +3,7 @@ local M = {
 }
 
 function M.config()
-  local icons = require "oathkeeper.icons"
+  local icons = require "user.ui.icons"
   require("nvim-navic").setup {
     icons = icons.kind,
     highlight = true,
