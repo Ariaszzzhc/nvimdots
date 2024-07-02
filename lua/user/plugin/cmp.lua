@@ -45,7 +45,6 @@ function M.config()
   require("luasnip/loaders/from_vscode").lazy_load()
 
   vim.api.nvim_set_hl(0, "CmpItemKindCopilot", { fg = "#6CC644" })
-  vim.api.nvim_set_hl(0, "CmpItemKindTabnine", { fg = "#CA42F0" })
   vim.api.nvim_set_hl(0, "CmpItemKindEmoji", { fg = "#FDE030" })
 
   local check_backspace = function()
@@ -54,6 +53,16 @@ function M.config()
   end
 
   local icons = require "user.ui.icons"
+
+  local has_words_before = function()
+    if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then
+      return false
+    end
+
+    local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+
+    return col ~= 0 and vim.api.nvim_buf_get_text(0, line-1, 0, line-1, col, {})[1]:match("^%s*$") == nil
+  end
 
   cmp.setup {
     snippet = {
@@ -77,7 +86,7 @@ function M.config()
       -- Set `select` to `false` to only confirm explicitly selected items.
       ["<CR>"] = cmp.mapping.confirm { select = true },
       ["<Tab>"] = cmp.mapping(function(fallback)
-        if cmp.visible() then
+        if cmp.visible() and has_words_before() then
           cmp.select_next_item()
         elseif luasnip.expandable() then
           luasnip.expand()
@@ -126,9 +135,9 @@ function M.config()
           vim_item.kind_hl_group = "CmpItemKindEmoji"
         end
 
-        if entry.source.name == "cmp_tabnine" then
-          vim_item.kind = icons.misc.Robot
-          vim_item.kind_hl_group = "CmpItemKindTabnine"
+        if entry.source.name == "copilot" then
+          vim_item.kind = icons.misc.Copilot
+          vim_item.kind_hl_group = "CmpItemKindCopilot"
         end
 
         return vim_item
@@ -138,7 +147,6 @@ function M.config()
       { name = "copilot" },
       { name = "nvim_lsp" },
       { name = "luasnip" },
-      { name = "cmp_tabnine" },
       { name = "nvim_lua" },
       { name = "buffer" },
       { name = "path" },
@@ -159,7 +167,7 @@ function M.config()
       },
     },
     experimental = {
-      ghost_text = false,
+      ghost_text = true,
     },
   }
 end
