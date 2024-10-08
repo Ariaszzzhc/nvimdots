@@ -74,3 +74,8 @@ vim.api.nvim_create_autocmd({ "CursorHold" }, {
     end
   end,
 })
+
+local cmd = vim.cmd
+
+cmd "set whichwrap+=<,>,[,],h,l"
+cmd [[set iskeyword+=-]]

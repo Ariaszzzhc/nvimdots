@@ -1,7 +1,11 @@
-require("user.config.mappings")
-require("user.config.options")
-require("user.config.autocmd")
+if vim.g.vscode then
+ require("user.config.mappings")
+ require("user.config.options")
+ require("user.config.vscode")
+else
+ require("user.config.mappings")
+ require("user.config.options")
+ require("user.config.autocmd")
 
-if not vim.g.vscode then
-  require("user.plugin")
+ require("user.plugin")
 end

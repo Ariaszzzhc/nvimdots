@@ -62,11 +62,6 @@ if vim.fn.has("nvim-0.10") == 1 then
   opt.smoothscroll = true
 end
 
-local cmd = vim.cmd
-
-cmd "set whichwrap+=<,>,[,],h,l"
-cmd [[set iskeyword+=-]]
-
 local g = vim.g
 
 g.netrw_banner = 0
