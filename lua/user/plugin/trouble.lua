@@ -6,8 +6,8 @@ function M.config()
   local trouble = require("trouble.config")
   local wk = require("which-key")
 
-  wk.register {
-   ["<leader>t"] = { "<cmd>TroubleToggle<CR>", "Trouble" },
+  wk.add {
+    { "<leader>t", "<cmd>TroubleToggle<CR>", desc = "Trouble" },
   }
 
   trouble.setup {
