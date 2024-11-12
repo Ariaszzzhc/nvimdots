@@ -8,4 +8,8 @@ else
  require("user.config.autocmd")
 
  require("user.plugin")
+
+ vim.cmd([[
+  autocmd VimLeave * set guicursor= | call chansend(v:stderr, "\x1b[ q")
+ ]])
 end

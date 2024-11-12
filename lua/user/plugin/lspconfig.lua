@@ -62,13 +62,12 @@ function M.config()
     "clangd",
     "cssls",
     "html",
-    "tsserver",
     "eslint",
-    "ts_ls",
     "pyright",
     "bashls",
     "jsonls",
     "yamlls",
+    "denols",
     "zls"
   }
 
