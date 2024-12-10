@@ -1,23 +1,28 @@
 local M = {
-  "zbirenbaum/copilot-cmp",
-  event = { "InsertEnter", "LspAttach" },
-  dependencies = {
-    "zbirenbaum/copilot.lua"
-  }
+  "github/copilot.vim",
+  cmd = "Copilot",
+  event = "InsertEnter",
 }
 
 function M.config()
-  require("copilot").setup({
-    suggestion = {
-      enabled = false
-    },
-    panel = {
-      enabled = false
-    },
+  vim.g.copilot_on = true
+  local wk = require("which-key")
+
+  wk.add({
+    "<leader>ae",
+    function()
+      local copilot_on = vim.g.copilot_on
+
+      if copilot_on then
+        vim.g.copilot_on = false
+        vim.cmd([[Copilot disable]])
+      else
+        vim.g.copilot_on = true
+        vim.cmd([[Copilot enable]])
+      end
+    end,
+    desc = "Toggle Copilot",
   })
-
-  -- require("copilot_cmp").setup()
-
 end
 
 return M

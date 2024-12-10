@@ -25,8 +25,11 @@ function M.config()
     win = {
       border = "rounded",
       padding = {
-        2, 2, 2, 2
-      }
+        2,
+        2,
+        2,
+        2,
+      },
     },
     -- ignore_missing = true,
     show_help = false,
@@ -38,21 +41,16 @@ function M.config()
   })
 
   which_key.add({
-    { "<leader>q", "<cmd>confirm q<CR>", desc = "Quit" },
+    { "<leader>q", "<cmd>confirm q<CR>",  desc = "Quit" },
     { "<leader>h", "<cmd>nohlsearch<CR>", desc = "NOHL" },
-    { "<leader>v", "<cmd>vsplit<CR>", desc = "Split" },
+    { "<leader>v", "<cmd>vsplit<CR>",     desc = "Split" },
     { "<leader>d", group = "Debug" },
     { "<leader>f", group = "Find" },
     { "<leader>g", group = "Git" },
     { "<leader>l", group = "LSP" },
     { "<leader>p", group = "Plugins" },
     { "<leader>T", group = "Test" },
-    { "<leader>a", group = "Tab" },
-    { "<leader>an", "<cmd>$tabnew<cr>", desc = "New Empty Tab" },
-    { "<leader>aN", "<cmd>tabnew %<cr>", desc = "New Tab" },
-    { "<leader>ao", "<cmd>tabonly<cr>", desc = "Only" },
-    { "<leader>ah", "<cmd>-tabmove<cr>", desc = "Move Left" },
-    { "<leader>al", "<cmd>+tabmove<cr>", desc = "Move Right" },
+    { "<leader>a", group = "Copilot" },
   })
 end
 

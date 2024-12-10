@@ -40,19 +40,18 @@ local M = {
 }
 
 function M.config()
-  local cmp = require "cmp"
-  local luasnip = require "luasnip"
+  local cmp = require("cmp")
+  local luasnip = require("luasnip")
   require("luasnip/loaders/from_vscode").lazy_load()
 
-  vim.api.nvim_set_hl(0, "CmpItemKindCopilot", { fg = "#6CC644" })
   vim.api.nvim_set_hl(0, "CmpItemKindEmoji", { fg = "#FDE030" })
 
   local check_backspace = function()
-    local col = vim.fn.col "." - 1
-    return col == 0 or vim.fn.getline("."):sub(col, col):match "%s"
+    local col = vim.fn.col(".") - 1
+    return col == 0 or vim.fn.getline("."):sub(col, col):match("%s")
   end
 
-  local icons = require "user.ui.icons"
+  local icons = require("user.ui.icons")
 
   local has_words_before = function()
     if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then
@@ -61,16 +60,16 @@ function M.config()
 
     local line, col = unpack(vim.api.nvim_win_get_cursor(0))
 
-    return col ~= 0 and vim.api.nvim_buf_get_text(0, line-1, 0, line-1, col, {})[1]:match("^%s*$") == nil
+    return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
   end
 
-  cmp.setup {
+  cmp.setup({
     snippet = {
       expand = function(args)
         luasnip.lsp_expand(args.body) -- For `luasnip` users.
       end,
     },
-    mapping = cmp.mapping.preset.insert {
+    mapping = cmp.mapping.preset.insert({
       ["<C-k>"] = cmp.mapping(cmp.mapping.select_prev_item(), { "i", "c" }),
       ["<C-j>"] = cmp.mapping(cmp.mapping.select_next_item(), { "i", "c" }),
       ["<Down>"] = cmp.mapping(cmp.mapping.select_next_item(), { "i", "c" }),
@@ -78,13 +77,13 @@ function M.config()
       ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-1), { "i", "c" }),
       ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(1), { "i", "c" }),
       ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
-      ["<C-e>"] = cmp.mapping {
+      ["<C-e>"] = cmp.mapping({
         i = cmp.mapping.abort(),
         c = cmp.mapping.close(),
-      },
+      }),
       -- Accept currently selected item. If none selected, `select` first item.
       -- Set `select` to `false` to only confirm explicitly selected items.
-      ["<CR>"] = cmp.mapping.confirm { select = true },
+      ["<CR>"] = cmp.mapping.confirm({ select = true }),
       ["<Tab>"] = cmp.mapping(function(fallback)
         if cmp.visible() and has_words_before() then
           cmp.select_next_item()
@@ -115,7 +114,7 @@ function M.config()
         "i",
         "s",
       }),
-    },
+    }),
     formatting = {
       expandable_indicator = false,
       fields = { "kind", "abbr", "menu" },
@@ -135,16 +134,10 @@ function M.config()
           vim_item.kind_hl_group = "CmpItemKindEmoji"
         end
 
-        if entry.source.name == "copilot" then
-          vim_item.kind = icons.misc.Copilot
-          vim_item.kind_hl_group = "CmpItemKindCopilot"
-        end
-
         return vim_item
       end,
     },
     sources = {
-      { name = "copilot" },
       { name = "nvim_lsp" },
       { name = "luasnip" },
       { name = "nvim_lua" },
@@ -167,9 +160,9 @@ function M.config()
       },
     },
     experimental = {
-      ghost_text = true,
+      ghost_text = false,
     },
-  }
+  })
 end
 
 return M

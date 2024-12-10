@@ -50,7 +50,6 @@ return {
     Diff = " ",
     Repo = " ",
     Octoface = " ",
-    Copilot = " ",
     Branch = "",
   },
   ui = {
@@ -147,7 +146,8 @@ return {
     Trace = "✎",
   },
   misc = {
-    Copilot = " ",
+    Copilot = " ",
+    CopilotOff = " ",
     Robot = "󰚩 ",
     Squirrel = " ",
     Tag = " ",
@@ -157,4 +157,3 @@ return {
     CircuitBoard = " ",
   },
 }
-
