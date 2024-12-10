@@ -12,7 +12,8 @@ local keymap = vim.keymap.set
 keymap("n", "<leader>L", "<cmd>lua require('vscode').action('vscode-neovim.restart')<CR>")
 
 keymap("n", "<leader>e", "<cmd>lua require('vscode').action('workbench.action.toggleSidebarVisibility')<CR>")
-keymap("n", "<leader>fw", "<cmd>lua require('vscode').action('workbench.action.findInFiles', { args = { query = vim.fn.expand('<cword>') } })<CR>")
+keymap("n", "<leader>fw",
+  "<cmd>lua require('vscode').action('workbench.action.findInFiles', { args = { query = vim.fn.expand('<cword>') } })<CR>")
 keymap("n", "<leader>ff", "<cmd>lua require('vscode').action('workbench.action.quickOpen')<CR>")
 keymap("n", "<leader>;", "<cmd>lua require('vscode').action('workbench.action.terminal.toggleTerminal')<CR>")
 keymap("n", "<leader>q", "<cmd>lua require('vscode').action('workbench.action.closeActiveEditor')<CR>")

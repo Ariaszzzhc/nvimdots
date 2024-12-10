@@ -6,17 +6,24 @@ function M.config()
   local trouble = require("trouble.config")
   local wk = require("which-key")
 
+  local icons = require("user.ui.icons")
+
   wk.add {
-    { "<leader>t", "<cmd>TroubleToggle<CR>", desc = "Trouble" },
+    { "<leader>x", "<cmd>TroubleToggle<CR>", desc = "Trouble" },
   }
 
   trouble.setup {
-    position = "bottom",
-    mode = "workspace_diagnostics",
-    icons = true,
-    severity = nil,
-    use_diagnostic_signs = true,
+    auto_close = false,
+    auto_open = false,
+    auto_preview = true,
+    auto_refresh = true,
+    auto_jump = false,
+
+    icons = {
+      kinds = icons.kind,
+    }
   }
+
 end
 
 return M

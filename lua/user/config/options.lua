@@ -46,7 +46,6 @@ opt.fillchars:append {
   stl = " ",
 }
 opt.foldlevel = 99
-opt.guifont = "OperatorMonoSSmLig Nerd Font Light:h17"
 opt.grepformat = "%f:%l:%c:%m"
 opt.grepprg = "rg --vimgrep"
 opt.inccommand = "nosplit"
@@ -58,13 +57,13 @@ opt.virtualedit = "block"
 opt.wildmode = "longest:full,full"
 opt.winminwidth = 5
 
-if vim.fn.has("nvim-0.10") == 1 then
-  opt.smoothscroll = true
-end
-
 local g = vim.g
 
 g.netrw_banner = 0
 g.netrw_mouse = 2
 g.markdown_recommended_style = 0
 
+if g.neovide then
+  opt.guifont = "OperatorMonoSSmLig Nerd Font Light:h17"
+  g.neovide_remember_window_size = true
+end

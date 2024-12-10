@@ -8,6 +8,9 @@ local M = {
     },
     {
       "nvim-lua/plenary.nvim",
+    },
+    {
+      "nvim-telescope/telescope-file-browser.nvim"
     }
   },
 }
@@ -19,18 +22,20 @@ function M.config()
     { "<leader>fB", "<cmd>Telescope git_branches<cr>", desc = "Checkout branch" },
     { "<leader>fc", "<cmd>Telescope colorscheme<cr>", desc = "Colorscheme" },
     { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find files" },
-    { "<leader>fp", "<cmd>lua require('telescope').extensions.projects.projects()<cr>", desc = "Projects" },
     { "<leader>ft", "<cmd>Telescope live_grep<cr>", desc = "Find Text" },
     { "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "Help" },
     { "<leader>fl", "<cmd>Telescope resume<cr>", desc = "Last Search" },
     { "<leader>fr", "<cmd>Telescope oldfiles<cr>", desc = "Recent File" },
+    { "<leader>e", "<cmd>Telescope file_browser<cr>", desc = "File Explorer"}
   }
 
   local icons = require("user.ui.icons")
   local actions = require("telescope.actions")
 
+  local telescope = require("telescope")
 
-  require("telescope").setup {
+
+  telescope.setup {
     defaults = {
       prompt_prefix = icons.ui.Telescope .. " ",
       selection_caret = icons.ui.Forward .. " ",
@@ -68,21 +73,7 @@ function M.config()
       },
     },
     pickers = {
-      live_grep = {
-        theme = "dropdown",
-      },
-
-      grep_string = {
-        theme = "dropdown",
-      },
-
-      find_files = {
-        theme = "dropdown",
-        previewer = false,
-      },
-
       buffers = {
-        theme = "dropdown",
         previewer = false,
         initial_mode = "normal",
         mappings = {
@@ -105,22 +96,18 @@ function M.config()
       },
 
       lsp_references = {
-        theme = "dropdown",
         initial_mode = "normal",
       },
 
       lsp_definitions = {
-        theme = "dropdown",
         initial_mode = "normal",
       },
 
       lsp_declarations = {
-        theme = "dropdown",
         initial_mode = "normal",
       },
 
       lsp_implementations = {
-        theme = "dropdown",
         initial_mode = "normal",
       },
     },
@@ -133,6 +120,9 @@ function M.config()
       },
     },
   }
+
+  telescope.load_extension("fzf")
+  telescope.load_extension("file_browser")
 end
 
 return M

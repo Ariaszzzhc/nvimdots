@@ -34,7 +34,8 @@ function M.common_capabilities()
 end
 
 M.toggle_inlay_hints = function()
-  vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(bufnr))
+  local bufnr = vim.api.nvim_get_current_buf()
+  vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({bufnr = bufnr}), {bufnr = bufnr})
 end
 
 function M.config()
@@ -97,7 +98,7 @@ function M.config()
 
   vim.diagnostic.config(default_diagnostic_config)
 
-  for _, sign in ipairs(vim.tbl_get(vim.diagnostic.config(), "signs", "values") or {}) do
+  for _, sign in ipairs(vim.tbl_get(vim.diagnostic.config() or {}, "signs", "values") or {}) do
     vim.fn.sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = sign.name })
   end
 
