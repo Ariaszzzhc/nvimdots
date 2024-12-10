@@ -20,7 +20,7 @@ spec("alpha")
 spec("devicons")
 spec("navic")
 spec("breadcrumbs")
--- spec("none-ls")
+spec("none-ls")
 spec("gitsigns")
 spec("illuminate")
 -- spec("copilot")
@@ -34,5 +34,3 @@ spec("term")
 spec("zen")
 
 require("user.plugin.lazy")
-
-

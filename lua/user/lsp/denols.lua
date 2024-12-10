@@ -1,9 +1,13 @@
+local util = require("lspconfig.util")
+
 -- https://luals.github.io/wiki/settings/
 vim.g.markdown_fenced_languages = {
   "ts=typescript",
 }
 
-return {
+local M = {}
+
+M.options = {
   settings = {
     deno = {
       enable = true,
@@ -27,9 +31,12 @@ return {
           variableTypes = {
             enable = true,
             suppressWhenTypeMatchesName = true,
-          }
-        }
-      }
-    }
-  }
+          },
+        },
+      },
+    },
+  },
+  autostart = false,
 }
+
+return M

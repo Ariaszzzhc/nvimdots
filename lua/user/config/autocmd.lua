@@ -1,6 +1,6 @@
 vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
   callback = function()
-    vim.cmd "set formatoptions-=cro"
+    vim.cmd("set formatoptions-=cro")
   end,
 })
 
@@ -21,35 +21,35 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
     "",
   },
   callback = function()
-    vim.cmd [[
+    vim.cmd([[
       nnoremap <silent> <buffer> q :close<CR>
       set nobuflisted
-    ]]
+    ]])
   end,
 })
 
 vim.api.nvim_create_autocmd({ "CmdWinEnter" }, {
   callback = function()
-    vim.cmd "quit"
+    vim.cmd("quit")
   end,
 })
 
 vim.api.nvim_create_autocmd({ "VimResized" }, {
   callback = function()
-    vim.cmd "tabdo wincmd ="
+    vim.cmd("tabdo wincmd =")
   end,
 })
 
 vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
   pattern = { "*" },
   callback = function()
-    vim.cmd "checktime"
+    vim.cmd("checktime")
   end,
 })
 
 vim.api.nvim_create_autocmd({ "TextYankPost" }, {
   callback = function()
-    vim.highlight.on_yank { higroup = "Visual", timeout = 40 }
+    vim.highlight.on_yank({ higroup = "Visual", timeout = 40 })
   end,
 })
 
@@ -58,6 +58,21 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
   callback = function()
     vim.opt_local.wrap = true
     vim.opt_local.spell = true
+  end,
+})
+
+vim.api.nvim_create_autocmd({ "LspAttach" }, {
+  group = vim.api.nvim_create_augroup("lsp", { clear = true }),
+  callback = function(args)
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      buffer = args.buf,
+      callback = function()
+        vim.lsp.buf.format({
+          async = false,
+          id = args.data.client_id,
+        })
+      end,
+    })
   end,
 })
 
@@ -70,12 +85,24 @@ vim.api.nvim_create_autocmd({ "CursorHold" }, {
     if luasnip.expand_or_jumpable() then
       -- ask maintainer for option to make this silent
       -- luasnip.unlink_current()
-      vim.cmd [[silent! lua require("luasnip").unlink_current()]]
+      vim.cmd([[silent! lua require("luasnip").unlink_current()]])
+    end
+  end,
+})
+
+vim.api.nvim_create_autocmd({ "FileType" }, {
+  pattern = { "typescript", "javascript", "typescriptreact", "javascriptreact" },
+  callback = function()
+    local cwd = vim.loop.cwd()
+    if vim.fn.filereadable(cwd .. "./package.json") == 0 then
+      require("lspconfig.configs")["ts_ls"].launch()
+    else
+      require("lspconfig.configs")["denols"].launch()
     end
   end,
 })
 
 local cmd = vim.cmd
 
-cmd "set whichwrap+=<,>,[,],h,l"
-cmd [[set iskeyword+=-]]
+cmd("set whichwrap+=<,>,[,],h,l")
+cmd([[set iskeyword+=-]])

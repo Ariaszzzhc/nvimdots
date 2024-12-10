@@ -9,13 +9,18 @@ function M.config()
   local null_ls = require "null-ls"
 
   local formatting = null_ls.builtins.formatting
-  local diagnostics =  null_ls.builtins.diagnostics
+  local diagnostics = null_ls.builtins.diagnostics
 
   null_ls.setup {
     debug = false,
     sources = {
       formatting.stylua,
-      formatting.prettier,
+      formatting.prettier.with({
+        filetype = { "html", "json", "yaml", "javascript", "javascriptreact", "typescript", "typescriptreact" },
+        condition = function(utils)
+          return utils.root_has_file({ "package.json" })
+        end
+      }),
       formatting.black,
       -- formatting.prettier.with {
       --   extra_filetypes = { "toml" },
