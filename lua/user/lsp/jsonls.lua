@@ -1,9 +1,9 @@
-return {
-  options = {
-    settings = {
-      json = {
-        schemas = require("schemastore").json.schemas(),
-      },
+local options = {
+  settings = {
+    json = {
+      schemas = require("schemastore").json.schemas(),
     },
   },
 }
+
+return options

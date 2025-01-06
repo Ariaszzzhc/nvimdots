@@ -8,7 +8,7 @@ function M.config()
     icons = icons.kind,
     highlight = true,
     lsp = {
-      auto_attach = true,
+      auto_attach = false,
     },
     click = true,
     separator = " " .. icons.ui.ChevronRight .. " ",

@@ -109,7 +109,7 @@ function M.config()
   require("lspconfig.ui.windows").default_options.border = "rounded"
 
   for _, server in pairs(servers) do
-    local require_ok, settings = pcall(require, "user.lsp." .. server)
+    local require_ok, options = pcall(require, "user.lsp." .. server)
 
     local opts = {
       on_attach = M.on_attach,
@@ -117,19 +117,8 @@ function M.config()
     }
 
     if require_ok then
-      local on_attach = settings.on_attach
-      local options = settings.options
-
-      if on_attach ~= nil then
-        opts.on_attach = function(client, bufnr)
-          M.on_attach(client, bufnr)
-          on_attach(client, bufnr)
-        end
-      end
-
-      if options ~= nil then
-        opts = vim.tbl_deep_extend("force", options, opts)
-      end
+      opts.on_attach = M.on_attach
+      opts = vim.tbl_deep_extend("force", options, opts)
     end
 
     if server == "lua_ls" then

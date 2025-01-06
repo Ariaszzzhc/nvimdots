@@ -5,9 +5,8 @@ vim.g.markdown_fenced_languages = {
   "ts=typescript",
 }
 
-local M = {}
 
-M.options = {
+local options = {
   settings = {
     deno = {
       enable = true,
@@ -36,7 +35,7 @@ M.options = {
       },
     },
   },
-  autostart = false,
+  single_file_support = true,
 }
 
-return M
+return options
