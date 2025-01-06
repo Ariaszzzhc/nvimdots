@@ -71,6 +71,7 @@ function M.config()
     "denols",
     "ts_ls",
     "zls",
+    "tailwindcss",
   }
 
   local default_diagnostic_config = {

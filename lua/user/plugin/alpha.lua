@@ -4,8 +4,8 @@ local M = {
 }
 
 function M.config()
-  local dashboard = require "alpha.themes.dashboard"
-  local icons = require "user.ui.icons"
+  local dashboard = require("alpha.themes.dashboard")
+  local icons = require("user.ui.icons")
 
   local function button(sc, txt, keybind, keybind_opts)
     local b = dashboard.button(sc, txt, keybind, keybind_opts)
@@ -51,9 +51,9 @@ function M.config()
   vim.api.nvim_create_autocmd({ "User" }, {
     pattern = { "AlphaReady" },
     callback = function()
-      vim.cmd [[
-      set laststatus=0 | autocmd BufUnload <buffer> set laststatus=3
-    ]]
+      vim.cmd([[
+        set laststatus=0 | autocmd BufUnload <buffer> set laststatus=3
+      ]])
     end,
   })
 end

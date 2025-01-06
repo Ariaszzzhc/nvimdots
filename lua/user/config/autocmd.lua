@@ -104,5 +104,9 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 
 local cmd = vim.cmd
 
+-- cmd([[
+--     autocmd VimLeave * set guicursor= | call chansend(v:stderr, "\x1b[ q")
+--  ]])
+
 cmd("set whichwrap+=<,>,[,],h,l")
 cmd([[set iskeyword+=-]])

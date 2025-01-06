@@ -4,7 +4,7 @@ local M = {
 }
 
 function M.config()
-  require("illuminate").configure {
+  require("illuminate").configure({
     filetypes_denylist = {
       "mason",
       "harpoon",
@@ -16,6 +16,7 @@ function M.config()
       "minifiles",
       "fugitive",
       "alpha",
+      "ministarter",
       "NvimTree",
       "lazy",
       "NeogitStatus",
@@ -30,7 +31,7 @@ function M.config()
       "DressingSelect",
       "TelescopePrompt",
     },
-  }
+  })
 end
 
 return M

@@ -13,7 +13,6 @@ opt.mouse = "a"          -- allow the mouse to be used in neovim
 opt.pumheight = 10       -- pop up menu height
 opt.pumblend = 10
 opt.showmode = false     -- we don't need to see things like -- INSERT -- anymore
-opt.showtabline = 1      -- always show tabs
 opt.smartcase = true     -- smart case
 opt.smartindent = true   -- make indenting smarter again
 opt.splitbelow = true    -- force all horizontal splits to go below current window

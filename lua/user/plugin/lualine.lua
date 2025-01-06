@@ -7,7 +7,7 @@ function M.config()
     options = {
       component_separators = { left = "", right = "" },
       section_separators = { left = "", right = "" },
-      ignore_focus = { "NvimTree" },
+      ignore_focus = { "NvimTree", "ministarter" },
       theme = "tokyonight-night",
     },
     sections = {
