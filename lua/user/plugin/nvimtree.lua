@@ -4,14 +4,14 @@ local M = {
 }
 
 function M.config()
-  local wk = require "which-key"
-  wk.add {
+  local wk = require("which-key")
+  wk.add({
     { "<leader>e", "<cmd>NvimTreeToggle<CR>", desc = "Explorer" },
-  }
+  })
 
-  local icons = require "user.ui.icons"
+  local icons = require("user.ui.icons")
 
-  require("nvim-tree").setup {
+  require("nvim-tree").setup({
     hijack_netrw = false,
     sync_root_with_cwd = true,
     view = {
@@ -90,7 +90,7 @@ function M.config()
         error = icons.diagnostics.BoldError,
       },
     },
-  }
+  })
 end
 
 return M

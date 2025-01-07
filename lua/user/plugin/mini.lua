@@ -16,6 +16,9 @@ M.config = function()
   -- setup fuzzy
   require("mini.fuzzy").setup()
 
+  -- setup animate
+  require("mini.animate").setup()
+
   -- setup starters
   -- local starter = require("mini.starter")
   --

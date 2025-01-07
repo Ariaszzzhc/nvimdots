@@ -61,21 +61,6 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
   end,
 })
 
-vim.api.nvim_create_autocmd({ "LspAttach" }, {
-  group = vim.api.nvim_create_augroup("lsp", { clear = true }),
-  callback = function(args)
-    vim.api.nvim_create_autocmd("BufWritePre", {
-      buffer = args.buf,
-      callback = function()
-        vim.lsp.buf.format({
-          async = false,
-          id = args.data.client_id,
-        })
-      end,
-    })
-  end,
-})
-
 vim.api.nvim_create_autocmd({ "CursorHold" }, {
   callback = function()
     local status_ok, luasnip = pcall(require, "luasnip")
@@ -86,18 +71,6 @@ vim.api.nvim_create_autocmd({ "CursorHold" }, {
       -- ask maintainer for option to make this silent
       -- luasnip.unlink_current()
       vim.cmd([[silent! lua require("luasnip").unlink_current()]])
-    end
-  end,
-})
-
-vim.api.nvim_create_autocmd({ "FileType" }, {
-  pattern = { "typescript", "javascript", "typescriptreact", "javascriptreact" },
-  callback = function()
-    local cwd = vim.loop.cwd()
-    if vim.fn.filereadable(cwd .. "./package.json") == 0 then
-      require("lspconfig.configs")["ts_ls"].launch()
-    else
-      require("lspconfig.configs")["denols"].launch()
     end
   end,
 })

@@ -7,6 +7,18 @@ vim.g.markdown_fenced_languages = {
 
 
 local options = {
+  root_dir = function(startpath)
+    local node_pattern = util.root_pattern("tsconfig.json", "jsconfig.json", "package.json")
+
+    local default_pattern = util.root_pattern("deno.json", "deno.jsonc", ".git")
+
+    local node_matched = node_pattern(startpath)
+
+    if node_matched == nil then
+      return default_pattern(startpath)
+    end
+  end,
+
   settings = {
     deno = {
       enable = true,
@@ -35,7 +47,7 @@ local options = {
       },
     },
   },
-  single_file_support = true,
+  single_file_support = false,
 }
 
 return options

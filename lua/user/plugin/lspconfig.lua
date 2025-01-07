@@ -19,11 +19,31 @@ local function lsp_keymaps(bufnr)
   keymap(bufnr, "n", "gl", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
 end
 
+local function lsp_formatting(bufnr)
+  vim.lsp.buf.format({
+    async = false,
+    bufnr = bufnr,
+  })
+end
+
 M.on_attach = function(client, bufnr)
   lsp_keymaps(bufnr)
 
   if client.supports_method("textDocument/inlayHint") then
     vim.lsp.inlay_hint.enable(true)
+  end
+
+  local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+
+  if client.supports_method("textDocument/formatting") then
+    vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      group = augroup,
+      buffer = bufnr,
+      callback = function()
+        lsp_formatting(bufnr)
+      end,
+    })
   end
 end
 
