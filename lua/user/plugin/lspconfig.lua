@@ -108,6 +108,12 @@ function M.config()
     update_in_insert = false,
     underline = true,
     severity_sort = true,
+    inlay_hints = {
+      enabled = true,
+    },
+    codelens = {
+      enabled = false,
+    },
     float = {
       focusable = true,
       style = "minimal",

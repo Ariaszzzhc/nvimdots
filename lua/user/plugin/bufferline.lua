@@ -1,16 +1,16 @@
 local M = {
   "akinsho/bufferline.nvim",
   event = "VeryLazy",
-  config = function (_, opts)
+  config = function(_, opts)
     require("bufferline").setup(opts)
 
     vim.api.nvim_create_autocmd({ "BufAdd", "BufDelete" }, {
-        callback = function()
-          vim.schedule(function()
-            pcall(nvim_bufferline)
-          end)
-        end,
-      })
+      callback = function()
+        vim.schedule(function()
+          pcall(nvim_bufferline)
+        end)
+      end,
+    })
   end,
   opts = {
     options = {
@@ -23,13 +23,13 @@ local M = {
           text_align = "left",
         },
       },
-      diagnostics_indicator = function (_, _, diag)
+      diagnostics_indicator = function(_, _, diag)
         local icons = require("user.ui.icons").diagnostics
 
         local ret = (diag.error and icons.Error .. diag.error .. " " or "")
             .. (diag.warning and icons.Warning .. diag.warning or "")
         return vim.trim(ret)
-      end
+      end,
     },
   },
 }

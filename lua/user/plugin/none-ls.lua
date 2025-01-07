@@ -25,7 +25,7 @@ function M.config()
         end,
       }),
       formatting.black,
-      diagnostics.flake8,
+      --      diagnostics.flake8,
       completion.spell,
     },
   })

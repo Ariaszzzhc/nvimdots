@@ -1,9 +1,9 @@
 local opt = vim.opt
 
-opt.backup = false                          -- creates a backup file
-opt.clipboard = "unnamedplus"               -- allows neovim to access the system clipboard
-opt.cmdheight = 1                           -- more space in the neovim command line for displaying messages
-opt.completeopt = { "menuone", "noselect" } -- mostly just for cmp
+opt.backup = false                        -- creates a backup file
+opt.clipboard = "unnamedplus"             -- allows neovim to access the system clipboard
+opt.cmdheight = 1                         -- more space in the neovim command line for displaying messages
+opt.completeopt = "menu,menuone,noselect" -- mostly just for cmp
 opt.conceallevel = 2
 opt.confirm = true
 -- vim.opt.fileencoding = "utf-8" -- the encoding written to a file
@@ -40,10 +40,14 @@ opt.sidescrolloff = 8
 opt.title = false
 -- colorcolumn = "80",
 -- colorcolumn = "120",
-opt.fillchars = vim.opt.fillchars + "eob: "
-opt.fillchars:append({
-  stl = " ",
-})
+opt.fillchars = {
+  foldopen = "",
+  foldclose = "",
+  fold = " ",
+  foldsep = " ",
+  diff = "╱",
+  eob = " ",
+}
 opt.foldlevel = 99
 opt.grepformat = "%f:%l:%c:%m"
 opt.grepprg = "rg --vimgrep"
@@ -55,6 +59,8 @@ opt.undolevels = 10000
 opt.virtualedit = "block"
 opt.wildmode = "longest:full,full"
 opt.winminwidth = 5
+
+opt.smoothscroll = true
 
 local g = vim.g
 
