@@ -41,7 +41,6 @@
 
 local M = {
   "saghen/blink.cmp",
-  event = "InsertEnter",
   dependencies = {
     "rafamadriz/friendly-snippets"
   },
@@ -56,16 +55,17 @@ function M.config()
   --- @type blink.cmp.Config
   local opts = {
     keymap = {
-      preset = "enter",
+      preset = "super-tab",
     },
     appearance = {
       kind_icons = icons.kind,
     },
     completion = {
-      menu = {
-        auto_show = function(ctx)
-          return ctx.mode ~= "cmdline"
-        end,
+      list = {
+        selection = {
+          preselect = true,
+          auto_insert = true,
+        },
       },
     },
     sources = {
@@ -76,6 +76,9 @@ function M.config()
         "buffer",
       }
     },
+    signature = {
+      enabled = true,
+    }
   }
   cmp.setup(opts)
 end

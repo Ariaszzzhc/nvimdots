@@ -135,6 +135,9 @@ add_mini({
   end,
   config = function()
     require("mini.notify").setup({
+      lsp_progress = {
+        enable = false,
+      },
       window = {
         config = {
           border = "rounded",

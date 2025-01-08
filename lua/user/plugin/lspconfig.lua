@@ -6,6 +6,34 @@ local M = {
       "folke/neodev.nvim",
     },
   },
+  init = function()
+    vim.api.nvim_create_autocmd("LspAttach", {
+      callback = function(args)
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+
+        if not client then return end
+
+        if client.supports_method("textDocument/formatting") then
+          if client.name == "ts_ls" then
+            return
+          end
+
+          vim.api.nvim_create_autocmd("BufWritePre", {
+            buffer = args.buf,
+            callback = function()
+              vim.notify("Formatting...", vim.log.levels.DEBUG)
+              vim.lsp.buf.format({
+                async = false,
+                bufnr = args.buf,
+                id = client.id,
+              })
+              vim.notify("Formatted!", vim.log.levels.DEBUG)
+            end,
+          })
+        end
+      end,
+    })
+  end
 }
 
 local function lsp_keymaps(bufnr)
@@ -19,31 +47,11 @@ local function lsp_keymaps(bufnr)
   keymap(bufnr, "n", "gl", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
 end
 
-local function lsp_formatting(bufnr)
-  vim.lsp.buf.format({
-    async = false,
-    bufnr = bufnr,
-  })
-end
-
 M.on_attach = function(client, bufnr)
   lsp_keymaps(bufnr)
 
   if client.supports_method("textDocument/inlayHint") then
     vim.lsp.inlay_hint.enable(true)
-  end
-
-  local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
-
-  if client.supports_method("textDocument/formatting") then
-    vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
-    vim.api.nvim_create_autocmd("BufWritePre", {
-      group = augroup,
-      buffer = bufnr,
-      callback = function()
-        lsp_formatting(bufnr)
-      end,
-    })
   end
 end
 
@@ -139,7 +147,7 @@ function M.config()
 
     local opts = {
       on_attach = M.on_attach,
-      capabilities = M.common_capabilities(),
+      capabilities = require("blink.cmp").get_lsp_capabilities(M.common_capabilities()),
     }
 
     if require_ok then
@@ -148,7 +156,7 @@ function M.config()
     end
 
     if server == "lua_ls" then
-      require("neodev").setup({})
+      require("neodev").setup()
     end
 
     lspconfig[server].setup(opts)

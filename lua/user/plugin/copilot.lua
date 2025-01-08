@@ -2,6 +2,14 @@ local M = {
   "github/copilot.vim",
   cmd = "Copilot",
   event = "InsertEnter",
+  init = function()
+    vim.api.nvim_create_autocmd("User", {
+      pattern = "BlinkCmpMenuOpen",
+      callback = function()
+        vim.cmd([[call copilot#Dismiss() ]])
+      end,
+    })
+  end
 }
 
 function M.config()
