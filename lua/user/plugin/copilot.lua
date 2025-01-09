@@ -1,20 +1,32 @@
 local M = {
-  "github/copilot.vim",
+  "zbirenbaum/copilot.lua",
   cmd = "Copilot",
+  build = ":Copilot auth",
   event = "InsertEnter",
-  init = function()
-    vim.api.nvim_create_autocmd("User", {
-      pattern = "BlinkCmpMenuOpen",
-      callback = function()
-        vim.cmd([[call copilot#Dismiss() ]])
-      end,
-    })
-  end
 }
 
 function M.config()
   vim.g.copilot_on = true
   local wk = require("which-key")
+  local copilot = require("copilot")
+
+  local opts = {
+    suggestion = {
+      enabled = true,
+      auto_trigger = true,
+      hide_during_completion = true,
+      keymap = {
+        accept = false,
+      }
+    },
+    panel = {
+      enabled = false,
+    },
+    filetypes = {
+      markdown = true,
+      help = true,
+    }
+  }
 
   wk.add({
     "<leader>ae",
@@ -31,6 +43,8 @@ function M.config()
     end,
     desc = "Toggle Copilot",
   })
+
+  copilot.setup(opts)
 end
 
 return M
