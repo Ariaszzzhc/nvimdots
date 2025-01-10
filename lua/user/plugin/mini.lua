@@ -38,33 +38,37 @@ add_mini({
         {
           name = "Find file",
           action = builtin.find_files,
-          section = "Actions",
+          section = pad .. "Actions",
         },
         {
           name = "New file",
           action = "ene <BAR> startinsert",
-          section = "Actions",
+          section = pad .. "Actions",
         },
         {
 
           name = "Recent files",
           action = builtin.oldfiles,
-          section = "Actions",
+          section = pad .. "Actions",
         },
         {
           name = "Find text",
           action = builtin.live_grep,
-          section = "Actions",
+          section = pad .. "Actions",
         },
         {
           name = "Config",
-          action = "e ~/.config/nvim/init.lua",
-          section = "Actions",
+          action = function()
+            builtin.find_files({
+              cwd = vim.fn.stdpath("config"),
+            })
+          end,
+          section = pad .. "Actions",
         },
         {
           name = "Quit",
           action = "qa",
-          section = "Actions",
+          section = pad .. "Actions",
         },
       },
       content_hooks = {
@@ -95,7 +99,7 @@ add_mini({
 add_mini({
   "echasnovski/mini.indentscope",
   version = false,
-  event = "InsertEnter",
+  event = { "BufReadPost", "BufNewFile", "BufWritePre" },
   opts = function()
     return {
       symbol = "│",
@@ -149,7 +153,7 @@ add_mini({
 
 add_mini({
   "echasnovski/mini.pairs",
-  event = "BufEnter",
+  event = { "BufReadPost", "BufNewFile", "BufWritePre" },
   config = function()
     require("mini.pairs").setup()
   end,
@@ -157,7 +161,7 @@ add_mini({
 
 add_mini({
   "echasnovski/mini.hipatterns",
-  event = "BufEnter",
+  event = { "BufReadPost", "BufNewFile", "BufWritePre" },
   config = function()
     require("mini.hipatterns").setup()
   end,
@@ -165,7 +169,7 @@ add_mini({
 
 add_mini({
   "echasnovski/mini.surround",
-  event = "BufEnter",
+  event = { "BufReadPost", "BufNewFile", "BufWritePre" },
   config = function()
     require("mini.surround").setup()
   end,
@@ -176,5 +180,16 @@ add_mini({
   event = "VimEnter",
   config = function()
     require("mini.fuzzy").setup()
+  end,
+})
+
+add_mini({
+  "echasnovski/mini.icons",
+  event = "VimEnter",
+  config = function()
+    local mini_icons = require("mini.icons")
+    mini_icons.setup()
+
+    mini_icons.mock_nvim_web_devicons()
   end,
 })
