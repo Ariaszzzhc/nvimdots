@@ -29,47 +29,29 @@ add_mini({
 
     local pad = string.rep(" ", 22)
 
+    local new_section = function(name, action, section)
+      return { name = name, action = action, section = pad .. section }
+    end
+
     local builtin = require("telescope.builtin")
 
     local opts = {
       header = logo,
       evaluate_single = true,
       items = {
-        {
-          name = "Find file",
-          action = builtin.find_files,
-          section = pad .. "Actions",
-        },
-        {
-          name = "New file",
-          action = "ene <BAR> startinsert",
-          section = pad .. "Actions",
-        },
-        {
-
-          name = "Recent files",
-          action = builtin.oldfiles,
-          section = pad .. "Actions",
-        },
-        {
-          name = "Find text",
-          action = builtin.live_grep,
-          section = pad .. "Actions",
-        },
-        {
-          name = "Config",
-          action = function()
-            builtin.find_files({
-              cwd = vim.fn.stdpath("config"),
-            })
-          end,
-          section = pad .. "Actions",
-        },
-        {
-          name = "Quit",
-          action = "qa",
-          section = pad .. "Actions",
-        },
+        new_section("Find file", builtin.find_files, "Picker"),
+        new_section("Recent files", builtin.oldfiles, "Picker"),
+        new_section("Find text", builtin.live_grep, "Picker"),
+        new_section("New file", "ene | startinsert", "Built-in"),
+        new_section("Quit", "qa", "Built-in"),
+        new_section("Config", function()
+          builtin.find_files({
+            cwd = vim.fn.stdpath("config"),
+          })
+        end, "Config"),
+        new_section("Update", function()
+          vim.cmd [[ Lazy Update ]]
+        end, "Config"),
       },
       content_hooks = {
         starter.gen_hook.adding_bullet(pad .. "░ ", false),

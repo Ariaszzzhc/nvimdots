@@ -18,6 +18,10 @@ local M = {
             return
           end
 
+          if client.name == "vtsls" then
+            return
+          end
+
           vim.api.nvim_create_autocmd("BufWritePre", {
             buffer = args.buf,
             callback = function()
@@ -31,10 +35,11 @@ local M = {
             end,
           })
         end
-      end,
+      end
     })
   end
 }
+
 
 local function lsp_keymaps(bufnr)
   local opts = { noremap = true, silent = true }
@@ -52,6 +57,14 @@ M.on_attach = function(client, bufnr)
 
   if client.supports_method("textDocument/inlayHint") then
     vim.lsp.inlay_hint.enable(true)
+  end
+
+  if client.supports_method("textDocument/codeLens") then
+    vim.lsp.codelens.refresh()
+    vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave" }, {
+      buffer = bufnr,
+      callback = vim.lsp.codelens.refresh
+    })
   end
 end
 
@@ -120,7 +133,7 @@ function M.config()
       enabled = true,
     },
     codelens = {
-      enabled = false,
+      enabled = true,
     },
     float = {
       focusable = true,
