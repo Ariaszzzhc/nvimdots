@@ -137,7 +137,12 @@ add_mini({
   "echasnovski/mini.pairs",
   event = { "BufReadPost", "BufNewFile", "BufWritePre" },
   config = function()
-    require("mini.pairs").setup()
+    require("mini.pairs").setup {
+      skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
+      skip_ts = { "string" },
+      skip_unbalanced = true,
+      markdown = true,
+    }
   end,
 })
 
