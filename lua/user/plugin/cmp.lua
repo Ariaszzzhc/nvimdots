@@ -18,13 +18,6 @@ function M.config()
       ["<Tab>"] = {
         function(c)
           local copilot = require("copilot.suggestion")
-          -- if copilot.is_visible() then
-          --   return copilot.accept()
-          -- elseif c.snippet_active() then
-          --   return c.accept()
-          -- else
-          --   return c.select_and_accept()
-          -- end
           if c.snippet_active() then
             return c.accept()
           elseif c.is_visible() then

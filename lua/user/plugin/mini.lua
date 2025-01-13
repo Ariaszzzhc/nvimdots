@@ -115,7 +115,7 @@ add_mini({
 
 add_mini({
   "echasnovski/mini.notify",
-  event = "VimEnter",
+  lazy = false,
   init = function()
     vim.notify = require("mini.notify").make_notify()
   end,
@@ -174,4 +174,48 @@ add_mini({
 
     mini_icons.mock_nvim_web_devicons()
   end,
+})
+
+local function close_buffer(id, force)
+  local buffer_delete = require("mini.bufremove").delete
+  local count = 0
+  local bufnrs = vim.api.nvim_list_bufs()
+  for _, bufnr in ipairs(bufnrs) do
+    if vim.api.nvim_buf_is_loaded(bufnr) and vim.api.nvim_buf_get_option(bufnr, 'buflisted') then
+      count = count + 1
+    end
+  end
+
+  if count == 1 then
+    buffer_delete(id, force)
+    vim.cmd.quit()
+  else
+    buffer_delete(id, force)
+  end
+end
+
+add_mini({
+  "echasnovski/mini.bufremove",
+  event = "BufReadPost",
+  config = function()
+    local wk = require("which-key")
+
+    wk.add {
+      "<leader>q",
+
+      function()
+        if vim.bo.modified then
+          local choice = vim.fn.confirm(("Save changes to %q?"):format(vim.fn.bufname()), "&Yes\n&No\n&Cancel")
+          if choice == 1 then -- Yes
+            vim.cmd.write()
+            close_buffer(0)
+          elseif choice == 2 then -- No
+            close_buffer(0, true)
+          end
+        else
+          close_buffer(0)
+        end
+      end, desc = "Close buffer"
+    }
+  end
 })
