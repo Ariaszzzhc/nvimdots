@@ -33,19 +33,19 @@ add_mini({
       return { name = name, action = action, section = pad .. section }
     end
 
-    local builtin = require("telescope.builtin")
+    local picker = require("fzf-lua")
 
     local opts = {
       header = logo,
       evaluate_single = true,
       items = {
-        new_section("Find file", builtin.find_files, "Picker"),
-        new_section("Recent files", builtin.oldfiles, "Picker"),
-        new_section("Find text", builtin.live_grep, "Picker"),
+        new_section("Find file", picker.files, "Picker"),
+        new_section("Recent files", picker.oldfiles, "Picker"),
+        new_section("Find text", picker.live_grep, "Picker"),
         new_section("New file", "ene | startinsert", "Built-in"),
         new_section("Quit", "qa", "Built-in"),
         new_section("Config", function()
-          builtin.find_files({
+          picker.files({
             cwd = vim.fn.stdpath("config"),
           })
         end, "Config"),

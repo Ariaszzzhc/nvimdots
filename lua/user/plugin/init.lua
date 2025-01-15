@@ -6,7 +6,8 @@ end
 
 spec("colorscheme")
 spec("whichkey")
-spec("telescope")
+-- spec("telescope")
+spec("picker")
 spec("treesitter")
 spec("lspconfig")
 spec("cmp")
