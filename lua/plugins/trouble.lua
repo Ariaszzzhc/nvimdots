@@ -7,7 +7,7 @@ function M.config()
   local trouble = require("trouble.config")
   local wk = require("which-key")
 
-  local icons = require("user.ui.icons")
+  local icons = require("configs.icons")
 
   wk.add({
     { "<leader>lx", "<cmd>Trouble diagnostics toggle<CR>", desc = "Diagnostics" },

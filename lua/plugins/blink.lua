@@ -7,7 +7,7 @@ local M = {
 }
 
 function M.config()
-  local icons = require("user.ui.icons")
+  local icons = require("configs.icons")
 
   local cmp = require("blink.cmp")
 
@@ -17,13 +17,13 @@ function M.config()
       preset = "super-tab",
       ["<Tab>"] = {
         function(c)
-          local copilot = require("copilot.suggestion")
+          -- local copilot = require("copilot.suggestion")
           if c.snippet_active() then
             return c.accept()
           elseif c.is_visible() then
             return c.select_and_accept()
-          elseif copilot.is_visible() then
-            copilot.accept()
+            -- elseif copilot.is_visible() then
+            --  copilot.accept()
           end
         end,
         "snippet_forward",

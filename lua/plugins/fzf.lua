@@ -36,7 +36,7 @@ function M.config()
   }
 
 
-  local trouble = require("trouble.sources.fzf")
+  -- local trouble = require("trouble.sources.fzf")
 
   -- Quickfix
   config.defaults.keymap.fzf["ctrl-q"] = "select-all+accept"
@@ -49,7 +49,7 @@ function M.config()
   config.defaults.keymap.builtin["<c-b>"] = "preview-page-up"
 
   -- Trouble
-  config.defaults.actions.files["ctrl-t"] = trouble.actions.open
+  -- config.defaults.actions.files["ctrl-t"] = trouble.actions.open
 
   picker.setup({
     "telescope",
