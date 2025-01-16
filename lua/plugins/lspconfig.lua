@@ -23,13 +23,11 @@ local M = {
           vim.api.nvim_create_autocmd("BufWritePre", {
             buffer = args.buf,
             callback = function()
-              vim.notify("Formatting...", vim.log.levels.DEBUG)
               vim.lsp.buf.format({
                 async = false,
                 bufnr = args.buf,
                 id = client.id,
               })
-              vim.notify("Formatted!", vim.log.levels.DEBUG)
             end,
           })
         end

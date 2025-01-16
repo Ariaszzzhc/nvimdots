@@ -6,24 +6,28 @@ local M = {
   version = "*",
 }
 
+local CREATE_UNDO = vim.api.nvim_replace_termcodes("<c-G>u", true, true, true)
+
 function M.config()
   local icons = require("configs.icons")
 
   local cmp = require("blink.cmp")
 
-  --- @type blink.cmp.Config
   local opts = {
     keymap = {
       preset = "super-tab",
       ["<Tab>"] = {
         function(c)
-          -- local copilot = require("copilot.suggestion")
+          local copilot = require("copilot.suggestion")
           if c.snippet_active() then
             return c.accept()
           elseif c.is_visible() then
             return c.select_and_accept()
-            -- elseif copilot.is_visible() then
-            --  copilot.accept()
+          elseif copilot.is_visible() then
+            if vim.api.nvim_get_mode().mode == "i" then
+              vim.api.nvim_feedkeys(CREATE_UNDO, "n", false)
+            end
+            copilot.accept()
           end
         end,
         "snippet_forward",
@@ -34,6 +38,16 @@ function M.config()
       kind_icons = icons.kind,
     },
     completion = {
+      accept = {
+        auto_brackets = {
+          enabled = true,
+        },
+      },
+      menu = {
+        draw = {
+          treesitter = { "lsp" },
+        }
+      },
       list = {
         selection = {
           preselect = true,
@@ -43,6 +57,9 @@ function M.config()
       documentation = {
         auto_show = true,
         auto_show_delay_ms = 200,
+      },
+      ghost_text = {
+        enabled = false,
       },
     },
     sources = {
@@ -55,7 +72,7 @@ function M.config()
     },
     signature = {
       enabled = true,
-    }
+    },
   }
   cmp.setup(opts)
 end

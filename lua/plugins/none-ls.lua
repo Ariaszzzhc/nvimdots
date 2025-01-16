@@ -9,7 +9,6 @@ function M.config()
   local null_ls = require("null-ls")
 
   local formatting = null_ls.builtins.formatting
-  -- local diagnostics = null_ls.builtins.diagnostics
   local completion = null_ls.builtins.completion
 
   null_ls.setup({
@@ -24,7 +23,6 @@ function M.config()
         end,
       }),
       formatting.black,
-      --      diagnostics.flake8,
       completion.spell,
     },
   })

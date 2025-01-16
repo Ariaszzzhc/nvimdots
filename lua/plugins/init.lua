@@ -6,6 +6,8 @@ end
 
 spec("mini")
 spec("snacks")
+spec("lualine")
+spec("bufferline")
 spec("dress")
 spec("colorscheme")
 spec("blink")
@@ -15,5 +17,9 @@ spec("whichkey")
 spec("fzf")
 spec("gitsigns")
 spec("trouble")
+spec("none-ls")
+spec("copilot")
+spec("zen")
+spec("commentstring")
 
 require("plugins.lazy")

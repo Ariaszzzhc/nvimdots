@@ -2,14 +2,24 @@ local M = {
   "folke/snacks.nvim",
   priority = 1000,
   lazy = false,
-  opts = {
+}
+
+function M.config()
+  local snacks = require("snacks")
+  snacks.setup({
     notifier = {
       enabled = true,
     },
     lazygit = {
       enabled = true,
+    },
+    indent = {
+      enabled = true,
+    },
+    toggle = {
+      enabled = true,
     }
-  }
-}
+  })
+end
 
 return M

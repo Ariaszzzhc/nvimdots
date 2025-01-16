@@ -1,57 +1,64 @@
 local M = {
   "folke/which-key.nvim",
+  keys = {
+    {
+      "<leader>?",
+      function()
+        require("which-key").show({ global = false })
+      end,
+      desc = "Buffer Keymaps (which-key)",
+    },
+    {
+      "<c-w><space>",
+      function()
+        require("which-key").show({ keys = "<c-w>", loop = true })
+      end,
+      desc = "Window Hydra Mode (which-key)",
+    },
+  },
 }
 
 function M.config()
   local which_key = require("which-key")
   which_key.setup({
     preset = "helix",
-    plugins = {
-      marks = true,
-      registers = true,
-      spelling = {
-        enabled = true,
-        suggestions = 20,
-      },
-      presets = {
-        operators = false,
-        motions = false,
-        text_objects = false,
-        windows = false,
-        nav = false,
-        z = false,
-        g = false,
+    defaults = {},
+    spec = {
+      {
+        mode = { "n", "v" },
+        { "<leader><tab>", group = "tabs" },
+        { "<leader>c", group = "code" },
+        { "<leader>d", group = "debug" },
+        { "<leader>dp", group = "profiler" },
+        { "<leader>f", group = "file/find" },
+        { "<leader>g", group = "git" },
+        { "<leader>gh", group = "hunks" },
+        { "<leader>q", group = "quit/session" },
+        { "<leader>s", group = "search" },
+        { "<leader>u", group = "ui", icon = { icon = "󰙵 ", color = "cyan" } },
+        { "<leader>x", group = "diagnostics/quickfix", icon = { icon = "󱖫 ", color = "green" } },
+        { "[", group = "prev" },
+        { "]", group = "next" },
+        { "g", group = "goto" },
+        { "gs", group = "surround" },
+        { "z", group = "fold" },
+        {
+          "<leader>b",
+          group = "buffer",
+          expand = function()
+            return require("which-key.extras").expand.buf()
+          end,
+        },
+        {
+          "<leader>w",
+          group = "windows",
+          proxy = "<c-w>",
+          expand = function()
+            return require("which-key.extras").expand.win()
+          end,
+        },
       },
     },
-    win = {
-      border = "rounded",
-      padding = {
-        2,
-        2,
-        2,
-        2,
-      },
-    },
-    -- ignore_missing = true,
-    show_help = false,
-    show_keys = false,
-    disable = {
-      buftypes = {},
-      filetypes = { "TelescopePrompt" },
-    },
-  })
-
-  which_key.add({
-    { "<leader>q", "<cmd>confirm q<CR>",  desc = "Quit" },
-    { "<leader>h", "<cmd>nohlsearch<CR>", desc = "NOHL" },
-    { "<leader>v", "<cmd>vsplit<CR>",     desc = "Split" },
-    { "<leader>d", group = "Debug" },
-    { "<leader>f", group = "Find" },
-    { "<leader>g", group = "Git" },
-    { "<leader>l", group = "LSP" },
-    { "<leader>p", group = "Plugins" },
-    { "<leader>T", group = "Test" },
-    { "<leader>a", group = "Copilot" },
   })
 end
 

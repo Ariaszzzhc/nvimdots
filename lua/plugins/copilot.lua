@@ -17,6 +17,8 @@ function M.config()
       hide_during_completion = true,
       keymap = {
         accept = false,
+        next = "<M-]>",
+        prev = "<M-[>",
       }
     },
     panel = {
