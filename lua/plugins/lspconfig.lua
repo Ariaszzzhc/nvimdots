@@ -3,6 +3,7 @@ local M = {
   event = { "BufReadPre", "BufNewFile" },
   dependencies = {
     { "williamboman/mason-lspconfig.nvim", config = function() end },
+    { "b0o/schemastore.nvim", lazy = true, }
   },
   init = function()
     vim.api.nvim_create_autocmd("LspAttach", {
@@ -33,7 +34,7 @@ local M = {
         end
       end
     })
-  end
+  end,
 }
 
 function M.opts()
@@ -88,15 +89,189 @@ function M.opts()
   return options
 end
 
-local function lsp_keymaps(bufnr)
-  local opts = { noremap = true, silent = true }
-  local keymap = vim.api.nvim_buf_set_keymap
-  keymap(bufnr, "n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
-  keymap(bufnr, "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
-  keymap(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
-  keymap(bufnr, "n", "gI", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
-  keymap(bufnr, "n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
-  keymap(bufnr, "n", "gl", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
+local actions = setmetatable({}, {
+  __index = function(_, action)
+    return function()
+      vim.lsp.buf.code_action({
+        apply = true,
+        context = {
+          only = { action },
+          diagnostics = {},
+        },
+      })
+    end
+  end,
+})
+
+local function lsp_keymaps(client, bufnr)
+  local keymap = vim.keymap.set
+
+  keymap("n", "<leader>cl", "<cmd>LspInfo<cr>", {
+    buffer = bufnr,
+    desc = "Lsp Info",
+    noremap = true,
+    silent = true,
+  })
+
+  if client.supports_method("textDocument/definition") then
+    keymap("n", "gd", vim.lsp.buf.definition, {
+      buffer = bufnr,
+      desc = "Goto Definition",
+      noremap = true,
+      silent = true,
+    })
+  end
+
+
+  keymap("n", "gr", vim.lsp.buf.references, {
+    buffer = bufnr,
+    desc = "References",
+    nowait = true,
+    noremap = true,
+    silent = true,
+  })
+
+  keymap("n", "gI", vim.lsp.buf.implementation, {
+    buffer = bufnr,
+    desc = "Goto Implementation",
+    noremap = true,
+    silent = true,
+  })
+
+  keymap("n", "gy", vim.lsp.buf.type_definition, {
+    buffer = bufnr,
+    desc = "Goto T[y]pe Definition",
+    noremap = true,
+    silent = true,
+  })
+
+  keymap("n", "gD", vim.lsp.buf.declaration, {
+    buffer = bufnr,
+    desc = "Goto Declaration",
+    noremap = true,
+    silent = true,
+  })
+
+  keymap("n", "K", function()
+      return vim.lsp.buf.hover()
+    end,
+    {
+      buffer = bufnr,
+      desc = "Hover",
+      noremap = true,
+      silent = true
+    })
+
+  if client.supports_method("textDocument/signatureHelp") then
+    keymap("n", "gK", function()
+        return vim.lsp.buf.signature_help()
+      end,
+      {
+        buffer = bufnr,
+        desc = "Signature Help",
+        noremap = true,
+        silent = true,
+      })
+
+    keymap("i", "<c-k>", function()
+        return vim.lsp.buf.signature_help()
+      end,
+      {
+        buffer = bufnr,
+        desc = "Signature Help",
+        noremap = true,
+        silent = true,
+      })
+  end
+
+  if client.supports_method("textDocument/codeAction") then
+    keymap({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {
+      buffer = bufnr,
+      desc = "Code Action",
+      noremap = true,
+      silent = true,
+    })
+  end
+
+  if client.supports_method("textDocument/codeLens") then
+    keymap({ "n", "v" }, "<leader>cc", vim.lsp.codelens.run, {
+      buffer = bufnr,
+      desc = "Run Codelens",
+      noremap = true,
+      silent = true,
+    })
+
+    keymap("n", "<leader>cC", vim.lsp.codelens.refresh, {
+      buffer = bufnr,
+      desc = "Refresh & Display Codelens",
+      noremap = true,
+      silent = true,
+    })
+  end
+
+  if client.supports_method("workspace/didRenameFiles") or client.supports_method("workspace/willRenameFiles") then
+    keymap("n", "<leader>cR", function()
+      Snacks.rename.rename_file()
+    end, {
+      buffer = bufnr,
+      desc = "Rename File",
+      noremap = true,
+      silent = true,
+    })
+  end
+
+  if client.supports_method("textDocument/rename") then
+    keymap("n", "<leader>cr", vim.lsp.buf.rename, {
+      buffer = bufnr,
+      desc = "Rename",
+      noremap = true,
+      silent = true,
+    })
+  end
+
+  if client.supports_method("textDocument/codeAction") then
+    keymap("n", "<leader>cA", actions.source, {
+      buffer = bufnr,
+      desc = "Source Action",
+      noremap = true,
+      silent = true,
+    })
+  end
+
+  if client.supports_method("textDocument/documentHighlight") and Snacks.words.is_enabled() then
+    keymap("n", "]]", function()
+      Snacks.words.jump(vim.v.count1)
+    end, {
+      buffer = bufnr,
+      desc = "Next Reference",
+      noremap = true,
+      silent = true,
+
+    })
+
+    keymap("n", "[[", function()
+      Snacks.words.jump(-vim.v.count1)
+    end, {
+      buffer = bufnr,
+      desc = "Prev Reference",
+      noremap = true,
+      silent = true,
+    })
+    keymap("n", "<a-n>", function() Snacks.words.jump(vim.v.count1, true) end, {
+      buffer = bufnr,
+      desc = "Next Reference",
+      noremap = true,
+      silent = true,
+    })
+    keymap("n", "<a-p>", function()
+      Snacks.words.jump(-vim.v.count1, true)
+    end, {
+      buffer = bufnr,
+      desc = "Prev Reference",
+      noremap = true,
+      silent = true,
+    })
+  end
 end
 
 local _supports_method = {}
@@ -180,8 +355,8 @@ end
 
 
 function M.config(_, opts)
-  on_attach(function(_, bufnr)
-    lsp_keymaps(bufnr)
+  on_attach(function(client, bufnr)
+    lsp_keymaps(client, bufnr)
   end)
 
   local register_capability = vim.lsp.handlers["client/registerCapability"]
@@ -250,102 +425,5 @@ M.toggle_inlay_hints = function()
   local bufnr = vim.api.nvim_get_current_buf()
   vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr }), { bufnr = bufnr })
 end
-
--- function M.config()
---   local wk = require("which-key")
---   wk.add({
---     { "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<cr>",                             desc = "Code Action" },
---     {
---      "<leader>lf",
---       "<cmd>lua vim.lsp.buf.format({async = true, filter = function(client) return client.name ~= 'typescript-tools' end})<cr>",
---       desc = "Format",
---     },
---     { "<leader>li", "<cmd>LspInfo<cr>",                                                   desc = "Info" },
---     { "<leader>lj", "<cmd>lua vim.diagnostic.goto_next()<cr>",                            desc = "Next Diagnostic" },
---     { "<leader>lh", "<cmd>lua require('user.plugin.lspconfig').toggle_inlay_hints()<cr>", desc = "Hints" },
---     { "<leader>lk", "<cmd>lua vim.diagnostic.goto_prev()<cr>",                            desc = "Prev Diagnostic" },
---     { "<leader>ll", "<cmd>lua vim.lsp.codelens.run()<cr>",                                desc = "CodeLens Action" },
---     { "<leader>lq", "<cmd>lua vim.diagnostic.setloclist()<cr>",                           desc = "Quickfix" },
---     { "<leader>lr", "<cmd>lua vim.lsp.buf.rename()<cr>",                                  desc = "Rename" },
---   })
-
---   local lspconfig = require("lspconfig")
---   local icons = require("user.ui.icons")
-
---   local servers = {
---     "lua_ls",
---    "clangd",
---     "cssls",
---     "html",
---     "pyright",
---     "bashls",
---     "jsonls",
---     "yamlls",
---     "denols",
---     "ts_ls",
---     "zls",
---     "tailwindcss",
---   }
-
---   local default_diagnostic_config = {
---     signs = {
---       active = true,
---       values = {
---         { name = "DiagnosticSignError", text = icons.diagnostics.Error },
---         { name = "DiagnosticSignWarn",  text = icons.diagnostics.Warning },
---         { name = "DiagnosticSignHint",  text = icons.diagnostics.Hint },
---         { name = "DiagnosticSignInfo",  text = icons.diagnostics.Information },
---       },
---     },
---     virtual_text = true,
---     update_in_insert = false,
---     underline = true,
---     severity_sort = true,
---     inlay_hints = {
---       enabled = true,
---     },
---     codelens = {
---       enabled = true,
---     },
---     float = {
---       focusable = true,
---       style = "minimal",
---       border = "rounded",
---       source = "always",
---       header = "",
---       prefix = "",
---     },
---   }
-
---   vim.diagnostic.config(default_diagnostic_config)
-
---   for _, sign in ipairs(vim.tbl_get(vim.diagnostic.config() or {}, "signs", "values") or {}) do
---     vim.fn.sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = sign.name })
---   end
-
---   vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
---   vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" })
---   require("lspconfig.ui.windows").default_options.border = "rounded"
-
---   for _, server in pairs(servers) do
---     local require_ok, options = pcall(require, "user.lsp." .. server)
-
---     local opts = {
---       on_attach = M.on_attach,
---       capabilities = require("blink.cmp").get_lsp_capabilities(M.common_capabilities()),
---     }
-
---     if require_ok then
---       opts.on_attach = M.on_attach
---       opts = vim.tbl_deep_extend("force", options, opts)
---     end
-
---     if server == "lua_ls" then
---       require("neodev").setup()
---     end
-
---     lspconfig[server].setup(opts)
---   end
--- end
 
 return M

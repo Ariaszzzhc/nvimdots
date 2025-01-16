@@ -48,7 +48,6 @@ return {
     },
     single_file_support = false,
   },
-
   lua_ls = {
     settings = {
       Lua = {
@@ -147,5 +146,12 @@ return {
       }
     },
     single_file_support = false,
-  }
+  },
+  jsonls = {
+    settiongs = {
+      json = {
+        schemas = require("schemastore").json.schemas(),
+      },
+    },
+  },
 }

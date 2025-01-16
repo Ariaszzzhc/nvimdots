@@ -18,6 +18,12 @@ function M.config()
     },
     toggle = {
       enabled = true,
+    },
+    rename = {
+      enabled = true,
+    },
+    words = {
+      enabled = true,
     }
   })
 end

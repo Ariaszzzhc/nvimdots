@@ -32,6 +32,7 @@ function M.config()
         { "<leader>dp", group = "profiler" },
         { "<leader>f", group = "file/find" },
         { "<leader>g", group = "git" },
+        { "<leader>a", group = "copilot" },
         { "<leader>gh", group = "hunks" },
         { "<leader>q", group = "quit/session" },
         { "<leader>s", group = "search" },

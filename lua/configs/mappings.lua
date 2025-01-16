@@ -69,9 +69,6 @@ map("i", ",", ",<c-g>u")
 map("i", ".", ".<c-g>u")
 map("i", ";", ";<c-g>u")
 
---keywordprg
-map("n", "<leader>K", "<cmd>norm! K<cr>", { desc = "Keywordprg" })
-
 -- better indenting
 map("v", "<", "<gv")
 map("v", ">", ">gv")
@@ -147,24 +144,3 @@ map("n", "<leader><tab><tab>", "<cmd>tabnew<cr>", { desc = "New Tab" })
 map("n", "<leader><tab>]", "<cmd>tabnext<cr>", { desc = "Next Tab" })
 map("n", "<leader><tab>d", "<cmd>tabclose<cr>", { desc = "Close Tab" })
 map("n", "<leader><tab>[", "<cmd>tabprevious<cr>", { desc = "Previous Tab" })
-
--- local keymap = vim.keymap.set
-
--- local opts = { noremap = true, silent = true }
-
--- keymap("i", "jk", "<ESC>", opts)
--- keymap("i", "kj", "<ESC>", opts)
-
--- keymap("t", "<C-;>", "<c-\\><c-n>", opts)
-
--- keymap("n", "<S-l>", ":bnext<CR>", opts)
--- keymap("n", "<S-h>", ":bprevious<CR>", opts)
-
--- keymap("v", "<S-j>", ":m '>+1<CR>gv=gv", opts)
--- keymap("v", "<S-k>", ":m '<-2<CR>gv=gv", opts)
--- keymap("v", "p", '"_dP', opts)
-
--- keymap("n", "<C-h>", "<C-w>h", opts)
--- keymap("n", "<C-j>", "<C-w>j", opts)
--- keymap("n", "<C-k>", "<C-w>k", opts)
--- keymap("n", "<C-l>", "<C-w>l", opts)
