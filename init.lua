@@ -14,4 +14,6 @@ require("configs.options")
 require("configs.autocmd")
 require("plugins")
 
-vim.cmd [[colorscheme tokyonight]]
+if not vim.g.vscode then
+  vim.cmd [[colorscheme tokyonight]]
+end

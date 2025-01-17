@@ -2,6 +2,7 @@ local M = {
   "folke/snacks.nvim",
   priority = 1000,
   lazy = false,
+  cond = not vim.g.vscode,
 }
 
 function M.config()
@@ -24,6 +25,17 @@ function M.config()
     },
     words = {
       enabled = true,
+    },
+    profiler = {
+      pick = {
+        picker = "fzf-lua",
+      }
+    },
+    input = {
+      enabled = false,
+      b = {
+        completion = false,
+      }
     }
   })
 end

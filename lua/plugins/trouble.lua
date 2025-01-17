@@ -1,6 +1,7 @@
 local M = {
   "folke/trouble.nvim",
   cmd = "Trouble",
+  cond = not vim.g.vscode,
   keys = {
     { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>",              desc = "Diagnostics" },
     { "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer Diagnostics" },

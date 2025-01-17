@@ -1,6 +1,11 @@
 local M = {
   "echasnovski/mini.nvim",
   version = false,
+  priority = 1000,
+  lazy = false,
+  dependencies = {
+    { "stevearc/dressing.nvim", opts = {} }
+  }
 }
 
 local function setup_starter()
@@ -521,60 +526,65 @@ local function setup_ai()
     },
   })
 
-  local objects = {
-    { " ", desc = "whitespace" },
-    { '"', desc = '" string' },
-    { "'", desc = "' string" },
-    { "(", desc = "() block" },
-    { ")", desc = "() block with ws" },
-    { "<", desc = "<> block" },
-    { ">", desc = "<> block with ws" },
-    { "?", desc = "user prompt" },
-    { "U", desc = "use/call without dot" },
-    { "[", desc = "[] block" },
-    { "]", desc = "[] block with ws" },
-    { "_", desc = "underscore" },
-    { "`", desc = "` string" },
-    { "a", desc = "argument" },
-    { "b", desc = ")]} block" },
-    { "c", desc = "class" },
-    { "d", desc = "digit(s)" },
-    { "e", desc = "CamelCase / snake_case" },
-    { "f", desc = "function" },
-    { "g", desc = "entire file" },
-    { "i", desc = "indent" },
-    { "o", desc = "block, conditional, loop" },
-    { "q", desc = "quote `\"'" },
-    { "t", desc = "tag" },
-    { "u", desc = "use/call" },
-    { "{", desc = "{} block" },
-    { "}", desc = "{} with ws" },
-  }
+  local wk_exists, wk = pcall(require, "which-key")
 
-  local ret = { mode = { "o", "x" } }
-  local mappings = {
-    around = "a",
-    inside = "i",
-    around_next = "an",
-    inside_next = "in",
-    around_last = "al",
-    inside_last = "il",
-  }
-  mappings.goto_left = nil
-  mappings.goto_right = nil
+  if wk_exists then
+    local objects = {
+      { " ", desc = "whitespace" },
+      { '"', desc = '" string' },
+      { "'", desc = "' string" },
+      { "(", desc = "() block" },
+      { ")", desc = "() block with ws" },
+      { "<", desc = "<> block" },
+      { ">", desc = "<> block with ws" },
+      { "?", desc = "user prompt" },
+      { "U", desc = "use/call without dot" },
+      { "[", desc = "[] block" },
+      { "]", desc = "[] block with ws" },
+      { "_", desc = "underscore" },
+      { "`", desc = "` string" },
+      { "a", desc = "argument" },
+      { "b", desc = ")]} block" },
+      { "c", desc = "class" },
+      { "d", desc = "digit(s)" },
+      { "e", desc = "CamelCase / snake_case" },
+      { "f", desc = "function" },
+      { "g", desc = "entire file" },
+      { "i", desc = "indent" },
+      { "o", desc = "block, conditional, loop" },
+      { "q", desc = "quote `\"'" },
+      { "t", desc = "tag" },
+      { "u", desc = "use/call" },
+      { "{", desc = "{} block" },
+      { "}", desc = "{} with ws" },
+    }
 
-  for name, prefix in pairs(mappings) do
-    name = name:gsub("^around_", ""):gsub("^inside_", "")
-    ret[#ret + 1] = { prefix, group = name }
-    for _, obj in ipairs(objects) do
-      local desc = obj.desc
-      if prefix:sub(1, 1) == "i" then
-        desc = desc:gsub(" with ws", "")
+    local ret = { mode = { "o", "x" } }
+    local mappings = {
+      around = "a",
+      inside = "i",
+      around_next = "an",
+      inside_next = "in",
+      around_last = "al",
+      inside_last = "il",
+    }
+    mappings.goto_left = nil
+    mappings.goto_right = nil
+
+    for name, prefix in pairs(mappings) do
+      name = name:gsub("^around_", ""):gsub("^inside_", "")
+      ret[#ret + 1] = { prefix, group = name }
+      for _, obj in ipairs(objects) do
+        local desc = obj.desc
+        if prefix:sub(1, 1) == "i" then
+          desc = desc:gsub(" with ws", "")
+        end
+        ret[#ret + 1] = { prefix .. obj[1], desc = obj.desc }
       end
-      ret[#ret + 1] = { prefix .. obj[1], desc = obj.desc }
     end
+
+    wk.add(ret, { notify = false })
   end
-  require("which-key").add(ret, { notify = false })
 end
 
 local function setup_comment()
@@ -588,11 +598,13 @@ local function setup_comment()
 end
 
 function M.config()
-  setup_starter()
-  setup_icons()
-  setup_autopair()
-  setup_cursorword()
-  setup_hipatterns()
+  if not vim.g.vscode then
+    setup_starter()
+    setup_icons()
+    setup_autopair()
+    setup_cursorword()
+    setup_hipatterns()
+  end
   setup_ai()
   setup_comment()
 end

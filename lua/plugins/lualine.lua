@@ -1,17 +1,7 @@
 local M = {
   "nvim-lualine/lualine.nvim",
+  cond = not vim.g.vscode,
 }
-
-function M.init()
-  vim.g.lualine_laststatus = vim.o.laststatus
-  if vim.fn.argc(-1) > 0 then
-    -- set an empty statusline till lualine loads
-    vim.o.statusline = " "
-  else
-    -- hide the statusline on the starter page
-    vim.o.laststatus = 0
-  end
-end
 
 function M.config()
   local trouble = require("trouble")
@@ -62,7 +52,7 @@ function M.config()
       lualine_x = {
         {
           function()
-            snacks.profiler.status()
+            return snacks.profiler.status()
           end,
           cond = snacks.profiler.running,
         },

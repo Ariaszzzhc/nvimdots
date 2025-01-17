@@ -3,8 +3,9 @@ local M = {
   event = { "BufReadPre", "BufNewFile" },
   dependencies = {
     { "williamboman/mason-lspconfig.nvim", config = function() end },
-    { "b0o/schemastore.nvim", lazy = true, }
+    { "b0o/schemastore.nvim",              lazy = true, }
   },
+  cond = not vim.g.vscode,
   init = function()
     vim.api.nvim_create_autocmd("LspAttach", {
       callback = function(args)
@@ -215,6 +216,18 @@ local function lsp_keymaps(client, bufnr)
     end, {
       buffer = bufnr,
       desc = "Rename File",
+      noremap = true,
+      silent = true,
+    })
+  end
+
+  if client.supports_method("textDocument/inlayHint") then
+    keymap("n", "<leader>uh", function()
+      local buf = vim.api.nvim_get_current_buf()
+      vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = buf }), { bufnr = buf })
+    end, {
+      buffer = bufnr,
+      desc = "Toggle Inlay Hints",
       noremap = true,
       silent = true,
     })

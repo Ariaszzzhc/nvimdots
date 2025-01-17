@@ -1,5 +1,5 @@
 local M = {
-  { "folke/tokyonight.nvim" }
+  { "folke/tokyonight.nvim", cond = not vim.g.vscode }
 }
 
 return M;

@@ -1,5 +1,6 @@
 local M = {
-  "ibhagwan/fzf-lua"
+  "ibhagwan/fzf-lua",
+  cond = not vim.g.vscode,
 }
 
 local function get_clients(opts)

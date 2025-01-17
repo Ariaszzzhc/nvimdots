@@ -16,6 +16,7 @@ local M = {
       desc = "Window Hydra Mode (which-key)",
     },
   },
+  cond = not vim.g.vscode,
 }
 
 function M.config()

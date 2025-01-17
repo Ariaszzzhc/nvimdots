@@ -3,6 +3,7 @@ local M = {
   cmd = "Copilot",
   build = ":Copilot auth",
   event = "InsertEnter",
+  cond = not vim.g.vscode,
 }
 
 function M.config()

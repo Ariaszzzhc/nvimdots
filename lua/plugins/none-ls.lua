@@ -3,6 +3,7 @@ local M = {
   dependencies = {
     "nvim-lua/plenary.nvim",
   },
+  cond = not vim.g.vscode,
 }
 
 function M.config()

@@ -13,13 +13,13 @@ local M = {
     { "[B",         "<cmd>BufferLineMovePrev<cr>",             desc = "Move buffer prev" },
     { "]B",         "<cmd>BufferLineMoveNext<cr>",             desc = "Move buffer next" },
   },
+  cond = not vim.g.vscode,
   config = function()
     local buf_delete = require("mini.bufremove")
 
     local opts = {
       options = {
         close_command = buf_delete.delete,
-        show_close_icon = false,
         diagnostics = "nvim_lsp",
         always_show_bufferline = false,
         offsets = {
@@ -36,6 +36,9 @@ local M = {
               .. (diag.warning and icons.Warning .. " " .. diag.warning or "")
           return vim.trim(ret)
         end,
+        get_element_icon = function(opts)
+          return MiniIcons.get("filetype", opts.filetype)
+        end,
       },
     }
 
@@ -49,26 +52,6 @@ local M = {
       end,
     })
   end,
-  opts = {
-    options = {
-      diagnostics = "nvim_lsp",
-      always_show_bufferline = false,
-      offsets = {
-        {
-          filetype = "NvimTree",
-          highlight = "Directory",
-          text_align = "left",
-        },
-      },
-      diagnostics_indicator = function(_, _, diag)
-        local icons = require("user.ui.icons").diagnostics
-
-        local ret = (diag.error and icons.Error .. diag.error .. " " or "")
-            .. (diag.warning and icons.Warning .. diag.warning or "")
-        return vim.trim(ret)
-      end,
-    },
-  },
 }
 
 return M
