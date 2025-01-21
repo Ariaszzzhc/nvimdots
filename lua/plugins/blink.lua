@@ -1,7 +1,7 @@
 local M = {
   "saghen/blink.cmp",
   dependencies = {
-    "rafamadriz/friendly-snippets"
+    { "rafamadriz/friendly-snippets", }
   },
   cond = not vim.g.vscode,
   version = "*",
@@ -20,6 +20,16 @@ function M.config()
       ["<Tab>"] = {
         function(c)
           local copilot = require("copilot.suggestion")
+          if copilot.is_visible() and not c.is_visible() then
+            if vim.api.nvim_get_mode().mode == "i" then
+              vim.api.nvim_feedkeys(CREATE_UNDO, "n", false)
+            end
+            copilot.accept()
+          end
+        end,
+        "snippet_forward",
+        function(c)
+          local copilot = require("copilot.suggestion")
           if c.snippet_active() then
             return c.accept()
           elseif c.is_visible() then
@@ -31,7 +41,6 @@ function M.config()
             copilot.accept()
           end
         end,
-        "snippet_forward",
         "fallback",
       },
     },
@@ -82,6 +91,21 @@ function M.config()
     signature = {
       enabled = true,
     },
+    snippets = {
+      expand = function(snippet)
+        if not _G.MiniSnippets then error('mini.snippets has not been setup') end
+        local insert = MiniSnippets.config.expand.insert or MiniSnippets.default_insert
+        insert({ body = snippet })
+      end,
+      active = function()
+        if not _G.MiniSnippets then error('mini.snippets has not been setup') end
+        return MiniSnippets.session.get(false) ~= nil
+      end,
+      jump = function(direction)
+        if not _G.MiniSnippets then error('mini.snippets has not been setup') end
+        MiniSnippets.session.jump(direction == -1 and 'prev' or 'next')
+      end,
+    }
   }
   cmp.setup(opts)
 end

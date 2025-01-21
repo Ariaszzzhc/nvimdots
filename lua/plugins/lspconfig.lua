@@ -3,7 +3,11 @@ local M = {
   event = { "BufReadPre", "BufNewFile" },
   dependencies = {
     { "williamboman/mason-lspconfig.nvim", config = function() end },
-    { "b0o/schemastore.nvim",              lazy = true, }
+    { "b0o/schemastore.nvim",              lazy = true, },
+    {
+      "p00f/clangd_extensions.nvim",
+      lazy = true,
+    },
   },
   cond = not vim.g.vscode,
   init = function()
@@ -429,6 +433,30 @@ function M.config(_, opts)
     local server_opts = vim.tbl_deep_extend("force", {
       capabilities = vim.deepcopy(capabilities),
     }, servers[server] or {})
+
+    if (server == "clangd") then
+      local clangd_opts = {
+        role_icons = {
+          type = "",
+          declaration = "",
+          expression = "",
+          specifier = "",
+          statement = "",
+          ["template argument"] = "",
+        },
+        kind_icons = {
+          Compound = "",
+          Recovery = "",
+          TranslationUnit = "",
+          PackExpansion = "",
+          TemplateTypeParm = "",
+          TemplateTemplateParm = "",
+          TemplateParamObject = "",
+        },
+      }
+
+      require("clangd_extensions").setup(clangd_opts)
+    end
 
     require("lspconfig")[server].setup(server_opts)
   end

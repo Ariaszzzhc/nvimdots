@@ -597,6 +597,38 @@ local function setup_comment()
   })
 end
 
+local function setup_surround()
+  require("mini.surround").setup({
+    mappings = {
+      add = "gsa",
+      delete = "gsd",
+      find = "gsf",
+      find_left = "gsF",
+      highlight = "gsh",
+      replace = "gsr",
+      update_n_lines = "gsn"
+    },
+  })
+end
+
+local function setup_snippets()
+  local snippets = require("mini.snippets")
+
+  local gen_loader = snippets.gen_loader
+
+  snippets.setup({
+    snippets = {
+      gen_loader.from_lang(),
+    },
+    mappings = {
+      expand = "",
+      jump_next = "",
+      jump_prev = "",
+      stop = "",
+    }
+  })
+end
+
 function M.config()
   if not vim.g.vscode then
     setup_starter()
@@ -604,7 +636,9 @@ function M.config()
     setup_autopair()
     setup_cursorword()
     setup_hipatterns()
+    setup_snippets()
   end
+  setup_surround()
   setup_ai()
   setup_comment()
 end
