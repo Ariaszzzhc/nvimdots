@@ -21,5 +21,6 @@ spec("zen")
 spec("commentstring")
 spec("lazydev")
 spec("yazi")
+spec("dap")
 
 require("plugins.lazy")

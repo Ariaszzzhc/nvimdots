@@ -157,10 +157,10 @@ return {
     CircuitBoard = " ",
   },
   dap = {
-    Stopped             = { "󰁕 ", "DiagnosticWarn", "DapStoppedLine" },
-    Breakpoint          = { " " },
-    BreakpointCondition = { " " },
-    BreakpointRejected  = { " ", "DiagnosticError" },
-    LogPoint            = { ".>" },
+    Stopped             = "󰁕 ",
+    Breakpoint          = " ",
+    BreakpointCondition = " ",
+    BreakpointRejected  = " ",
+    LogPoint            = ".>",
   },
 }
