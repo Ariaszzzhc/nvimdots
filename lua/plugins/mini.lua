@@ -629,6 +629,34 @@ local function setup_snippets()
   })
 end
 
+local function setup_move()
+  local move = require("mini.move")
+  move.setup()
+end
+
+local function setup_diff()
+  local diff = require("mini.diff")
+
+  diff.setup({
+    view = {
+      style = "sign",
+      signs = {
+        add = "▎",
+        change = "▎",
+        delete = "",
+      },
+    }
+  })
+
+  vim.keymap.set("n", "<leader>go", function()
+    diff.toggle_overlay(0)
+  end, {
+    desc = "Toggle mini.diff overlay",
+    noremap = true,
+    silent = true
+  })
+end
+
 function M.config()
   if not vim.g.vscode then
     setup_starter()
@@ -637,10 +665,12 @@ function M.config()
     setup_cursorword()
     setup_hipatterns()
     setup_snippets()
+    setup_diff()
   end
   setup_surround()
   setup_ai()
   setup_comment()
+  setup_move()
 end
 
 return M
