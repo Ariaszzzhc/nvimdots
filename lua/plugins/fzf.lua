@@ -34,6 +34,7 @@ function M.config()
     { "<leader>ft", picker.live_grep, desc = "Find Text" },
     { "<leader>fl", picker.resume,    desc = "Last Search" },
     { "<leader>fr", picker.oldfiles,  desc = "Recent File" },
+    { "<leader>uc", picker.commands,  desc = "Run Command" },
   }
 
 

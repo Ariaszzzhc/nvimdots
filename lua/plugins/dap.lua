@@ -56,6 +56,38 @@ end
 local M = {
   "mfussenegger/nvim-dap",
   enabled = not vim.g.vscode,
+  dependencies = {
+    {
+      "nvim-neotest/nvim-nio",
+    },
+    {
+      "rcarriga/nvim-dap-ui",
+      keys = {
+        { "<leader>du", function() require("dapui").toggle({}) end, desc = "Dap UI" },
+        { "<leader>de", function() require("dapui").eval() end,     desc = "Eval",  mode = { "n", "v" } },
+      },
+      config = function()
+        local dap = require("dap")
+        local dapui = require("dapui")
+        dapui.setup()
+        dap.listeners.before.attach.dapui_config = function()
+          dapui.open()
+        end
+        dap.listeners.before.launch.dapui_config = function()
+          dapui.open()
+        end
+        dap.listeners.before.event_terminated.dapui_config = function()
+          dapui.close()
+        end
+        dap.listeners.before.event_exited.dapui_config = function()
+          dapui.close()
+        end
+      end
+    },
+    {
+      "theHamsta/nvim-dap-virtual-text",
+    },
+  },
   keys = {
     { "<leader>dB", function() require("dap").set_breakpoint(vim.fn.input('Breakpoint condition: ')) end, desc = "Breakpoint Condition" },
     { "<leader>db", function() require("dap").toggle_breakpoint() end,                                    desc = "Toggle Breakpoint" },
@@ -123,6 +155,7 @@ function M.config()
   )
 
   local debuggers = require("configs.debuggers")
+  local dbg_configs = require("configs.debug_configs")
 
   local dap = require("dap")
 
@@ -131,6 +164,14 @@ function M.config()
 
     dap.adapters[dbg] = dbg_opts
   end
+
+  for dbg_config, _ in pairs(dbg_configs) do
+    local dbg_config_opts = dbg_configs[dbg_config]
+
+    dap.configurations[dbg_config] = dbg_config_opts
+  end
+
+  require("nvim-dap-virtual-text").setup()
 end
 
 return M
