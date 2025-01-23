@@ -2,7 +2,6 @@ local M = {
   "neovim/nvim-lspconfig",
   event = { "BufReadPre", "BufNewFile" },
   dependencies = {
-    { "williamboman/mason-lspconfig.nvim", config = function() end },
     { "b0o/schemastore.nvim", lazy = true },
     {
       "p00f/clangd_extensions.nvim",

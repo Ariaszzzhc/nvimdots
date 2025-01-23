@@ -29,14 +29,14 @@ function M.config()
     profiler = {
       pick = {
         picker = "fzf-lua",
-      }
+      },
     },
     input = {
       enabled = false,
       b = {
         completion = false,
-      }
-    }
+      },
+    },
   })
 
   Snacks.toggle({
