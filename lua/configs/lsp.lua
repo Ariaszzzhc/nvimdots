@@ -54,29 +54,13 @@ return {
         format = {
           enable = true,
         },
-        -- diagnostics = {
-        --   globals = { "vim", "spec" },
-        -- },
-        -- runtime = {
-        --   version = "LuaJIT",
-        --   special = {
-        --     spec = "require",
-        --   },
-        -- },
-        -- workspace = {
-        --   checkThirdParty = false,
-        --   library = {
-        --     [vim.fn.expand("$VIMRUNTIME/lua")] = true,
-        --     [vim.fn.stdpath("config") .. "/lua"] = true,
-        --   },
-        -- },
         hint = {
           enable = true,
           arrayIndex = "Disable", -- "Enable" | "Auto" | "Disable"
           await = true,
-          paramName = "Disable",  -- "All" | "Literal" | "Disable"
+          paramName = "Disable", -- "All" | "Literal" | "Disable"
           paramType = true,
-          semicolon = "Disable",  -- "All" | "SameLine" | "Disable"
+          semicolon = "Disable", -- "All" | "SameLine" | "Disable"
           setType = false,
         },
         codeLens = {
@@ -87,7 +71,6 @@ return {
         },
       },
     },
-
   },
   ts_ls = {
     root_dir = function(startpath)
@@ -119,7 +102,7 @@ return {
         },
         implementationsCodeLens = {
           enabled = true,
-        }
+        },
       },
       javascript = {
         inlayHints = {
@@ -138,12 +121,12 @@ return {
         },
         implementationsCodeLens = {
           enabled = true,
-        }
+        },
       },
 
       completions = {
         completeFunctionCalls = true,
-      }
+      },
     },
     single_file_support = false,
   },
@@ -164,6 +147,6 @@ return {
       "--function-arg-placeholders",
       "--fallback-style=google",
       "--experimental-modules-support",
-    }
+    },
   },
 }

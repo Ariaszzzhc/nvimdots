@@ -4,8 +4,8 @@ local M = {
   priority = 1000,
   lazy = false,
   dependencies = {
-    { "stevearc/dressing.nvim", opts = {} }
-  }
+    { "stevearc/dressing.nvim", opts = {} },
+  },
 }
 
 local function setup_starter()
@@ -78,7 +78,6 @@ local function setup_starter()
     end,
   })
 end
-
 
 local function setup_autopair()
   require("mini.pairs").setup({
@@ -446,20 +445,22 @@ local function setup_hipatterns()
       },
       tailwind = {
         pattern = function()
-          if not vim.tbl_contains({
-                "astro",
-                "css",
-                "heex",
-                "html",
-                "html-eex",
-                "javascript",
-                "javascriptreact",
-                "rust",
-                "svelte",
-                "typescript",
-                "typescriptreact",
-                "vue",
-              }, vim.bo.filetype) then
+          if
+            not vim.tbl_contains({
+              "astro",
+              "css",
+              "heex",
+              "html",
+              "html-eex",
+              "javascript",
+              "javascriptreact",
+              "rust",
+              "svelte",
+              "typescript",
+              "typescriptreact",
+              "vue",
+            }, vim.bo.filetype)
+          then
             return
           end
           return "%f[%w:-]()[%w:-]+%-[a-z%-]+%-%d+()%f[^%w:-]"
@@ -483,7 +484,7 @@ local function setup_hipatterns()
           end
         end,
         extmark_opts = { priority = 2000 },
-      }
+      },
     },
   })
 end
@@ -499,10 +500,10 @@ local function setup_ai()
         i = { "@block.inner", "@conditional.inner", "@loop.inner" },
       }),
       f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }), -- function
-      c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }),       -- class
-      t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" },           -- tags
-      d = { "%f[%d]%d+" },                                                          -- digits
-      e = {                                                                         -- Word with case
+      c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }), -- class
+      t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" }, -- tags
+      d = { "%f[%d]%d+" }, -- digits
+      e = { -- Word with case
         { "%u[%l%d]+%f[^%l%d]", "%f[%S][%l%d]+%f[^%l%d]", "%f[%P][%l%d]+%f[^%l%d]", "^[%l%d]+%f[^%l%d]" },
         "^().*()$",
       },
@@ -520,8 +521,8 @@ local function setup_ai()
 
         local to_col = math.max(vim.fn.getline(end_line):len(), 1)
         return { from = { line = start_line, col = 1 }, to = { line = end_line, col = to_col } }
-      end,                                                       -- buffer
-      u = ai.gen_spec.function_call(),                           -- u for "Usage"
+      end, -- buffer
+      u = ai.gen_spec.function_call(), -- u for "Usage"
       U = ai.gen_spec.function_call({ name_pattern = "[%w_]" }), -- without dot in function name
     },
   })
@@ -591,7 +592,7 @@ local function setup_comment()
   require("mini.comment").setup({
     options = {
       custom_commentstring = function()
-        return require('ts_context_commentstring').calculate_commentstring() or vim.bo.commentstring
+        return require("ts_context_commentstring").calculate_commentstring() or vim.bo.commentstring
       end,
     },
   })
@@ -606,7 +607,7 @@ local function setup_surround()
       find_left = "gsF",
       highlight = "gsh",
       replace = "gsr",
-      update_n_lines = "gsn"
+      update_n_lines = "gsn",
     },
   })
 end
@@ -625,7 +626,7 @@ local function setup_snippets()
       jump_next = "",
       jump_prev = "",
       stop = "",
-    }
+    },
   })
 end
 
@@ -645,7 +646,7 @@ local function setup_diff()
         change = "▎",
         delete = "",
       },
-    }
+    },
   })
 
   vim.keymap.set("n", "<leader>go", function()
@@ -653,7 +654,7 @@ local function setup_diff()
   end, {
     desc = "Toggle mini.diff overlay",
     noremap = true,
-    silent = true
+    silent = true,
   })
 end
 

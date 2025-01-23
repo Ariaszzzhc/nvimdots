@@ -3,43 +3,13 @@ local M = {
   event = { "BufReadPre", "BufNewFile" },
   dependencies = {
     { "williamboman/mason-lspconfig.nvim", config = function() end },
-    { "b0o/schemastore.nvim",              lazy = true, },
+    { "b0o/schemastore.nvim", lazy = true },
     {
       "p00f/clangd_extensions.nvim",
       lazy = true,
     },
   },
   cond = not vim.g.vscode,
-  init = function()
-    vim.api.nvim_create_autocmd("LspAttach", {
-      callback = function(args)
-        local client = vim.lsp.get_client_by_id(args.data.client_id)
-
-        if not client then return end
-
-        if client.supports_method("textDocument/formatting") then
-          if client.name == "ts_ls" then
-            return
-          end
-
-          if client.name == "vtsls" then
-            return
-          end
-
-          vim.api.nvim_create_autocmd("BufWritePre", {
-            buffer = args.buf,
-            callback = function()
-              vim.lsp.buf.format({
-                async = false,
-                bufnr = args.buf,
-                id = client.id,
-              })
-            end,
-          })
-        end
-      end
-    })
-  end,
 }
 
 function M.opts()
@@ -88,7 +58,7 @@ function M.opts()
     format = {
       formatting_options = nil,
       timeout_ms = nil,
-    }
+    },
   }
 
   return options
@@ -127,7 +97,6 @@ local function lsp_keymaps(client, bufnr)
     })
   end
 
-
   keymap("n", "gr", vim.lsp.buf.references, {
     buffer = bufnr,
     desc = "References",
@@ -158,35 +127,32 @@ local function lsp_keymaps(client, bufnr)
   })
 
   keymap("n", "K", function()
-      return vim.lsp.buf.hover()
-    end,
-    {
-      buffer = bufnr,
-      desc = "Hover",
-      noremap = true,
-      silent = true
-    })
+    return vim.lsp.buf.hover()
+  end, {
+    buffer = bufnr,
+    desc = "Hover",
+    noremap = true,
+    silent = true,
+  })
 
   if client.supports_method("textDocument/signatureHelp") then
     keymap("n", "gK", function()
-        return vim.lsp.buf.signature_help()
-      end,
-      {
-        buffer = bufnr,
-        desc = "Signature Help",
-        noremap = true,
-        silent = true,
-      })
+      return vim.lsp.buf.signature_help()
+    end, {
+      buffer = bufnr,
+      desc = "Signature Help",
+      noremap = true,
+      silent = true,
+    })
 
     keymap("i", "<c-k>", function()
-        return vim.lsp.buf.signature_help()
-      end,
-      {
-        buffer = bufnr,
-        desc = "Signature Help",
-        noremap = true,
-        silent = true,
-      })
+      return vim.lsp.buf.signature_help()
+    end, {
+      buffer = bufnr,
+      desc = "Signature Help",
+      noremap = true,
+      silent = true,
+    })
   end
 
   if client.supports_method("textDocument/codeAction") then
@@ -263,7 +229,6 @@ local function lsp_keymaps(client, bufnr)
       desc = "Next Reference",
       noremap = true,
       silent = true,
-
     })
 
     keymap("n", "[[", function()
@@ -274,7 +239,9 @@ local function lsp_keymaps(client, bufnr)
       noremap = true,
       silent = true,
     })
-    keymap("n", "<a-n>", function() Snacks.words.jump(vim.v.count1, true) end, {
+    keymap("n", "<a-n>", function()
+      Snacks.words.jump(vim.v.count1, true)
+    end, {
       buffer = bufnr,
       desc = "Next Reference",
       noremap = true,
@@ -370,7 +337,6 @@ local function on_attach(on_attach, name)
   })
 end
 
-
 function M.config(_, opts)
   on_attach(function(client, bufnr)
     lsp_keymaps(client, bufnr)
@@ -400,9 +366,9 @@ function M.config(_, opts)
 
   on_supports_method("textDocument/inlayHint", function(client, bufnr)
     if
-        vim.api.nvim_buf_is_valid(bufnr)
-        and vim.bo[bufnr].buftype == ""
-        and not vim.tbl_contains(opts.inlay_hints.exclude, vim.bo[bufnr].filetype)
+      vim.api.nvim_buf_is_valid(bufnr)
+      and vim.bo[bufnr].buftype == ""
+      and not vim.tbl_contains(opts.inlay_hints.exclude, vim.bo[bufnr].filetype)
     then
       vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
     end
@@ -434,7 +400,7 @@ function M.config(_, opts)
       capabilities = vim.deepcopy(capabilities),
     }, servers[server] or {})
 
-    if (server == "clangd") then
+    if server == "clangd" then
       local clangd_opts = {
         role_icons = {
           type = "",
@@ -455,7 +421,7 @@ function M.config(_, opts)
         },
       }
 
-      require("clangd_extensions").setup(clangd_opts)
+      require("clangd_extensions").setup()
     end
 
     require("lspconfig")[server].setup(server_opts)
