@@ -18,18 +18,22 @@ function M.config()
     keymap = {
       preset = "super-tab",
       ["<Tab>"] = {
-        "snippet_forward",
         function(c)
-          local copilot = require("copilot.suggestion")
           if c.snippet_active() then
             return c.accept()
-          elseif c.is_visible() then
+          else
             return c.select_and_accept()
-          elseif copilot.is_visible() then
+          end
+        end,
+        "snippet_forward",
+        function()
+          local sug = require("copilot.suggestion")
+          if sug.is_visible() then
             if vim.api.nvim_get_mode().mode == "i" then
               vim.api.nvim_feedkeys(CREATE_UNDO, "n", false)
             end
-            copilot.accept()
+            sug.accept()
+            return true
           end
         end,
         "fallback",
