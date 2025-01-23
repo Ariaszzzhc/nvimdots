@@ -149,4 +149,5 @@ return {
       "--experimental-modules-support",
     },
   },
+  zls = {},
 }
