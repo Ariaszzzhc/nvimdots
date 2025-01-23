@@ -628,6 +628,15 @@ local function setup_snippets()
       stop = "",
     },
   })
+
+  vim.api.nvim_create_autocmd("User", {
+    pattern = "MiniSnippetsSessionJump",
+    callback = function(args)
+      if args.data.tabstop_to == "0" then
+        MiniSnippets.session.stop()
+      end
+    end,
+  })
 end
 
 local function setup_move()
