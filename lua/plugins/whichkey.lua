@@ -24,6 +24,9 @@ function M.config()
   which_key.setup({
     preset = "helix",
     defaults = {},
+    win = {
+      border = "single",
+    },
     spec = {
       {
         mode = { "n", "v" },

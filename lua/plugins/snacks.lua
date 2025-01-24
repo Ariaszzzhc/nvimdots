@@ -32,9 +32,36 @@ function M.config()
       },
     },
     input = {
-      enabled = false,
+      enabled = true,
       b = {
         completion = false,
+      },
+    },
+    zen = {
+      toggles = {
+        dim = false,
+        mini_diff_signs = true,
+      },
+      show = {
+        statusline = true,
+        tabline = false,
+      },
+    },
+    styles = {
+      input = {
+        border = "single",
+      },
+      blame_line = {
+        border = "single",
+      },
+      notification = {
+        border = "single",
+      },
+      notification_history = {
+        border = "single",
+      },
+      scratch = {
+        border = "single",
       },
     },
   })
@@ -57,6 +84,8 @@ function M.config()
       end, 200)
     end,
   }):map("<leader>uG")
+
+  Snacks.toggle.zen():map("<leader>uz")
 end
 
 return M

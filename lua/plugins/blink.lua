@@ -5,7 +5,7 @@ local M = {
     {
       "xzbdmw/colorful-menu.nvim",
       config = function()
-        require("colorful-menu").setup({})
+        require("colorful-menu").setup()
       end,
     },
   },
@@ -63,7 +63,7 @@ function M.config()
           },
           components = {
             label = {
-              width = { fill = true, max = 60 },
+              width = { fill = true, max = 40, min = 40 },
               text = function(ctx)
                 local highlights_info = require("colorful-menu").blink_highlights(ctx)
                 if highlights_info ~= nil then

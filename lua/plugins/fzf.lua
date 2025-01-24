@@ -28,15 +28,14 @@ function M.config()
   local config = picker.config
   local actions = picker.actions
 
-  wk.add {
-    { "<leader>fb", picker.buffers,   desc = "Find Buffer" },
-    { "<leader>ff", picker.files,     desc = "Find files" },
+  wk.add({
+    { "<leader>fb", picker.buffers, desc = "Find Buffer" },
+    { "<leader>ff", picker.files, desc = "Find files" },
     { "<leader>ft", picker.live_grep, desc = "Find Text" },
-    { "<leader>fl", picker.resume,    desc = "Last Search" },
-    { "<leader>fr", picker.oldfiles,  desc = "Recent File" },
-    { "<leader>uc", picker.commands,  desc = "Run Command" },
-  }
-
+    { "<leader>fl", picker.resume, desc = "Last Search" },
+    { "<leader>fr", picker.oldfiles, desc = "Recent File" },
+    { "<leader>uc", picker.commands, desc = "Run Command" },
+  })
 
   -- local trouble = require("trouble.sources.fzf")
 
@@ -54,7 +53,7 @@ function M.config()
   -- config.defaults.actions.files["ctrl-t"] = trouble.actions.open
 
   picker.setup({
-    "telescope",
+    "ivy",
     fzf_colors = true,
     fzf_opts = {
       ["--no-scrollbar"] = true,
@@ -96,7 +95,7 @@ function M.config()
       col = 0.5,
       preview = {
         scrollchars = { "┃", "" },
-      }
+      },
     },
     files = {
       cwd_prompt = false,

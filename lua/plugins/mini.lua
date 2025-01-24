@@ -3,9 +3,6 @@ local M = {
   version = false,
   priority = 1000,
   lazy = false,
-  dependencies = {
-    { "stevearc/dressing.nvim", opts = {} },
-  },
 }
 
 local function setup_starter()
@@ -667,6 +664,59 @@ local function setup_diff()
   })
 end
 
+local function setup_files()
+  vim.keymap.set("n", "<leader>e", function()
+    require("mini.files").open(vim.uv.cwd(), true)
+  end, {
+    desc = "Open mini.files",
+    noremap = true,
+    silent = true,
+  })
+
+  vim.keymap.set("n", "<leader>E", function()
+    require("mini.files").open(vim.api.nvim_buf_get_name(0), true)
+  end, {
+    desc = "Open mini.files in current file directory",
+    noremap = true,
+    silent = true,
+  })
+
+  local files = require("mini.files")
+
+  files.setup({
+    windows = {
+      preview = true,
+      width_focus = 30,
+      width_preview = 50,
+    },
+    options = {
+      use_as_default_explorer = true,
+    },
+    mappings = {
+      close = "q",
+      go_in = "L",
+      go_in_plus = "l",
+      go_out = "H",
+      go_out_plus = "h",
+      mark_goto = "'",
+      mark_set = "m",
+      reset = "<BS>",
+      reveal_cwd = "@",
+      show_help = "g?",
+      synchronize = "=",
+      trim_left = "<",
+      trim_right = ">",
+    },
+  })
+
+  vim.api.nvim_create_autocmd("User", {
+    pattern = "MiniFilesActionRename",
+    callback = function(event)
+      Snacks.rename.on_rename_file(event.data.from, event.data.to)
+    end,
+  })
+end
+
 function M.config()
   if not vim.g.vscode then
     setup_starter()
@@ -676,6 +726,7 @@ function M.config()
     setup_hipatterns()
     setup_snippets()
     setup_diff()
+    setup_files()
   end
   setup_surround()
   setup_ai()

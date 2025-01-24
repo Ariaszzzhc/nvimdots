@@ -191,15 +191,7 @@ local function lsp_keymaps(client, bufnr)
   end
 
   if client.supports_method("textDocument/inlayHint") then
-    keymap("n", "<leader>uh", function()
-      local buf = vim.api.nvim_get_current_buf()
-      vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = buf }), { bufnr = buf })
-    end, {
-      buffer = bufnr,
-      desc = "Toggle Inlay Hints",
-      noremap = true,
-      silent = true,
-    })
+    Snacks.toggle.inlay_hints():map("<leader>uh")
   end
 
   if client.supports_method("textDocument/rename") then

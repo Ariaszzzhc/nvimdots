@@ -6,6 +6,7 @@ end
 
 spec("mini")
 spec("snacks")
+spec("noice")
 spec("lualine")
 spec("bufferline")
 spec("colorscheme")
@@ -17,10 +18,8 @@ spec("fzf")
 spec("trouble")
 spec("conform")
 spec("copilot")
-spec("zen")
 spec("commentstring")
 spec("lazydev")
-spec("yazi")
 spec("dap")
 
 require("plugins.lazy")
