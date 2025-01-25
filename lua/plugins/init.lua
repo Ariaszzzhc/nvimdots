@@ -21,5 +21,6 @@ spec("copilot")
 spec("commentstring")
 spec("lazydev")
 spec("dap")
+spec("octo")
 
 require("plugins.lazy")

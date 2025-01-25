@@ -7,6 +7,7 @@ local M = {
       lazy = true,
     },
   },
+  cond = not vim.g.vscode,
 }
 
 function M.config()
