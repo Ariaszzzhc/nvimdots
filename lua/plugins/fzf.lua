@@ -125,6 +125,8 @@ function M.config()
       },
     },
   })
+
+  picker.register_ui_select()
 end
 
 return M

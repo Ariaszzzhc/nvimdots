@@ -6,10 +6,6 @@ local M = {
       "MunifTanjim/nui.nvim",
       lazy = true,
     },
-    {
-      "stevearc/dressing.nvim",
-      lazy = true,
-    },
   },
 }
 
