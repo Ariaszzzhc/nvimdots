@@ -15,14 +15,30 @@ function M.config()
   end
 
   local views = require("noice.config.views").defaults
+  local icons = require("configs.icons")
 
   views.confirm.border.style = "single"
+  views.cmdline_input.border.style = "single"
   views.notify.backend = "snacks"
 
   require("noice").setup({
     cmdline = {
       enabled = true,
       view = "cmdline",
+      format = {
+        IncRename = {
+          view = "cmdline_input",
+          pattern = "^:%s*IncRename%s+",
+          title = "Rename",
+          icon = icons.ui.Pencil,
+          conceal = true,
+          opts = {
+            relative = "cursor",
+            size = { min_width = 20 },
+            position = { row = -3, col = 0 },
+          },
+        },
+      },
     },
     lsp = {
       override = {

@@ -2,6 +2,14 @@ local M = {
   "neovim/nvim-lspconfig",
   event = { "BufReadPre", "BufNewFile" },
   dependencies = {
+    {
+      "smjonas/inc-rename.nvim",
+      lazy = true,
+      cmd = "IncRename",
+      config = function()
+        require("inc_rename").setup()
+      end,
+    },
     { "b0o/schemastore.nvim", lazy = true },
     {
       "p00f/clangd_extensions.nvim",
@@ -195,11 +203,15 @@ local function lsp_keymaps(client, bufnr)
   end
 
   if client.supports_method("textDocument/rename") then
-    keymap("n", "<leader>cr", vim.lsp.buf.rename, {
+    keymap("n", "<leader>cr", function()
+      local inc_rename = require("inc_rename")
+      return ":" .. inc_rename.config.cmd_name .. " " .. vim.fn.expand("<cword>")
+    end, {
       buffer = bufnr,
       desc = "Rename",
       noremap = true,
       silent = true,
+      expr = true,
     })
   end
 
