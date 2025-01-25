@@ -16,13 +16,16 @@ local function get_args(config)
 end
 
 local function import_dap_config()
-  local fzf = require("fzf-lua")
+  local picker = require("fzf-lua")
 
-  fzf.files({
+  picker.files({
     previewer = false,
     prompt = ">",
     cwd = vim.fn.getcwd(),
     fd_opts = "--type f --extension json",
+    winopts = {
+      title = "Select debug configuration",
+    },
     actions = {
       ["default"] = function(selected)
         if selected and #selected > 0 then

@@ -9,10 +9,12 @@ local function exe_picker(exe_cb)
     fd_opts = "--type x",
     actions = {
       ["default"] = exe_cb,
-    }
+    },
+    winopts = {
+      title = "Select executable",
+    },
   })
 end
-
 
 return {
   zig = {
@@ -33,7 +35,7 @@ return {
           end)
         end)
       end,
-    }
+    },
   },
   c = {
     {
@@ -53,8 +55,7 @@ return {
           end)
         end)
       end,
-
-    }
+    },
   },
   cpp = {
     {
@@ -74,7 +75,7 @@ return {
           end)
         end)
       end,
-    }
+    },
   },
   rust = {
     {
@@ -94,8 +95,6 @@ return {
           end)
         end)
       end,
-
-    }
-  }
-
+    },
+  },
 }
