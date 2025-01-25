@@ -49,7 +49,7 @@ local function setup_starter()
         })
       end, "Config"),
       new_section("Update", function()
-        vim.cmd([[ Lazy Update ]])
+        vim.cmd([[ Lazy update ]])
       end, "Config"),
     },
     content_hooks = {
