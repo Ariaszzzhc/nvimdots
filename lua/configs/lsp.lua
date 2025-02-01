@@ -150,4 +150,5 @@ return {
     },
   },
   zls = {},
+  tailwindcss = {},
 }

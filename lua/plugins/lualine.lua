@@ -22,13 +22,14 @@ function M.config()
     options = {
       component_separators = { left = "", right = "" },
       section_separators = { left = "", right = "" },
-      theme = "tokyonight-night",
+      theme = "tokyonight",
       globalstatus = vim.o.laststatus == 3,
       disabled_filetypes = { statusline = { "NvimTree", "ministarter" } },
     },
     sections = {
       lualine_a = { "mode" },
-      lualine_b = { "branch",
+      lualine_b = {
+        "branch",
         {
           "diff",
           symbols = {
@@ -39,13 +40,13 @@ function M.config()
           source = function()
             local summary = vim.b.minidiff_summary
             return summary
-                and {
-                  added = summary.add,
-                  modified = summary.change,
-                  removed = summary.delete,
-                }
+              and {
+                added = summary.add,
+                modified = summary.change,
+                removed = summary.delete,
+              }
           end,
-        }
+        },
       },
       lualine_c = { "diagnostics", { symbols and symbols.get, cond = symbols.has } },
       lualine_x = {

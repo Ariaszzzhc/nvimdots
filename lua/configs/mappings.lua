@@ -11,10 +11,10 @@ map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, 
 map({ "n", "x" }, "<Up>", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
 
 -- Move to window using the <ctrl> hjkl keys
-map("n", "<C-h>", "<C-w>h", { desc = "Go to Left Window", remap = true })
-map("n", "<C-j>", "<C-w>j", { desc = "Go to Lower Window", remap = true })
-map("n", "<C-k>", "<C-w>k", { desc = "Go to Upper Window", remap = true })
-map("n", "<C-l>", "<C-w>l", { desc = "Go to Right Window", remap = true })
+-- map("n", "<C-h>", "<C-w>h", { desc = "Go to Left Window", remap = true })
+-- map("n", "<C-j>", "<C-w>j", { desc = "Go to Lower Window", remap = true })
+-- map("n", "<C-k>", "<C-w>k", { desc = "Go to Upper Window", remap = true })
+-- map("n", "<C-l>", "<C-w>l", { desc = "Go to Right Window", remap = true })
 
 -- Resize window using <ctrl> arrow keys
 map("n", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase Window Height" })
@@ -102,7 +102,6 @@ map("n", "[e", diagnostic_goto(false, "ERROR"), { desc = "Prev Error" })
 map("n", "]w", diagnostic_goto(true, "WARN"), { desc = "Next Warning" })
 map("n", "[w", diagnostic_goto(false, "WARN"), { desc = "Prev Warning" })
 
-
 -- lazygit
 map("n", "<leader>gg", function()
   require("snacks").lazygit()
@@ -114,7 +113,6 @@ map("n", "<leader>gl", function()
   require("fzf-lua").git_commits()
 end, { desc = "Git Log" })
 
-
 map("n", "<leader>gb", function()
   require("fzf-lua").git_blame()
 end, { desc = "Git Blame Line" })
@@ -122,9 +120,13 @@ map({ "n", "x" }, "<leader>gB", function()
   require("snacks").gitbrowse()
 end, { desc = "Git Browse (open)" })
 map({ "n", "x" }, "<leader>gY", function()
-  require("snacks").gitbrowse({ open = function(url) vim.fn.setreg("+", url) end, notify = false })
+  require("snacks").gitbrowse({
+    open = function(url)
+      vim.fn.setreg("+", url)
+    end,
+    notify = false,
+  })
 end, { desc = "Git Browse (copy)" })
-
 
 -- Terminal Mappings
 map("t", "<C-/>", "<cmd>close<cr>", { desc = "Hide Terminal" })
