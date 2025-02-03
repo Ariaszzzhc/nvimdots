@@ -10,11 +10,6 @@ local M = {
         require("inc_rename").setup()
       end,
     },
-    { "b0o/schemastore.nvim", lazy = true },
-    {
-      "p00f/clangd_extensions.nvim",
-      lazy = true,
-    },
   },
   cond = not vim.g.vscode,
 }
@@ -386,49 +381,6 @@ function M.config(_, opts)
   end)
 
   vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
-
-  local servers = require("configs.lsp")
-  local blink = require("blink.cmp")
-
-  local capabilities = vim.tbl_deep_extend(
-    "force",
-    {},
-    vim.lsp.protocol.make_client_capabilities(),
-    blink.get_lsp_capabilities(),
-    opts.capabilities
-  )
-
-  for server, _ in pairs(servers) do
-    local server_opts = vim.tbl_deep_extend("force", {
-      capabilities = vim.deepcopy(capabilities),
-    }, servers[server] or {})
-
-    if server == "clangd" then
-      local clangd_opts = {
-        role_icons = {
-          type = "",
-          declaration = "",
-          expression = "",
-          specifier = "",
-          statement = "",
-          ["template argument"] = "",
-        },
-        kind_icons = {
-          Compound = "",
-          Recovery = "",
-          TranslationUnit = "",
-          PackExpansion = "",
-          TemplateTypeParm = "",
-          TemplateTemplateParm = "",
-          TemplateParamObject = "",
-        },
-      }
-
-      require("clangd_extensions").setup()
-    end
-
-    require("lspconfig")[server].setup(server_opts)
-  end
 end
 
 M.toggle_inlay_hints = function()

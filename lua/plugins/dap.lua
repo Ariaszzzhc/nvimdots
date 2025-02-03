@@ -272,7 +272,6 @@ function M.config()
   })
 
   local debuggers = require("configs.debuggers")
-  local dbg_configs = require("configs.debug_configs")
 
   local dap = require("dap")
 
@@ -280,12 +279,6 @@ function M.config()
     local dbg_opts = debuggers[dbg]
 
     dap.adapters[dbg] = dbg_opts
-  end
-
-  for dbg_config, _ in pairs(dbg_configs) do
-    local dbg_config_opts = dbg_configs[dbg_config]
-
-    dap.configurations[dbg_config] = dbg_config_opts
   end
 
   require("nvim-dap-virtual-text").setup()
