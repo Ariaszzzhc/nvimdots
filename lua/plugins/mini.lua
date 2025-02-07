@@ -63,11 +63,20 @@ local function setup_starter()
   vim.api.nvim_create_autocmd("User", {
     pattern = "LazyVimStarted",
     callback = function(event)
+      local icons = require("configs.icons")
       local stats = require("lazy").stats()
       local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
       local pad_footer = string.rep(" ", 8)
 
-      starter.config.footer = pad_footer .. "Loaded " .. stats.count .. " plugins in " .. ms .. "ms"
+      starter.config.footer = pad_footer
+        .. icons.ui.Gear
+        .. "Loaded "
+        .. stats.loaded
+        .. " / "
+        .. stats.count
+        .. " plugins in "
+        .. ms
+        .. "ms"
 
       if vim.bo[event.buf].filetype == "ministarter" then
         pcall(starter.refresh)

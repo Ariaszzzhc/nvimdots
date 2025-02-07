@@ -271,16 +271,6 @@ function M.config()
     texthl = "DiagnosticWarn",
   })
 
-  local debuggers = require("configs.debuggers")
-
-  local dap = require("dap")
-
-  for dbg, _ in pairs(debuggers) do
-    local dbg_opts = debuggers[dbg]
-
-    dap.adapters[dbg] = dbg_opts
-  end
-
   require("nvim-dap-virtual-text").setup()
 end
 

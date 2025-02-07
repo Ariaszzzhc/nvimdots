@@ -12,15 +12,17 @@ return {
   {
     "neovim/nvim-lspconfig",
     opts = {
-      jsonls = function()
-        return {
-          settings = {
-            json = {
-              schemas = require("schemastore").json.schemas(),
+      servers = {
+        jsonls = function()
+          return {
+            settings = {
+              json = {
+                schemas = require("schemastore").json.schemas(),
+              },
             },
-          },
-        }
-      end,
+          }
+        end,
+      },
     },
   },
 }

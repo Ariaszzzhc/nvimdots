@@ -23,9 +23,14 @@ require("lazy").setup({
     { "folke/lazy.nvim", version = "*" },
     { import = "plugins" },
     { import = "plugins.lang" },
+    { import = "plugins.daps" },
   },
 })
 
+if vim.g.vscode then
+  require("configs.vscode")
+end
+
 if not vim.g.vscode then
-  vim.cmd([[colorscheme tokyonight]])
+  vim.cmd([[colorscheme cyberdream]])
 end

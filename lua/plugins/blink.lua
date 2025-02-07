@@ -4,9 +4,7 @@ local M = {
     { "rafamadriz/friendly-snippets" },
     {
       "xzbdmw/colorful-menu.nvim",
-      config = function()
-        require("colorful-menu").setup()
-      end,
+      opts = {},
     },
   },
   cond = not vim.g.vscode,

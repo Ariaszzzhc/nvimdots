@@ -2,6 +2,7 @@ local M = {
   {
     "folke/tokyonight.nvim",
     cond = not vim.g.vscode,
+    lazy = false,
     opts = {
       style = "night",
       transparent = true,
@@ -9,6 +10,14 @@ local M = {
         sidebars = "transparent",
         floats = "transparent",
       },
+    },
+  },
+  {
+    "scottmckendry/cyberdream.nvim",
+    cond = not vim.g.vscode,
+    lazy = false,
+    opts = {
+      transparent = true,
     },
   },
 }

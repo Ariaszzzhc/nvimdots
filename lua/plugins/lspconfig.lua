@@ -313,23 +313,10 @@ local function on_dynamic_capability(fn, opts)
   })
 end
 
---- from lazy
---- @param on_attach fun(client:vim.lsp.Client, buffer)
---- @param name? string
-local function on_attach(on_attach, name)
-  return vim.api.nvim_create_autocmd("LspAttach", {
-    callback = function(args)
-      local buffer = args.buf ---@type number
-      local client = vim.lsp.get_client_by_id(args.data.client_id)
-      if client and (not name or client.name == name) then
-        return on_attach(client, buffer)
-      end
-    end,
-  })
-end
+local lsp_on_attach = require("utils").lsp_on_attach
 
 function M.config(_, opts)
-  on_attach(function(client, bufnr)
+  lsp_on_attach(function(client, bufnr)
     lsp_keymaps(client, bufnr)
   end)
 
@@ -348,7 +335,7 @@ function M.config(_, opts)
     end
     return ret
   end
-  on_attach(check_methods)
+  lsp_on_attach(check_methods)
   on_dynamic_capability(check_methods)
 
   on_dynamic_capability(function(client, bufnr)
@@ -367,7 +354,7 @@ function M.config(_, opts)
 
   on_supports_method("textDocument/codeLens", function(client, bufnr)
     vim.lsp.codelens.refresh()
-    vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
+    vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave" }, {
       buffer = bufnr,
       callback = vim.lsp.codelens.refresh,
     })
@@ -386,11 +373,11 @@ function M.config(_, opts)
       server_opts = vim.tbl_deep_extend("force", {
         capabilities = vim.deepcopy(capabilities),
       }, base_server_opts())
+    else
+      server_opts = vim.tbl_deep_extend("force", {
+        capabilities = vim.deepcopy(capabilities),
+      }, base_server_opts)
     end
-
-    server_opts = vim.tbl_deep_extend("force", {
-      capabilities = vim.deepcopy(capabilities),
-    }, base_server_opts)
 
     require("lspconfig")[server].setup(server_opts)
   end

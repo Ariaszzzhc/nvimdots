@@ -22,7 +22,6 @@ function M.config()
     options = {
       component_separators = { left = "", right = "" },
       section_separators = { left = "", right = "" },
-      theme = "tokyonight",
       globalstatus = vim.o.laststatus == 3,
       disabled_filetypes = { statusline = { "NvimTree", "ministarter" } },
     },
