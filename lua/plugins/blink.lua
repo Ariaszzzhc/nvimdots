@@ -112,11 +112,11 @@ function M.config()
         "buffer",
       },
       providers = {
-        -- lazydev = {
-        --   name = "LazyDev",
-        --   module = "lazydev.integrations.blink",
-        --   score_offset = 100,
-        -- },
+        lazydev = {
+          name = "LazyDev",
+          module = "lazydev.integrations.blink",
+          score_offset = 100,
+        },
       },
     },
     signature = {

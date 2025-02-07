@@ -3,13 +3,9 @@ local M = {
   event = { "BufReadPost", "BufNewFile" },
   build = ":TSUpdate",
   dependencies = {
-    "nvim-treesitter/nvim-treesitter-textobjects"
-  }
-}
-
-function M.config()
-  require("nvim-treesitter.configs").setup({
-    ensure_installed = { "lua", "markdown", "markdown_inline", "bash", "python" },
+    "nvim-treesitter/nvim-treesitter-textobjects",
+  },
+  opts = {
     highlight = { enable = true },
     indent = { enable = true },
     auto_install = true,
@@ -24,7 +20,11 @@ function M.config()
         goto_previous_end = { ["[F"] = "@function.outer", ["[C"] = "@class.outer", ["[A"] = "@parameter.inner" },
       },
     },
-  })
+  },
+}
+
+function M.config(_, opts)
+  require("nvim-treesitter.configs").setup(opts)
 end
 
 return M

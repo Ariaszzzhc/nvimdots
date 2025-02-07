@@ -1,3 +1,5 @@
+local icons = require("configs.icons")
+
 local M = {
   "neovim/nvim-lspconfig",
   event = { "BufReadPre", "BufNewFile" },
@@ -6,18 +8,11 @@ local M = {
       "smjonas/inc-rename.nvim",
       lazy = true,
       cmd = "IncRename",
-      config = function()
-        require("inc_rename").setup()
-      end,
+      opts = {},
     },
   },
   cond = not vim.g.vscode,
-}
-
-function M.opts()
-  local icons = require("configs.icons")
-
-  local options = {
+  opts = {
     diagnostics = {
       underline = true,
       update_in_insert = false,
@@ -61,10 +56,8 @@ function M.opts()
       formatting_options = nil,
       timeout_ms = nil,
     },
-  }
-
-  return options
-end
+  },
+}
 
 local actions = setmetatable({}, {
   __index = function(_, action)
@@ -359,7 +352,7 @@ function M.config(_, opts)
   on_dynamic_capability(check_methods)
 
   on_dynamic_capability(function(client, bufnr)
-    lsp_keymaps(bufnr)
+    lsp_keymaps(client, bufnr)
   end)
 
   on_supports_method("textDocument/inlayHint", function(client, bufnr)
@@ -381,6 +374,26 @@ function M.config(_, opts)
   end)
 
   vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
+
+  local servers = opts.servers or {}
+
+  local capabilities = require("utils").lsp_capabilities
+
+  for server, base_server_opts in pairs(servers) do
+    local server_opts
+
+    if type(base_server_opts) == "function" then
+      server_opts = vim.tbl_deep_extend("force", {
+        capabilities = vim.deepcopy(capabilities),
+      }, base_server_opts())
+    end
+
+    server_opts = vim.tbl_deep_extend("force", {
+      capabilities = vim.deepcopy(capabilities),
+    }, base_server_opts)
+
+    require("lspconfig")[server].setup(server_opts)
+  end
 end
 
 M.toggle_inlay_hints = function()
