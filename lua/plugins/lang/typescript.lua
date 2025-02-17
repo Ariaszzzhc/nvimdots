@@ -12,6 +12,7 @@ return {
     opts = {
       servers = {
         vtsls = {
+          single_file_support = false,
           root_dir = function(startpath)
             local default_pattern = lsp_util.root_pattern("tsconfig.json", "jsconfig.json", "package.json", ".git")
 
@@ -85,7 +86,6 @@ return {
               return default_pattern(startpath)
             end
           end,
-          autostart = false,
           filetypes = {
             "javascript",
             "javascriptreact",
@@ -122,7 +122,6 @@ return {
               },
             },
           },
-          single_file_support = false,
         },
         tailwindcss = {},
       },
