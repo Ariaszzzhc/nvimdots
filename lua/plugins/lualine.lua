@@ -23,7 +23,7 @@ function M.config()
       component_separators = { left = "", right = "" },
       section_separators = { left = "", right = "" },
       globalstatus = vim.o.laststatus == 3,
-      disabled_filetypes = { statusline = { "NvimTree", "ministarter" } },
+      disabled_filetypes = { statusline = { "ministarter" }, winbar = { "ministarter" } },
     },
     sections = {
       lualine_a = { "mode" },
@@ -47,7 +47,7 @@ function M.config()
           end,
         },
       },
-      lualine_c = { "diagnostics", { symbols and symbols.get, cond = symbols.has } },
+      lualine_c = { "diagnostics", { (symbols and symbols.has) and symbols.get or "" } },
       lualine_x = {
         {
           function()
@@ -66,6 +66,15 @@ function M.config()
           end,
         },
         "filetype",
+        {
+          "fileformat",
+          icons_enabled = true,
+          symbols = {
+            unix = "LF",
+            dos = "CRLF",
+            mac = "CR",
+          },
+        },
       },
       lualine_y = {
         {
