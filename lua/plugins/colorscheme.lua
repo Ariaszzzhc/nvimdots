@@ -20,6 +20,16 @@ local M = {
       transparent = true,
     },
   },
+  {
+    "rose-pine/neovim",
+    name = "rose-pine",
+    opts = {
+      styles = {
+        transparent = true,
+        italic = false,
+      },
+    },
+  },
 }
 
 return M

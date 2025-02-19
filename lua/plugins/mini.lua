@@ -53,7 +53,7 @@ local function setup_starter()
       end, "Config"),
     },
     content_hooks = {
-      starter.gen_hook.adding_bullet(pad .. "░ ", false),
+      starter.gen_hook.adding_bullet(pad .. "  ", false),
       starter.gen_hook.aligning("center", "center"),
     },
   }
