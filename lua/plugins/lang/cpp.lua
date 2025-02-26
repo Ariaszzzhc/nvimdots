@@ -56,7 +56,8 @@ return {
     opts = function()
       local dap = require("dap")
       local picker = require("utils").exe_picker
-      dap.configurations.zig = {
+
+      local config = {
         {
           type = "lldb-dap",
           request = "launch",
@@ -74,6 +75,9 @@ return {
           end,
         },
       }
+
+      dap.configurations.c = config
+      dap.configurations.cpp = config
     end,
   },
 }

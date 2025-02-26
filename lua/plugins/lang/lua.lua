@@ -11,10 +11,15 @@ return {
     opts = {
       library = {
         { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+        { path = "xmake-luals-addon/library", files = { "xmake.lua" } },
       },
       enabled = function(root_dir)
         return not vim.uv.fs_stat(root_dir .. "/.luarc.json")
       end,
+    },
+    dependencies = {
+      "LelouchHe/xmake-luals-addon",
+      name = "xmake-luals-addon",
     },
   },
   {

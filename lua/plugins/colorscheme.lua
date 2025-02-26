@@ -25,7 +25,7 @@ local M = {
     name = "rose-pine",
     opts = {
       styles = {
-        transparent = true,
+        transparent = false,
         italic = false,
       },
     },
