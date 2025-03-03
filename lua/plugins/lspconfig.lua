@@ -38,7 +38,7 @@ local M = {
       },
     },
     inlay_hints = {
-      enabled = true,
+      enabled = false,
       exclude = { "vue" },
     },
     codelens = {

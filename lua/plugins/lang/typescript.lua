@@ -11,8 +11,7 @@ return {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
-        vtsls = {
-          single_file_support = false,
+        ts_ls = {
           root_dir = function(startpath)
             local default_pattern = lsp_util.root_pattern("tsconfig.json", "jsconfig.json", "package.json", ".git")
 
@@ -24,6 +23,50 @@ return {
               return default_pattern(startpath)
             end
           end,
+          settings = {
+            typescript = {
+              inlayHints = {
+                includeInlayEnumMemberValueHints = true,
+                includeInlayFunctionLikeReturnTypeHints = true,
+                includeInlayFunctionParameterTypeHints = true,
+                includeInlayParameterNameHints = "all",
+                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                includeInlayPropertyDeclarationTypeHints = true,
+                includeInlayVariableTypeHints = true,
+                includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+              },
+              referencesCodeLens = {
+                enabled = true,
+                showOnAllFunctions = true,
+              },
+              implementationsCodeLens = {
+                enabled = true,
+              },
+            },
+            javascript = {
+              inlayHints = {
+                includeInlayEnumMemberValueHints = true,
+                includeInlayFunctionLikeReturnTypeHints = true,
+                includeInlayFunctionParameterTypeHints = true,
+                includeInlayParameterNameHints = "all",
+                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                includeInlayPropertyDeclarationTypeHints = true,
+                includeInlayVariableTypeHints = true,
+                includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+              },
+              referencesCodeLens = {
+                enabled = true,
+                showOnAllFunctions = true,
+              },
+              implementationsCodeLens = {
+                enabled = true,
+              },
+            },
+
+            completions = {
+              completeFunctionCalls = true,
+            },
+          },
           filetypes = {
             "javascript",
             "javascriptreact",
@@ -32,47 +75,7 @@ return {
             "typescriptreact",
             "typescript.tsx",
           },
-          settings = {
-            complete_function_calls = true,
-            vtsls = {
-              enableMoveToFileCodeAction = true,
-              autoUseWorkspaceTsdk = true,
-              experimental = {
-                maxInlayHintLength = 30,
-                completion = {
-                  enableServerSideFuzzyMatch = true,
-                },
-              },
-            },
-            typescript = {
-              updateImportsOnFileMove = {
-                enabled = "always",
-              },
-              suggest = {
-                completeFunctionCalls = true,
-              },
-              inlayHints = {
-                enumMemberValues = {
-                  enabled = true,
-                },
-                functionLikeReturnTypes = {
-                  enabled = true,
-                },
-                parameterNames = {
-                  enabled = "literals",
-                },
-                parameterTypes = {
-                  enabled = true,
-                },
-                propertyDeclarationTypes = {
-                  enabled = true,
-                },
-                variableTypes = {
-                  enabled = true,
-                },
-              },
-            },
-          },
+          single_file_support = false,
         },
         denols = {
           root_dir = function(startpath)

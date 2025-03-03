@@ -23,9 +23,10 @@ local M = {
   {
     "rose-pine/neovim",
     name = "rose-pine",
+    cond = not vim.g.vscode,
     opts = {
       styles = {
-        transparent = false,
+        transparent = true,
         italic = false,
       },
     },

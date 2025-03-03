@@ -738,6 +738,14 @@ local function setup_files()
   })
 end
 
+local function setup_misc()
+  local misc = require("mini.misc")
+
+  misc.setup()
+
+  misc.setup_auto_root({ ".git", "package.json", "deno.json", "deno.jsonc" })
+end
+
 function M.config()
   if not vim.g.vscode then
     setup_starter()
@@ -748,6 +756,7 @@ function M.config()
     setup_snippets()
     setup_diff()
     setup_files()
+    setup_misc()
   end
   setup_surround()
   setup_ai()

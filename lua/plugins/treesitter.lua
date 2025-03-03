@@ -6,7 +6,7 @@ local M = {
     "nvim-treesitter/nvim-treesitter-textobjects",
   },
   opts = {
-    highlight = { enable = true },
+    highlight = { enable = not vim.g.vscode },
     indent = { enable = true },
     auto_install = true,
     sync_install = false,
