@@ -16,18 +16,23 @@ local function get_args(config)
 end
 
 local function import_dap_config()
-  local picker = require("fzf-lua")
+  local picker = Snacks.picker
 
   picker.files({
     previewer = false,
-    prompt = ">",
+    cmd = "fd",
     cwd = vim.fn.getcwd(),
-    fd_opts = "--type f --extension json",
-    winopts = {
-      title = "Select debug configuration",
+    args = { "--type", "f", "--extension", "json" },
+    layout = "select",
+    win = {
+      input = {
+        keys = {
+          ["<CR>"] = { "load" },
+        },
+      },
     },
     actions = {
-      ["default"] = function(selected)
+      load = function(selected)
         if selected and #selected > 0 then
           local file = selected[1]:sub(8)
           local data = vim.fn.readfile(file)

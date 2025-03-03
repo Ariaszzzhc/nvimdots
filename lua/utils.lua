@@ -1,9 +1,9 @@
-local picker = require("fzf-lua")
+-- local picker = require("fzf-lua")
 local blink = require("blink.cmp")
 
 return {
   exe_picker = function(exe_cb)
-    picker.files({
+    Snacks.picker.files({
       previewer = false,
       prompt = "> ",
       cwd = vim.fn.getcwd(),

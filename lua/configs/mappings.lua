@@ -102,32 +102,6 @@ map("n", "[e", diagnostic_goto(false, "ERROR"), { desc = "Prev Error" })
 map("n", "]w", diagnostic_goto(true, "WARN"), { desc = "Next Warning" })
 map("n", "[w", diagnostic_goto(false, "WARN"), { desc = "Prev Warning" })
 
--- lazygit
-map("n", "<leader>gg", function()
-  require("snacks").lazygit()
-end, { desc = "Lazygit" })
-map("n", "<leader>gf", function()
-  require("fzf-lua").git_bcommits()
-end, { desc = "Git Current File History" })
-map("n", "<leader>gl", function()
-  require("fzf-lua").git_commits()
-end, { desc = "Git Log" })
-
-map("n", "<leader>gb", function()
-  require("fzf-lua").git_blame()
-end, { desc = "Git Blame Line" })
-map({ "n", "x" }, "<leader>gB", function()
-  require("snacks").gitbrowse()
-end, { desc = "Git Browse (open)" })
-map({ "n", "x" }, "<leader>gY", function()
-  require("snacks").gitbrowse({
-    open = function(url)
-      vim.fn.setreg("+", url)
-    end,
-    notify = false,
-  })
-end, { desc = "Git Browse (copy)" })
-
 -- Terminal Mappings
 map("t", "<C-/>", "<cmd>close<cr>", { desc = "Hide Terminal" })
 map("t", "<c-_>", "<cmd>close<cr>", { desc = "which_key_ignore" })

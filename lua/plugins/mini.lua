@@ -1,7 +1,7 @@
 local M = {
   "echasnovski/mini.nvim",
   version = false,
-  priority = 1000,
+  priority = 900,
   lazy = false,
 }
 
@@ -32,15 +32,15 @@ local function setup_starter()
     return { name = name, action = action, section = pad .. section }
   end
 
-  local picker = require("fzf-lua")
+  local picker = Snacks.picker
 
   local opts = {
     header = logo,
     evaluate_single = true,
     items = {
       new_section("Find file", picker.files, "Picker"),
-      new_section("Recent files", picker.oldfiles, "Picker"),
-      new_section("Find text", picker.live_grep, "Picker"),
+      new_section("Recent files", picker.recent, "Picker"),
+      new_section("Find text", picker.grep, "Picker"),
       new_section("New file", "ene | startinsert", "Built-in"),
       new_section("Quit", "qa", "Built-in"),
       new_section("Config", function()

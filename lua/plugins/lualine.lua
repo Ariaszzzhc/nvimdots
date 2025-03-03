@@ -89,7 +89,7 @@ function M.config()
       },
       lualine_z = {},
     },
-    extensions = { "lazy", "fzf" },
+    extensions = { "lazy", "trouble" },
   })
 end
 
