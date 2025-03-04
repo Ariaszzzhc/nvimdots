@@ -17,45 +17,35 @@ end
 
 local function import_dap_config()
   local picker = Snacks.picker
+  local ft = vim.bo.filetype
 
   picker.files({
     previewer = false,
     cmd = "fd",
     cwd = vim.fn.getcwd(),
     args = { "--type", "f", "--extension", "json" },
+    title = "Select debug configuration",
     layout = "select",
-    win = {
-      input = {
-        keys = {
-          ["<CR>"] = { "load" },
-        },
-      },
-    },
-    actions = {
-      load = function(selected)
-        if selected and #selected > 0 then
-          local file = selected[1]:sub(8)
-          local data = vim.fn.readfile(file)
-          local launch = vim.json.decode(table.concat(data, "\n"))
-          local config = launch.configurations
+    confirm = function(p, selected)
+      if selected then
+        local file = selected._path
+        local data = vim.fn.readfile(file)
+        local launch = vim.json.decode(table.concat(data, "\n"))
+        local config = launch.configurations
 
-          if config ~= nil then
-            local dap = require("dap")
-            local ft = vim.bo.filetype
+        if config ~= nil then
+          local dap = require("dap")
+          local dap_config = dap.configurations[ft] or {}
 
-            local dap_config = dap.configurations[ft]
-
-            if dap_config ~= nil then
-              dap.configurations[ft] = vim.tbl_deep_extend("force", dap_config, config)
-            else
-              dap.configurations[ft] = config
-            end
-          else
-            vim.notify("No configurations found in " .. file)
-          end
+          vim.list_extend(dap_config, config)
+          dap.configurations[ft] = dap_config
+        else
+          vim.notify("No configurations found in " .. file)
         end
-      end,
-    },
+      end
+
+      p:close()
+    end,
   })
 end
 
