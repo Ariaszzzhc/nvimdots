@@ -108,12 +108,19 @@ function M.config()
         "path",
         "snippets",
         "buffer",
+        "markdown",
       },
       providers = {
         lazydev = {
           name = "LazyDev",
           module = "lazydev.integrations.blink",
           score_offset = 100,
+        },
+        markdown = {
+          name = "RenderMarkdown",
+          module = "render-markdown.integ.blink",
+          score_offset = 100,
+          fallbacks = { "lsp" },
         },
       },
     },
@@ -140,6 +147,9 @@ function M.config()
         end
         MiniSnippets.session.jump(direction == -1 and "prev" or "next")
       end,
+    },
+    cmdline = {
+      enabled = true,
     },
   }
   cmp.setup(opts)

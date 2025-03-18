@@ -302,6 +302,9 @@ local M = {
     lazygit = {
       enabled = true,
     },
+    statuscolumn = {
+      enabled = true,
+    },
     indent = {
       enabled = true,
     },
@@ -493,6 +496,15 @@ local M = {
             end, 200)
           end,
         }):map("<leader>uG")
+      end,
+    })
+
+    vim.api.nvim_create_autocmd("BufWinEnter", {
+      callback = function()
+        local ft = vim.bo.ft
+        if ft == "dap-repl" or ft:match("^dapui_") then
+          vim.wo.statuscolumn = ""
+        end
       end,
     })
   end,

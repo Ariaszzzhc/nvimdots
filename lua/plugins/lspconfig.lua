@@ -342,15 +342,15 @@ function M.config(_, opts)
     lsp_keymaps(client, bufnr)
   end)
 
-  on_supports_method("textDocument/inlayHint", function(client, bufnr)
-    if
-      vim.api.nvim_buf_is_valid(bufnr)
-      and vim.bo[bufnr].buftype == ""
-      and not vim.tbl_contains(opts.inlay_hints.exclude, vim.bo[bufnr].filetype)
-    then
-      vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
-    end
-  end)
+  -- on_supports_method("textDocument/inlayHint", function(client, bufnr)
+  --   if
+  --     vim.api.nvim_buf_is_valid(bufnr)
+  --     and vim.bo[bufnr].buftype == ""
+  --     and not vim.tbl_contains(opts.inlay_hints.exclude, vim.bo[bufnr].filetype)
+  --   then
+  --     vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+  --   end
+  -- end)
 
   on_supports_method("textDocument/codeLens", function(client, bufnr)
     vim.lsp.codelens.refresh()
