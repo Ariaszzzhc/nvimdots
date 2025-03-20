@@ -438,6 +438,9 @@ local M = {
         completion = false,
       },
     },
+    image = {
+      enabled = true,
+    },
     zen = {
       toggles = {
         dim = false,

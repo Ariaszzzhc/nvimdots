@@ -127,6 +127,26 @@ return {
           },
         },
         tailwindcss = {},
+        eslint = {
+          root_dir = function(startpath)
+            local pattern = lsp_util.root_pattern(
+              "eslint.config.js",
+              "eslint.config.mjs",
+              "eslint.config.cjs",
+              "eslint.config.ts",
+              "eslint.config.cts",
+              "eslint.config.mts",
+              ".eslintrc.js",
+              ".eslintrc.mjs",
+              ".eslintrc.cjs",
+              ".eslintrc.yaml",
+              ".eslintrc.yml",
+              ".eslintrc.json"
+            )
+
+            return pattern(startpath)
+          end,
+        },
       },
     },
   },

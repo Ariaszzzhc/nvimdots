@@ -5,9 +5,8 @@ local M = {
 
 function M.config()
   vim.keymap.set("n", "<leader>cf", function()
-      require("conform").format({ bufnr = vim.api.nvim_get_current_buf() })
-    end,
-    { desc = "Format the current buffer", noremap = true, silent = true })
+    require("conform").format({ bufnr = vim.api.nvim_get_current_buf() })
+  end, { desc = "Format the current buffer", noremap = true, silent = true })
 
   require("conform").setup({
     format_on_save = {
@@ -20,10 +19,11 @@ function M.config()
       javascriptreact = { "prettierd", "prettier", stop_after_first = true },
       typescript = { "prettierd", "prettier", stop_after_first = true },
       typescriptreact = { "prettierd", "prettier", stop_after_first = true },
+      astro = { "prettierd", "prettier", stop_after_first = true },
     },
     default_format_opts = {
       lsp_format = "fallback",
-    }
+    },
   })
 end
 
