@@ -11,7 +11,7 @@ return {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
-        ts_ls = {
+        vtsls = {
           root_dir = function(startpath)
             local default_pattern = lsp_util.root_pattern("tsconfig.json", "jsconfig.json", "package.json", ".git")
 
@@ -104,23 +104,20 @@ return {
                 enable = "on",
                 variableTypes = {
                   enable = true,
-                  functionLikeReturnTypes = {
-                    enable = true,
-                  },
-                  parameterNames = {
-                    enable = "all",
-                    suppressWhenArgumentMatchesName = true,
-                  },
-                  parameterTypes = {
-                    enable = true,
-                  },
-                  propertyDeclarationTypes = {
-                    enable = true,
-                  },
-                  variableTypes = {
-                    enable = true,
-                    suppressWhenTypeMatchesName = true,
-                  },
+                  suppressWhenTypeMatchesName = true,
+                },
+                functionLikeReturnTypes = {
+                  enable = true,
+                },
+                parameterNames = {
+                  enable = "all",
+                  suppressWhenArgumentMatchesName = true,
+                },
+                parameterTypes = {
+                  enable = true,
+                },
+                propertyDeclarationTypes = {
+                  enable = true,
                 },
               },
             },
