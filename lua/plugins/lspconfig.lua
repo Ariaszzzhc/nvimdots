@@ -83,44 +83,6 @@ local function lsp_keymaps(client, bufnr)
     silent = true,
   })
 
-  if client.supports_method("textDocument/definition") then
-    keymap("n", "gd", vim.lsp.buf.definition, {
-      buffer = bufnr,
-      desc = "Goto Definition",
-      noremap = true,
-      silent = true,
-    })
-  end
-
-  keymap("n", "gr", vim.lsp.buf.references, {
-    buffer = bufnr,
-    desc = "References",
-    nowait = true,
-    noremap = true,
-    silent = true,
-  })
-
-  keymap("n", "gI", vim.lsp.buf.implementation, {
-    buffer = bufnr,
-    desc = "Goto Implementation",
-    noremap = true,
-    silent = true,
-  })
-
-  keymap("n", "gy", vim.lsp.buf.type_definition, {
-    buffer = bufnr,
-    desc = "Goto T[y]pe Definition",
-    noremap = true,
-    silent = true,
-  })
-
-  keymap("n", "gD", vim.lsp.buf.declaration, {
-    buffer = bufnr,
-    desc = "Goto Declaration",
-    noremap = true,
-    silent = true,
-  })
-
   keymap("n", "K", function()
     return vim.lsp.buf.hover()
   end, {
