@@ -5,7 +5,11 @@ local M = {
     lazy = false,
     opts = {
       style = "night",
-      transparent = false,
+      transparent = true,
+      styles = {
+        sidebars = "transparent",
+        floats = "transparent",
+      },
     },
   },
   {
@@ -22,7 +26,7 @@ local M = {
     cond = not vim.g.vscode,
     opts = {
       styles = {
-        transparent = false,
+        transparent = true,
         italic = false,
       },
     },

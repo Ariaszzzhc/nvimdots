@@ -32,5 +32,7 @@ if vim.g.vscode then
 end
 
 if not vim.g.vscode then
-  vim.cmd([[colorscheme rose-pine-dawn]])
+  -- vim.cmd([[colorscheme rose-pine-dawn]])
+  vim.cmd([[colorscheme tokyonight]])
+  -- vim.cmd([[colorscheme rose-pine]])
 end

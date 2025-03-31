@@ -4,6 +4,13 @@ local M = {
   lazy = false,
   cond = not vim.g.vscode,
   keys = {
+    {
+      "<leader>e",
+      function()
+        Snacks.explorer()
+      end,
+      desc = "File Explorer",
+    },
     -- find
     {
       "<leader>fb",
@@ -510,6 +517,9 @@ local M = {
       scratch = {
         border = "single",
       },
+    },
+    explorer = {
+      enabled = true,
     },
   },
   init = function()

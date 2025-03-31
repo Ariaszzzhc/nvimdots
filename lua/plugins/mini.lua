@@ -755,7 +755,7 @@ function M.config()
     setup_hipatterns()
     setup_snippets()
     setup_diff()
-    setup_files()
+    -- setup_files()
     setup_misc()
   end
   setup_surround()
