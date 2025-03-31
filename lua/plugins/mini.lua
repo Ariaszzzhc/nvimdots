@@ -1,121 +1,4 @@
-local M = {
-  "echasnovski/mini.nvim",
-  version = false,
-  priority = 900,
-  lazy = false,
-}
-
-local function setup_starter()
-  if vim.o.filetype == "lazy" then
-    vim.cmd.close()
-    vim.api.nvim_create_autocmd("User", {
-      pattern = "MiniStarterOpened",
-      callback = function()
-        require("lazy").show()
-      end,
-    })
-  end
-
-  local starter = require("mini.starter")
-  local logo = table.concat({
-    [[                               __                ]],
-    [[  ___     ___    ___   __  __ /\_\    ___ ___    ]],
-    [[ / _ `\  / __`\ / __`\/\ \/\ \\/\ \  / __` __`\  ]],
-    [[/\ \/\ \/\  __//\ \_\ \ \ \_/ |\ \ \/\ \/\ \/\ \ ]],
-    [[\ \_\ \_\ \____\ \____/\ \___/  \ \_\ \_\ \_\ \_\]],
-    [[ \/_/\/_/\/____/\/___/  \/__/    \/_/\/_/\/_/\/_/]],
-  }, "\n")
-
-  local pad = string.rep(" ", 22)
-
-  local new_section = function(name, action, section)
-    return { name = name, action = action, section = pad .. section }
-  end
-
-  local picker = Snacks.picker
-
-  local opts = {
-    header = logo,
-    evaluate_single = true,
-    items = {
-      new_section("Find file", picker.files, "Picker"),
-      new_section("Recent files", picker.recent, "Picker"),
-      new_section("Find text", picker.grep, "Picker"),
-      new_section("New file", "ene | startinsert", "Built-in"),
-      new_section("Quit", "qa", "Built-in"),
-      new_section("Config", function()
-        picker.files({
-          cwd = vim.fn.stdpath("config"),
-        })
-      end, "Config"),
-      new_section("Update", function()
-        vim.cmd([[ Lazy update ]])
-      end, "Config"),
-    },
-    content_hooks = {
-      starter.gen_hook.adding_bullet(pad .. "  ", false),
-      starter.gen_hook.aligning("center", "center"),
-    },
-  }
-
-  starter.setup(opts)
-
-  vim.api.nvim_create_autocmd("User", {
-    pattern = "LazyVimStarted",
-    callback = function(event)
-      local icons = require("configs.icons")
-      local stats = require("lazy").stats()
-      local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
-      local pad_footer = string.rep(" ", 8)
-
-      starter.config.footer = pad_footer
-        .. icons.ui.Gear
-        .. "Loaded "
-        .. stats.loaded
-        .. " / "
-        .. stats.count
-        .. " plugins in "
-        .. ms
-        .. "ms"
-
-      if vim.bo[event.buf].filetype == "ministarter" then
-        pcall(starter.refresh)
-      end
-    end,
-  })
-end
-
-local function setup_autopair()
-  require("mini.pairs").setup({
-    skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
-    skip_ts = { "string" },
-    skip_unbalanced = true,
-    markdown = true,
-  })
-end
-
-local function setup_icons()
-  local icons = require("configs.icons")
-
-  local mini_icons = require("mini.icons")
-  mini_icons.setup({
-    file = {
-      [".keep"] = { glyph = icons.git.Repe, hl = "MiniIconsGrey" },
-      ["devcontainer.json"] = { glyph = icons.misc.Package, hl = "MiniIconsAzure" },
-    },
-    filetype = {
-      dotenv = { glyph = icons.ui.Gear, hl = "MiniIconsYellow" },
-    },
-  })
-
-  mini_icons.mock_nvim_web_devicons()
-end
-
-local function setup_cursorword()
-  require("mini.cursorword").setup()
-end
-
-local colors = {
+local _colors = {
   slate = {
     [50] = "f8fafc",
     [100] = "f1f5f9",
@@ -425,343 +308,450 @@ local colors = {
   },
 }
 
-local function setup_hipatterns()
-  vim.api.nvim_create_autocmd("ColorScheme", {
-    callback = function()
-      M.hl = {}
+local _hl = {}
+
+local M = {
+  {
+    "echasnovski/mini.starter",
+    version = false,
+    event = "VimEnter",
+    cond = not vim.g.vscode,
+    opts = function()
+      local starter = require("mini.starter")
+      local logo = table.concat({
+        [[                               __                ]],
+        [[  ___     ___    ___   __  __ /\_\    ___ ___    ]],
+        [[ / _ `\  / __`\ / __`\/\ \/\ \\/\ \  / __` __`\  ]],
+        [[/\ \/\ \/\  __//\ \_\ \ \ \_/ |\ \ \/\ \/\ \/\ \ ]],
+        [[\ \_\ \_\ \____\ \____/\ \___/  \ \_\ \_\ \_\ \_\]],
+        [[ \/_/\/_/\/____/\/___/  \/__/    \/_/\/_/\/_/\/_/]],
+      }, "\n")
+
+      local pad = string.rep(" ", 22)
+
+      local new_section = function(name, action, section)
+        return { name = name, action = action, section = pad .. section }
+      end
+
+      local picker = Snacks.picker
+
+      return {
+        header = logo,
+        evaluate_single = true,
+        items = {
+          new_section("Find file", picker.files, "Picker"),
+          new_section("Recent files", picker.recent, "Picker"),
+          new_section("Find text", picker.grep, "Picker"),
+          new_section("New file", "ene | startinsert", "Built-in"),
+          new_section("Quit", "qa", "Built-in"),
+          new_section("Config", function()
+            picker.files({
+              cwd = vim.fn.stdpath("config"),
+            })
+          end, "Config"),
+          new_section("Update", function()
+            vim.cmd([[ Lazy update ]])
+          end, "Config"),
+        },
+        content_hooks = {
+          starter.gen_hook.adding_bullet(pad .. "  ", false),
+          starter.gen_hook.aligning("center", "center"),
+        },
+      }
     end,
-  })
+    config = function(_, opts)
+      if vim.o.filetype == "lazy" then
+        vim.cmd.close()
+        vim.api.nvim_create_autocmd("User", {
+          pattern = "MiniStarterOpened",
+          callback = function()
+            require("lazy").show()
+          end,
+        })
+      end
 
-  local hi = require("mini.hipatterns")
+      local starter = require("mini.starter")
+      starter.setup(opts)
 
-  hi.setup({
-    highlighters = {
-      hex_color = hi.gen_highlighter.hex_color({ priority = 2000 }),
-      shorthand = {
-        pattern = "()#%x%x%x()%f[^%x%w]",
-        group = function(_, _, data)
-          ---@type string
-          local match = data.full_match
-          local r, g, b = match:sub(2, 2), match:sub(3, 3), match:sub(4, 4)
-          local hex_color = "#" .. r .. r .. g .. g .. b .. b
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "LazyVimStarted",
+        callback = function(event)
+          local icons = require("configs.icons")
+          local stats = require("lazy").stats()
+          local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
+          local pad_footer = string.rep(" ", 8)
 
-          return hi.compute_hex_color_group(hex_color, "bg")
-        end,
-        extmark_opts = { priority = 2000 },
-      },
-      tailwind = {
-        pattern = function()
-          if
-            not vim.tbl_contains({
-              "astro",
-              "css",
-              "heex",
-              "html",
-              "html-eex",
-              "javascript",
-              "javascriptreact",
-              "rust",
-              "svelte",
-              "typescript",
-              "typescriptreact",
-              "vue",
-            }, vim.bo.filetype)
-          then
-            return
+          starter.config.footer = pad_footer
+            .. icons.ui.Gear
+            .. "Loaded "
+            .. stats.loaded
+            .. " / "
+            .. stats.count
+            .. " plugins in "
+            .. ms
+            .. "ms"
+
+          if vim.bo[event.buf].filetype == "ministarter" then
+            pcall(starter.refresh)
           end
-          return "%f[%w:-]()[%w:-]+%-[a-z%-]+%-%d+()%f[^%w:-]"
         end,
-        group = function(_, _, m)
-          ---@type string
-          local match = m.full_match
-          ---@type string, number
-          local color, shade = match:match("[%w-]+%-([a-z%-]+)%-(%d+)")
-          shade = tonumber(shade)
-          local bg = vim.tbl_get(colors, color, shade)
-          if bg then
-            local hl = "MiniHipatternsTailwind" .. color .. shade
-            if not M.hl[hl] then
-              M.hl[hl] = true
-              local bg_shade = shade == 500 and 950 or shade < 500 and 900 or 100
-              local fg = vim.tbl_get(colors, color, bg_shade)
-              vim.api.nvim_set_hl(0, hl, { bg = "#" .. bg, fg = "#" .. fg })
+      })
+    end,
+  },
+  {
+    "echasnovski/mini.pairs",
+    version = false,
+    event = "VeryLazy",
+    cond = not vim.g.vscode,
+    opts = {
+      skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
+      skip_ts = { "string" },
+      skip_unbalanced = true,
+      markdown = true,
+    },
+  },
+  {
+    "echasnovski/mini.icons",
+    lazy = true,
+    version = false,
+    cond = not vim.g.vscode,
+    opts = function()
+      local icons = require("configs.icons")
+      return {
+        file = {
+          [".keep"] = { glyph = icons.git.Repe, hl = "MiniIconsGrey" },
+          ["devcontainer.json"] = { glyph = icons.misc.Package, hl = "MiniIconsAzure" },
+        },
+        filetype = {
+          dotenv = { glyph = icons.ui.Gear, hl = "MiniIconsYellow" },
+        },
+      }
+    end,
+    init = function()
+      package.preload["nvim-web-devicons"] = function()
+        require("mini.icons").mock_nvim_web_devicons()
+        return package.loaded["nvim-web-devicons"]
+      end
+    end,
+  },
+  {
+    "echasnovski/mini.cursorword",
+    version = false,
+    event = "BufEnter",
+    cond = not vim.g.vscode,
+    opts = {},
+  },
+  {
+    "echasnovski/mini.hipatterns",
+    version = false,
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+    cond = not vim.g.vscode,
+    opts = function()
+      local hi = require("mini.hipatterns")
+
+      return {
+        highlighters = {
+          hex_color = hi.gen_highlighter.hex_color({ priority = 2000 }),
+          shorthand = {
+            pattern = "()#%x%x%x()%f[^%x%w]",
+            group = function(_, _, data)
+              ---@type string
+              local match = data.full_match
+              local r, g, b = match:sub(2, 2), match:sub(3, 3), match:sub(4, 4)
+              local hex_color = "#" .. r .. r .. g .. g .. b .. b
+
+              return hi.compute_hex_color_group(hex_color, "bg")
+            end,
+            extmark_opts = { priority = 2000 },
+          },
+          tailwind = {
+            pattern = function()
+              if
+                not vim.tbl_contains({
+                  "astro",
+                  "css",
+                  "heex",
+                  "html",
+                  "html-eex",
+                  "javascript",
+                  "javascriptreact",
+                  "rust",
+                  "svelte",
+                  "typescript",
+                  "typescriptreact",
+                  "vue",
+                }, vim.bo.filetype)
+              then
+                return
+              end
+              return "%f[%w:-]()[%w:-]+%-[a-z%-]+%-%d+()%f[^%w:-]"
+            end,
+            group = function(_, _, m)
+              ---@type string
+              local match = m.full_match
+              ---@type string, number
+              local color, shade = match:match("[%w-]+%-([a-z%-]+)%-(%d+)")
+              shade = tonumber(shade) or 0
+              local bg = vim.tbl_get(_colors, color, shade)
+              if bg then
+                local hl = "MiniHipatternsTailwind" .. color .. shade
+                if not _hl[hl] then
+                  _hl[hl] = true
+                  local bg_shade = shade == 500 and 950 or shade < 500 and 900 or 100
+                  local fg = vim.tbl_get(_colors, color, bg_shade)
+                  vim.api.nvim_set_hl(0, hl, { bg = "#" .. bg, fg = "#" .. fg })
+                end
+                return hl
+              end
+            end,
+            extmark_opts = { priority = 2000 },
+          },
+        },
+      }
+    end,
+    config = function(_, opts)
+      vim.api.nvim_create_autocmd("ColorScheme", {
+        callback = function()
+          _hl = {}
+        end,
+      })
+
+      local hi = require("mini.hipatterns")
+      hi.setup(opts)
+    end,
+  },
+  {
+    "echasnovski/mini.ai",
+    version = false,
+    event = "VeryLazy",
+    opts = function()
+      local ai = require("mini.ai")
+
+      return {
+        n_lines = 500,
+        custom_textobjects = {
+          o = ai.gen_spec.treesitter({ -- code block
+            a = { "@block.outer", "@conditional.outer", "@loop.outer" },
+            i = { "@block.inner", "@conditional.inner", "@loop.inner" },
+          }),
+          f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }), -- function
+          c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }), -- class
+          t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" }, -- tags
+          d = { "%f[%d]%d+" }, -- digits
+          e = { -- Word with case
+            { "%u[%l%d]+%f[^%l%d]", "%f[%S][%l%d]+%f[^%l%d]", "%f[%P][%l%d]+%f[^%l%d]", "^[%l%d]+%f[^%l%d]" },
+            "^().*()$",
+          },
+          g = function(ai_type)
+            local start_line, end_line = 1, vim.fn.line("$")
+            if ai_type == "i" then
+              -- Skip first and last blank lines for `i` textobject
+              local first_nonblank, last_nonblank = vim.fn.nextnonblank(start_line), vim.fn.prevnonblank(end_line)
+              -- Do nothing for buffer with all blanks
+              if first_nonblank == 0 or last_nonblank == 0 then
+                return { from = { line = start_line, col = 1 } }
+              end
+              start_line, end_line = first_nonblank, last_nonblank
             end
-            return hl
+
+            local to_col = math.max(vim.fn.getline(end_line):len(), 1)
+            return { from = { line = start_line, col = 1 }, to = { line = end_line, col = to_col } }
+          end, -- buffer
+          u = ai.gen_spec.function_call(), -- u for "Usage"
+          U = ai.gen_spec.function_call({ name_pattern = "[%w_]" }), -- without dot in function name
+        },
+      }
+    end,
+    config = function(_, opts)
+      local ai = require("mini.ai")
+      ai.setup(opts)
+
+      local wk_exists, wk = pcall(require, "which-key")
+
+      if wk_exists then
+        local objects = {
+          { " ", desc = "whitespace" },
+          { '"', desc = '" string' },
+          { "'", desc = "' string" },
+          { "(", desc = "() block" },
+          { ")", desc = "() block with ws" },
+          { "<", desc = "<> block" },
+          { ">", desc = "<> block with ws" },
+          { "?", desc = "user prompt" },
+          { "U", desc = "use/call without dot" },
+          { "[", desc = "[] block" },
+          { "]", desc = "[] block with ws" },
+          { "_", desc = "underscore" },
+          { "`", desc = "` string" },
+          { "a", desc = "argument" },
+          { "b", desc = ")]} block" },
+          { "c", desc = "class" },
+          { "d", desc = "digit(s)" },
+          { "e", desc = "CamelCase / snake_case" },
+          { "f", desc = "function" },
+          { "g", desc = "entire file" },
+          { "i", desc = "indent" },
+          { "o", desc = "block, conditional, loop" },
+          { "q", desc = "quote `\"'" },
+          { "t", desc = "tag" },
+          { "u", desc = "use/call" },
+          { "{", desc = "{} block" },
+          { "}", desc = "{} with ws" },
+        }
+
+        local ret = { mode = { "o", "x" } }
+        local mappings = {
+          around = "a",
+          inside = "i",
+          around_next = "an",
+          inside_next = "in",
+          around_last = "al",
+          inside_last = "il",
+        }
+        mappings.goto_left = nil
+        mappings.goto_right = nil
+
+        for name, prefix in pairs(mappings) do
+          name = name:gsub("^around_", ""):gsub("^inside_", "")
+          ret[#ret + 1] = { prefix, group = name }
+          for _, obj in ipairs(objects) do
+            local desc = obj.desc
+            if prefix:sub(1, 1) == "i" then
+              desc = desc:gsub(" with ws", "")
+            end
+            ret[#ret + 1] = { prefix .. obj[1], desc = obj.desc }
+          end
+        end
+
+        wk.add(ret, { notify = false })
+      end
+    end,
+  },
+  {
+    "echasnovski/mini.comment",
+    version = false,
+    event = "BufEnter",
+    opts = {
+      options = {
+        custom_commentstring = function()
+          return require("ts_context_commentstring").calculate_commentstring() or vim.bo.commentstring
+        end,
+      },
+    },
+  },
+  {
+    "echasnovski/mini.surround",
+    version = false,
+    event = "VeryLazy",
+    opts = {
+      mappings = {
+        add = "gsa",
+        delete = "gsd",
+        find = "gsf",
+        find_left = "gsF",
+        highlight = "gsh",
+        replace = "gsr",
+        update_n_lines = "gsn",
+      },
+    },
+  },
+  {
+    "echasnovski/mini.snippets",
+    event = "InsertEnter",
+    cond = not vim.g.vscode,
+    dependencies = { "rafamadriz/friendly-snippets" },
+    opts = function()
+      local snippets = require("mini.snippets")
+      local gen_loader = snippets.gen_loader
+      return {
+        snippets = {
+          gen_loader.from_lang(),
+        },
+        mappings = {
+          expand = "",
+          jump_next = "",
+          jump_prev = "",
+          stop = "",
+        },
+      }
+    end,
+    config = function(_, opts)
+      local snippets = require("mini.snippets")
+      snippets.setup(opts)
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "MiniSnippetsSessionJump",
+        callback = function(args)
+          if args.data.tabstop_to == "0" then
+            MiniSnippets.session.stop()
           end
         end,
-        extmark_opts = { priority = 2000 },
-      },
-    },
-  })
-end
-
-local function setup_ai()
-  local ai = require("mini.ai")
-
-  ai.setup({
-    n_lines = 500,
-    custom_textobjects = {
-      o = ai.gen_spec.treesitter({ -- code block
-        a = { "@block.outer", "@conditional.outer", "@loop.outer" },
-        i = { "@block.inner", "@conditional.inner", "@loop.inner" },
-      }),
-      f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }), -- function
-      c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }), -- class
-      t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" }, -- tags
-      d = { "%f[%d]%d+" }, -- digits
-      e = { -- Word with case
-        { "%u[%l%d]+%f[^%l%d]", "%f[%S][%l%d]+%f[^%l%d]", "%f[%P][%l%d]+%f[^%l%d]", "^[%l%d]+%f[^%l%d]" },
-        "^().*()$",
-      },
-      g = function(ai_type)
-        local start_line, end_line = 1, vim.fn.line("$")
-        if ai_type == "i" then
-          -- Skip first and last blank lines for `i` textobject
-          local first_nonblank, last_nonblank = vim.fn.nextnonblank(start_line), vim.fn.prevnonblank(end_line)
-          -- Do nothing for buffer with all blanks
-          if first_nonblank == 0 or last_nonblank == 0 then
-            return { from = { line = start_line, col = 1 } }
-          end
-          start_line, end_line = first_nonblank, last_nonblank
-        end
-
-        local to_col = math.max(vim.fn.getline(end_line):len(), 1)
-        return { from = { line = start_line, col = 1 }, to = { line = end_line, col = to_col } }
-      end, -- buffer
-      u = ai.gen_spec.function_call(), -- u for "Usage"
-      U = ai.gen_spec.function_call({ name_pattern = "[%w_]" }), -- without dot in function name
-    },
-  })
-
-  local wk_exists, wk = pcall(require, "which-key")
-
-  if wk_exists then
-    local objects = {
-      { " ", desc = "whitespace" },
-      { '"', desc = '" string' },
-      { "'", desc = "' string" },
-      { "(", desc = "() block" },
-      { ")", desc = "() block with ws" },
-      { "<", desc = "<> block" },
-      { ">", desc = "<> block with ws" },
-      { "?", desc = "user prompt" },
-      { "U", desc = "use/call without dot" },
-      { "[", desc = "[] block" },
-      { "]", desc = "[] block with ws" },
-      { "_", desc = "underscore" },
-      { "`", desc = "` string" },
-      { "a", desc = "argument" },
-      { "b", desc = ")]} block" },
-      { "c", desc = "class" },
-      { "d", desc = "digit(s)" },
-      { "e", desc = "CamelCase / snake_case" },
-      { "f", desc = "function" },
-      { "g", desc = "entire file" },
-      { "i", desc = "indent" },
-      { "o", desc = "block, conditional, loop" },
-      { "q", desc = "quote `\"'" },
-      { "t", desc = "tag" },
-      { "u", desc = "use/call" },
-      { "{", desc = "{} block" },
-      { "}", desc = "{} with ws" },
-    }
-
-    local ret = { mode = { "o", "x" } }
-    local mappings = {
-      around = "a",
-      inside = "i",
-      around_next = "an",
-      inside_next = "in",
-      around_last = "al",
-      inside_last = "il",
-    }
-    mappings.goto_left = nil
-    mappings.goto_right = nil
-
-    for name, prefix in pairs(mappings) do
-      name = name:gsub("^around_", ""):gsub("^inside_", "")
-      ret[#ret + 1] = { prefix, group = name }
-      for _, obj in ipairs(objects) do
-        local desc = obj.desc
-        if prefix:sub(1, 1) == "i" then
-          desc = desc:gsub(" with ws", "")
-        end
-        ret[#ret + 1] = { prefix .. obj[1], desc = obj.desc }
-      end
-    end
-
-    wk.add(ret, { notify = false })
-  end
-end
-
-local function setup_comment()
-  require("mini.comment").setup({
-    options = {
-      custom_commentstring = function()
-        return require("ts_context_commentstring").calculate_commentstring() or vim.bo.commentstring
-      end,
-    },
-  })
-end
-
-local function setup_surround()
-  require("mini.surround").setup({
-    mappings = {
-      add = "gsa",
-      delete = "gsd",
-      find = "gsf",
-      find_left = "gsF",
-      highlight = "gsh",
-      replace = "gsr",
-      update_n_lines = "gsn",
-    },
-  })
-end
-
-local function setup_snippets()
-  local snippets = require("mini.snippets")
-
-  local gen_loader = snippets.gen_loader
-
-  snippets.setup({
-    snippets = {
-      gen_loader.from_lang(),
-    },
-    mappings = {
-      expand = "",
-      jump_next = "",
-      jump_prev = "",
-      stop = "",
-    },
-  })
-
-  vim.api.nvim_create_autocmd("User", {
-    pattern = "MiniSnippetsSessionJump",
-    callback = function(args)
-      if args.data.tabstop_to == "0" then
-        MiniSnippets.session.stop()
-      end
+      })
     end,
-  })
-end
+  },
+  {
+    "echasnovski/mini.move",
+    version = false,
+    event = "BufEnter",
+    opts = {
+      mappings = {
+        left = "<C-h>",
+        right = "<C-l>",
+        down = "<C-j>",
+        up = "<C-k>",
 
-local function setup_move()
-  local move = require("mini.move")
-  move.setup({
-    mappings = {
-      left = "<C-h>",
-      right = "<C-l>",
-      down = "<C-j>",
-      up = "<C-k>",
-
-      line_left = "<C-h>",
-      line_right = "<C-l>",
-      line_down = "<C-j>",
-      line_up = "<C-k>",
-    },
-  })
-end
-
-local function setup_diff()
-  local diff = require("mini.diff")
-
-  diff.setup({
-    view = {
-      style = "sign",
-      signs = {
-        add = "▎",
-        change = "▎",
-        delete = "",
+        line_left = "<C-h>",
+        line_right = "<C-l>",
+        line_down = "<C-j>",
+        line_up = "<C-k>",
       },
     },
-  })
-
-  vim.keymap.set("n", "<leader>go", function()
-    diff.toggle_overlay(0)
-  end, {
-    desc = "Toggle mini.diff overlay",
-    noremap = true,
-    silent = true,
-  })
-end
-
-local function setup_files()
-  vim.keymap.set("n", "<leader>e", function()
-    require("mini.files").open(vim.uv.cwd(), true)
-  end, {
-    desc = "Open mini.files",
-    noremap = true,
-    silent = true,
-  })
-
-  vim.keymap.set("n", "<leader>E", function()
-    require("mini.files").open(vim.api.nvim_buf_get_name(0), true)
-  end, {
-    desc = "Open mini.files in current file directory",
-    noremap = true,
-    silent = true,
-  })
-
-  local files = require("mini.files")
-
-  files.setup({
-    windows = {
-      preview = true,
-      width_focus = 30,
-      width_preview = 50,
+  },
+  {
+    "echasnovski/mini.diff",
+    version = false,
+    event = "VeryLazy",
+    cond = not vim.g.vscode,
+    keys = {
+      {
+        "<leader>go",
+        function()
+          require("mini.diff").toggle_overlay(0)
+        end,
+        desc = "Toggle mini.diff overlay",
+      },
     },
-    options = {
-      use_as_default_explorer = true,
+    opts = {
+      view = {
+        style = "sign",
+        signs = {
+          add = "▎",
+          change = "▎",
+          delete = "",
+        },
+      },
     },
-    mappings = {
-      close = "q",
-      go_in = "L",
-      go_in_plus = "l",
-      go_out = "H",
-      go_out_plus = "h",
-      mark_goto = "'",
-      mark_set = "m",
-      reset = "<BS>",
-      reveal_cwd = "@",
-      show_help = "g?",
-      synchronize = "=",
-      trim_left = "<",
-      trim_right = ">",
-    },
-  })
+  },
+  {
+    "echasnovski/mini.misc",
+    version = false,
+    cond = not vim.g.vscode,
+    event = "VeryLazy",
+    opts = {},
+    config = function(_, opts)
+      local misc = require("mini.misc")
 
-  vim.api.nvim_create_autocmd("User", {
-    pattern = "MiniFilesActionRename",
-    callback = function(event)
-      Snacks.rename.on_rename_file(event.data.from, event.data.to)
+      misc.setup(opts)
+
+      misc.setup_auto_root({ ".git", "package.json", "deno.json", "deno.jsonc" })
     end,
-  })
-end
-
-local function setup_misc()
-  local misc = require("mini.misc")
-
-  misc.setup()
-
-  misc.setup_auto_root({ ".git", "package.json", "deno.json", "deno.jsonc" })
-end
-
-function M.config()
-  if not vim.g.vscode then
-    setup_starter()
-    setup_icons()
-    setup_autopair()
-    setup_cursorword()
-    setup_hipatterns()
-    setup_snippets()
-    setup_diff()
-    -- setup_files()
-    setup_misc()
-  end
-  setup_surround()
-  setup_ai()
-  setup_comment()
-  setup_move()
-end
+  },
+  {
+    "echasnovski/mini.bufremove",
+    version = false,
+    cond = not vim.g.vscode,
+    event = "VeryLazy",
+    oprs = {},
+  },
+}
 
 return M
