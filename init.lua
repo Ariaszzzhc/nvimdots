@@ -1,3 +1,5 @@
+local colorscheme = "tokyonight"
+
 require("configs.mappings")
 require("configs.options")
 require("configs.autocmd")
@@ -25,6 +27,9 @@ require("lazy").setup({
     { import = "plugins.lang" },
     { import = "plugins.daps" },
   },
+  install = {
+    colorscheme = { colorscheme },
+  },
 })
 
 if vim.g.vscode then
@@ -35,6 +40,6 @@ end
 
 if not vim.g.vscode then
   -- vim.cmd([[colorscheme rose-pine-dawn]])
-  vim.cmd([[colorscheme tokyonight]])
+  vim.cmd("colorscheme " .. colorscheme)
   -- vim.cmd([[colorscheme rose-pine]])
 end

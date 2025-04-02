@@ -287,6 +287,7 @@ vim.diagnostic.config({
 })
 
 vim.lsp.enable({
+  "clangd",
   "denols",
   "tailwindcss",
   "vtsls",
