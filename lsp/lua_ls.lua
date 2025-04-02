@@ -11,18 +11,6 @@ return {
     "selene.yml",
     ".git",
   },
-  -- root_dir = function(bufnr, cb)
-  --   cb(vim.fs.root(0, {
-  --     ".luarc.json",
-  --     ".luarc.jsonc",
-  --     ".luacheckrc",
-  --     ".stylua.toml",
-  --     "stylua.toml",
-  --     "selene.toml",
-  --     "selene.yml",
-  --     ".git",
-  --   }))
-  -- end,
   settings = {
     Lua = {
       format = {
