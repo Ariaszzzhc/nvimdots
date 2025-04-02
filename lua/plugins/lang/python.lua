@@ -5,12 +5,4 @@ return {
       ensure_installed = { "ninja", "rst", "python" },
     },
   },
-  {
-    "neovim/nvim-lspconfig",
-    opts = {
-      servers = {
-        basedpyright = {},
-      },
-    },
-  },
 }

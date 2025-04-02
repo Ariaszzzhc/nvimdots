@@ -1,12 +1,5 @@
 return {
-  {
-    "neovim/nvim-lspconfig",
-    opts = {
-      servers = {
-        zls = {},
-      },
-    },
-  },
+
   {
     "nvim-treesitter/nvim-treesitter",
     opts = {
@@ -18,7 +11,7 @@ return {
     opts = function()
       local dap = require("dap")
       local picker = require("utils").exe_picker
-      dap.configurations.zig = {
+      dap.configurations["zig"] = {
         {
           type = "lldb-dap",
           request = "launch",

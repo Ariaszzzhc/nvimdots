@@ -5,12 +5,4 @@ return {
       ensure_installed = { "astro" },
     },
   },
-  {
-    "neovim/nvim-lspconfig",
-    opts = {
-      servers = {
-        astro = {},
-      },
-    },
-  },
 }

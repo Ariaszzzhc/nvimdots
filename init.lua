@@ -29,6 +29,8 @@ require("lazy").setup({
 
 if vim.g.vscode then
   require("configs.vscode")
+else
+  require("configs.lsp")
 end
 
 if not vim.g.vscode then

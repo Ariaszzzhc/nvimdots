@@ -20,35 +20,4 @@ return {
       end,
     },
   },
-  {
-    "neovim/nvim-lspconfig",
-    opts = {
-      servers = {
-        lua_ls = {
-          settings = {
-            Lua = {
-              format = {
-                enable = true,
-              },
-              hint = {
-                enable = true,
-                arrayIndex = "Disable", -- "Enable" | "Auto" | "Disable"
-                await = true,
-                paramName = "Disable", -- "All" | "Literal" | "Disable"
-                paramType = true,
-                semicolon = "Disable", -- "All" | "SameLine" | "Disable"
-                setType = false,
-              },
-              codeLens = {
-                enable = true,
-              },
-              telemetry = {
-                enable = false,
-              },
-            },
-          },
-        },
-      },
-    },
-  },
 }

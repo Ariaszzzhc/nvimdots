@@ -33,25 +33,6 @@ return {
     },
   },
   {
-    "neovim/nvim-lspconfig",
-    opts = {
-      servers = {
-        clangd = {
-          cmd = {
-            "clangd",
-            "--background-index",
-            "--clang-tidy",
-            "--completion-style=detailed",
-            "--header-insertion=iwyu",
-            "--function-arg-placeholders",
-            "--fallback-style=google",
-            "--experimental-modules-support",
-          },
-        },
-      },
-    },
-  },
-  {
     "mfussenegger/nvim-dap",
     opts = function()
       local dap = require("dap")
@@ -75,5 +56,20 @@ return {
       dap.configurations.c = config
       dap.configurations.cpp = config
     end,
+  },
+  {
+    "Mythos-404/xmake.nvim",
+    event = "BufReadPost",
+    opts = {
+      runner = {
+        type = "snacks",
+        config = {
+          snacks = {
+            position = "float",
+            interactive = true,
+          },
+        },
+      },
+    },
   },
 }
