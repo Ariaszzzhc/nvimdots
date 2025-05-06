@@ -1,4 +1,4 @@
-local colorscheme = "tokyonight"
+local colorscheme = "vitesse"
 
 require("configs.mappings")
 require("configs.options")

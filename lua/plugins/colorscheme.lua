@@ -31,6 +31,16 @@ local M = {
       },
     },
   },
+  {
+    "2nthony/vitesse.nvim",
+    dependencies = {
+      "tjdevries/colorbuddy.nvim",
+    },
+    opts = {
+      transparent_background = true,
+      transparent_float_background = true,
+    },
+  },
 }
 
 return M

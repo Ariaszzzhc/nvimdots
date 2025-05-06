@@ -7,6 +7,9 @@ return {
     provideFormatter = true,
   },
   settings = status and {
-    json = schemastore.json.schemas(),
+    json = {
+      schemas = schemastore.json.schemas(),
+      validate = { enable = true },
+    },
   } or {},
 }
