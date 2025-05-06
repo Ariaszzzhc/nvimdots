@@ -112,25 +112,7 @@ function M.config()
       enabled = true,
     },
     snippets = {
-      expand = function(snippet)
-        if not _G.MiniSnippets then
-          error("mini.snippets has not been setup")
-        end
-        local insert = MiniSnippets.config.expand.insert or MiniSnippets.default_insert
-        insert({ body = snippet })
-      end,
-      active = function()
-        if not _G.MiniSnippets then
-          error("mini.snippets has not been setup")
-        end
-        return MiniSnippets.session.get(false) ~= nil
-      end,
-      jump = function(direction)
-        if not _G.MiniSnippets then
-          error("mini.snippets has not been setup")
-        end
-        MiniSnippets.session.jump(direction == -1 and "prev" or "next")
-      end,
+      preset = "mini_snippets",
     },
     cmdline = {
       enabled = true,

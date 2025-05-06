@@ -78,6 +78,24 @@ local M = {
       config = function()
         local dap = require("dap")
         local dapui = require("dapui")
+
+        -- setup dap server
+        vim.notify(vim.fn.stdpath("config") .. "/dap")
+        local original_path = package.path
+        local files = vim.fn.readdir(vim.fn.stdpath("config") .. "/dap")
+        package.path = package.path .. ";" .. vim.fn.stdpath("config") .. "/dap/?.lua"
+        for _, file in ipairs(files) do
+          local ext = vim.fn.fnamemodify(file, ":e")
+          if ext == "lua" then
+            local name = vim.fn.fnamemodify(file, ":t:r")
+            local config = require(name)
+            if config ~= nil then
+              dap.adapters[name] = config
+            end
+          end
+        end
+        package.path = original_path
+
         dapui.setup()
         dap.listeners.before.attach.dapui_config = function()
           dapui.open()

@@ -310,94 +310,7 @@ local _colors = {
 
 local _hl = {}
 
-local M = {
-  {
-    "echasnovski/mini.starter",
-    version = false,
-    event = "VimEnter",
-    cond = not vim.g.vscode,
-    opts = function()
-      local starter = require("mini.starter")
-      local logo = table.concat({
-        [[                               __                ]],
-        [[  ___     ___    ___   __  __ /\_\    ___ ___    ]],
-        [[ / _ `\  / __`\ / __`\/\ \/\ \\/\ \  / __` __`\  ]],
-        [[/\ \/\ \/\  __//\ \_\ \ \ \_/ |\ \ \/\ \/\ \/\ \ ]],
-        [[\ \_\ \_\ \____\ \____/\ \___/  \ \_\ \_\ \_\ \_\]],
-        [[ \/_/\/_/\/____/\/___/  \/__/    \/_/\/_/\/_/\/_/]],
-      }, "\n")
-
-      local pad = string.rep(" ", 22)
-
-      local new_section = function(name, action, section)
-        return { name = name, action = action, section = pad .. section }
-      end
-
-      local picker = Snacks.picker
-
-      return {
-        header = logo,
-        evaluate_single = true,
-        items = {
-          new_section("Find file", picker.files, "Picker"),
-          new_section("Recent files", picker.recent, "Picker"),
-          new_section("Find text", picker.grep, "Picker"),
-          new_section("New file", "ene | startinsert", "Built-in"),
-          new_section("Quit", "qa", "Built-in"),
-          new_section("Config", function()
-            picker.files({
-              cwd = vim.fn.stdpath("config"),
-            })
-          end, "Config"),
-          new_section("Update", function()
-            vim.cmd([[ Lazy update ]])
-          end, "Config"),
-        },
-        content_hooks = {
-          starter.gen_hook.adding_bullet(pad .. "  ", false),
-          starter.gen_hook.aligning("center", "center"),
-        },
-      }
-    end,
-    config = function(_, opts)
-      if vim.o.filetype == "lazy" then
-        vim.cmd.close()
-        vim.api.nvim_create_autocmd("User", {
-          pattern = "MiniStarterOpened",
-          callback = function()
-            require("lazy").show()
-          end,
-        })
-      end
-
-      local starter = require("mini.starter")
-      starter.setup(opts)
-
-      vim.api.nvim_create_autocmd("User", {
-        pattern = "LazyVimStarted",
-        callback = function(event)
-          local icons = require("configs.icons")
-          local stats = require("lazy").stats()
-          local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
-          local pad_footer = string.rep(" ", 8)
-
-          starter.config.footer = pad_footer
-            .. icons.ui.Gear
-            .. "Loaded "
-            .. stats.loaded
-            .. " / "
-            .. stats.count
-            .. " plugins in "
-            .. ms
-            .. "ms"
-
-          if vim.bo[event.buf].filetype == "ministarter" then
-            pcall(starter.refresh)
-          end
-        end,
-      })
-    end,
-  },
+return {
   {
     "echasnovski/mini.pairs",
     version = false,
@@ -409,30 +322,6 @@ local M = {
       skip_unbalanced = true,
       markdown = true,
     },
-  },
-  {
-    "echasnovski/mini.icons",
-    lazy = true,
-    version = false,
-    cond = not vim.g.vscode,
-    opts = function()
-      local icons = require("configs.icons")
-      return {
-        file = {
-          [".keep"] = { glyph = icons.git.Repe, hl = "MiniIconsGrey" },
-          ["devcontainer.json"] = { glyph = icons.misc.Package, hl = "MiniIconsAzure" },
-        },
-        filetype = {
-          dotenv = { glyph = icons.ui.Gear, hl = "MiniIconsYellow" },
-        },
-      }
-    end,
-    init = function()
-      package.preload["nvim-web-devicons"] = function()
-        require("mini.icons").mock_nvim_web_devicons()
-        return package.loaded["nvim-web-devicons"]
-      end
-    end,
   },
   {
     "echasnovski/mini.cursorword",
@@ -631,6 +520,13 @@ local M = {
     "echasnovski/mini.comment",
     version = false,
     event = "BufEnter",
+    dependencies = {
+      "JoosepAlviste/nvim-ts-context-commentstring",
+      lazy = true,
+      opts = {
+        enable_autocmd = false,
+      },
+    },
     opts = {
       options = {
         custom_commentstring = function()
@@ -654,39 +550,6 @@ local M = {
         update_n_lines = "gsn",
       },
     },
-  },
-  {
-    "echasnovski/mini.snippets",
-    event = "InsertEnter",
-    cond = not vim.g.vscode,
-    dependencies = { "rafamadriz/friendly-snippets" },
-    opts = function()
-      local snippets = require("mini.snippets")
-      local gen_loader = snippets.gen_loader
-      return {
-        snippets = {
-          gen_loader.from_lang(),
-        },
-        mappings = {
-          expand = "",
-          jump_next = "",
-          jump_prev = "",
-          stop = "",
-        },
-      }
-    end,
-    config = function(_, opts)
-      local snippets = require("mini.snippets")
-      snippets.setup(opts)
-      vim.api.nvim_create_autocmd("User", {
-        pattern = "MiniSnippetsSessionJump",
-        callback = function(args)
-          if args.data.tabstop_to == "0" then
-            MiniSnippets.session.stop()
-          end
-        end,
-      })
-    end,
   },
   {
     "echasnovski/mini.move",
@@ -752,6 +615,37 @@ local M = {
     event = "VeryLazy",
     oprs = {},
   },
+  {
+    "echasnovski/mini.snippets",
+    event = "InsertEnter",
+    cond = not vim.g.vscode,
+    dependencies = { "rafamadriz/friendly-snippets" },
+    opts = function()
+      local mini_snippets = require("mini.snippets")
+      local gen_loader = mini_snippets.gen_loader
+      return {
+        snippets = {
+          gen_loader.from_lang(),
+        },
+        expand = {
+          select = function(snippets, insert)
+            local select = MiniSnippets.default_select
+            select(snippets, insert)
+          end,
+        },
+      }
+    end,
+    config = function(_, opts)
+      local snippets = require("mini.snippets")
+      snippets.setup(opts)
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "MiniSnippetsSessionJump",
+        callback = function(args)
+          if args.data.tabstop_to == "0" then
+            MiniSnippets.session.stop()
+          end
+        end,
+      })
+    end,
+  },
 }
-
-return M

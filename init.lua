@@ -1,4 +1,4 @@
-local colorscheme = "vitesse"
+local colorscheme = "tokyonight"
 
 require("configs.mappings")
 require("configs.options")
@@ -23,9 +23,11 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   spec = {
     { "folke/lazy.nvim", version = "*" },
-    { import = "plugins" },
+    { import = "plugins.core" },
+    { import = "plugins.ui" },
+    { import = "plugins.ai" },
+    { import = "plugins.misc" },
     { import = "plugins.lang" },
-    { import = "plugins.daps" },
   },
   install = {
     colorscheme = { colorscheme },
