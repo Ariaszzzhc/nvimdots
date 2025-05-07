@@ -272,7 +272,11 @@ vim.diagnostic.config({
         end
       end
 
-      return "" .. diagnostic.code .. ": " .. diagnostic.message
+      if diagnostic.code ~= nil then
+        return "" .. diagnostic.code .. ": " .. diagnostic.message
+      end
+
+      return diagnostic.message
     end,
   },
   severity_sort = true,

@@ -4,6 +4,8 @@ return {
     "nvim-treesitter/nvim-treesitter",
     "echasnovski/mini.nvim",
   },
-  ft = "markdown",
-  opts = {},
+  ft = { "markdown", "Avante", "codecompanion" },
+  opts = {
+    file_types = { "markdown", "Avante", "codecompanion" },
+  },
 }

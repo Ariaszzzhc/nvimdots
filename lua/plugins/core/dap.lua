@@ -284,7 +284,7 @@ function M.config()
     texthl = "DiagnosticWarn",
   })
 
-  require("nvim-dap-virtual-text").setup()
+  require("nvim-dap-virtual-text").setup({})
 end
 
 return M
