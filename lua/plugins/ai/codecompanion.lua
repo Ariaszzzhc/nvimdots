@@ -22,6 +22,7 @@ return {
       end,
     },
   },
+  cond = not vim.g.vscode,
   opts = {
     strategies = {
       chat = {

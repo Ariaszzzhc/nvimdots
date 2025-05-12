@@ -23,7 +23,10 @@ function M.config()
       component_separators = { left = "", right = "" },
       section_separators = { left = "", right = "" },
       globalstatus = vim.o.laststatus == 3,
-      disabled_filetypes = { statusline = { "ministarter", "snacks_dashboard" }, winbar = { "ministarter" } },
+      disabled_filetypes = {
+        statusline = { "ministarter", "snacks_dashboard", "snacks_picker_list" },
+        winbar = { "ministarter" },
+      },
     },
     sections = {
       lualine_a = { "mode" },

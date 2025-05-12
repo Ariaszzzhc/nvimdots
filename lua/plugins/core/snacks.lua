@@ -412,10 +412,10 @@ local M = {
             height = 0.8,
             border = "none",
             box = "vertical",
-            { win = "preview", title = "{preview}", height = 0.4, border = "rounded" },
+            { win = "preview", title = "{preview}", height = 0.4, border = "single" },
             {
               box = "vertical",
-              border = "rounded",
+              border = "single",
               title = "{title} {live} {flags}",
               title_pos = "center",
               { win = "input", height = 1, border = "bottom" },

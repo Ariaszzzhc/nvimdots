@@ -81,7 +81,7 @@ return {
     ChevronShortLeft = "",
     ChevronShortRight = "",
     ChevronShortUp = "",
-    Circle = " ",
+    Circle = "",
     Close = "󰅖",
     CloudDownload = " ",
     Code = "",
@@ -157,10 +157,10 @@ return {
     CircuitBoard = " ",
   },
   dap = {
-    Stopped             = "󰁕 ",
-    Breakpoint          = " ",
+    Stopped = "󰁕 ",
+    Breakpoint = " ",
     BreakpointCondition = " ",
-    BreakpointRejected  = " ",
-    LogPoint            = ".>",
+    BreakpointRejected = " ",
+    LogPoint = ".>",
   },
 }
