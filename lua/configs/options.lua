@@ -1,82 +1,51 @@
-local opt = vim.opt
+vim.opt.backup = false
+vim.opt.clipboard = "unnamedplus"
+vim.opt.confirm = true
+vim.opt.conceallevel = 2
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+vim.opt.mouse = "a"
+vim.opt.showmode = false
+vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.cursorline = true
+vim.opt.swapfile = false
+vim.opt.autoindent = true
+vim.opt.smartindent = true
+vim.opt.timeoutlen = 300
+vim.opt.updatetime = 200
+vim.opt.writebackup = false
+vim.opt.undofile = true
+vim.opt.expandtab = true
+vim.opt.shiftwidth = 4
+vim.opt.tabstop = 4
+vim.opt.wrap = false
+vim.opt.scrolloff = 10
+vim.opt.sidescrolloff = 8
+vim.opt.title = true
+vim.opt.virtualedit = "block"
+vim.opt.winminwidth = 5
+vim.opt.foldlevel = 99
+vim.opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp", "folds" }
+vim.opt.shiftround = true
+vim.opt.shortmess:append({ W = true, I = true, c = true, C = true })
+vim.opt.termguicolors = true
+vim.opt.signcolumn = "yes"
+vim.opt.splitright = true
+vim.opt.splitbelow = true
+vim.opt.fillchars:append({ eob = " " })
+vim.opt.laststatus = 3
 
-opt.backup = false -- creates a backup file
-opt.clipboard = "unnamedplus" -- allows neovim to access the system clipboard
-opt.cmdheight = 1 -- more space in the neovim command line for displaying messages
-opt.completeopt = "menu,menuone,noselect" -- mostly just for cmp
-opt.conceallevel = 2
-opt.confirm = true
--- vim.opt.fileencoding = "utf-8" -- the encoding written to a file
-opt.hlsearch = true -- highlight all matches on previous search pattern
-opt.ignorecase = true -- ignore case in search patterns
-opt.mouse = "a" -- allow the mouse to be used in neovim
-opt.pumheight = 10 -- pop up menu height
-opt.pumblend = 10
-opt.showmode = false -- we don't need to see things like -- INSERT -- anymore
-opt.smartcase = true -- smart case
-opt.smartindent = true -- make indenting smarter again
-opt.splitbelow = true -- force all horizontal splits to go below current window
-opt.splitright = true -- force all vertical splits to go to the right of current window
-opt.swapfile = false -- creates a swapfile
-opt.termguicolors = true -- set term gui colors (most terminals support this)
-opt.timeoutlen = 300 -- time to wait for a mapped sequence to complete (in milliseconds)
-opt.undofile = true -- enable persistent undo
-opt.updatetime = 200 -- faster completion (4000ms default)
-opt.writebackup = false -- if a file is being edited by another program (or was written to file while editing with another program), it is not allowed to be edited
-opt.expandtab = true -- convert tabs to spaces
-opt.shiftwidth = 2 -- the number of spaces inserted for each indentation
-opt.tabstop = 2 -- insert 2 spaces for a tab
-opt.cursorline = true -- highlight the current line
-opt.number = true -- set numbered lines
-opt.laststatus = 3
-opt.showcmd = false
-opt.ruler = false
-opt.relativenumber = true -- set relative numbered lines
-opt.numberwidth = 4 -- set number column width to 2 {default 4}
-opt.signcolumn = "yes" -- always show the sign column, otherwise it would shift the text each time
-opt.wrap = false -- display lines as one long line
-opt.scrolloff = 4
-opt.sidescrolloff = 8
-opt.title = false
--- colorcolumn = "80",
--- colorcolumn = "120",
-opt.fillchars = {
-  foldopen = "",
-  foldclose = "",
-  fold = " ",
-  foldsep = " ",
-  diff = "╱",
-  eob = " ",
-}
-opt.foldlevel = 99
-opt.grepformat = "%f:%l:%c:%m"
-opt.grepprg = "rg --vimgrep"
-opt.inccommand = "nosplit"
-opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp", "folds" }
-opt.shiftround = true
-opt.shortmess:append({ W = true, I = true, c = true, C = true })
-opt.undolevels = 10000
-opt.virtualedit = "block"
-opt.wildmode = "longest:full,full"
-opt.winminwidth = 5
-opt.guicursor =
-  "n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor,sm:block-blinkwait175-blinkoff150-blinkon175"
+vim.g.netrw_banner = 0
+vim.g.netrw_mouse = 2
+vim.g.markdown_recommended_style = 0
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_node_provider = 0
+vim.g.loaded_python3_provider = 0
 
-opt.smoothscroll = true
-opt.winblend = 0
-opt.pumblend = 0
+vim.opt.guifont = "OperatorMonoSSmLig Nerd Font:h15:w1"
 
-local g = vim.g
-
-g.netrw_banner = 0
-g.netrw_mouse = 2
-g.markdown_recommended_style = 0
-g.loaded_ruby_provider = 0
-g.loaded_perl_provider = 0
-g.loaded_node_provider = 0
-g.loaded_python3_provider = 0
-
-if g.neovide then
-  opt.guifont = "OperatorMonoSSmLig Nerd Font Light:h17"
-  g.neovide_remember_window_size = true
+if vim.g.neovide then
+  vim.g.neovide_remember_window_size = true
 end

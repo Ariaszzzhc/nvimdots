@@ -112,7 +112,7 @@ function M.config()
       enabled = true,
     },
     snippets = {
-      preset = "mini_snippets",
+      preset = "luasnip",
     },
     cmdline = {
       enabled = true,

@@ -1,6 +1,7 @@
 return {
   "echasnovski/mini.icons",
-  lazy = true,
+  priority = 1000,
+  lazy = false,
   version = false,
   cond = not vim.g.vscode,
   opts = function()

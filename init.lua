@@ -1,4 +1,4 @@
-local colorscheme = "tokyonight"
+local colorscheme = "rose-pine"
 
 require("configs.mappings")
 require("configs.options")
@@ -41,7 +41,5 @@ else
 end
 
 if not vim.g.vscode then
-  -- vim.cmd([[colorscheme rose-pine-dawn]])
   vim.cmd("colorscheme " .. colorscheme)
-  -- vim.cmd([[colorscheme rose-pine]])
 end

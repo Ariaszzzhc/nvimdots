@@ -615,37 +615,4 @@ return {
     event = "VeryLazy",
     oprs = {},
   },
-  {
-    "echasnovski/mini.snippets",
-    event = "InsertEnter",
-    cond = not vim.g.vscode,
-    dependencies = { "rafamadriz/friendly-snippets" },
-    opts = function()
-      local mini_snippets = require("mini.snippets")
-      local gen_loader = mini_snippets.gen_loader
-      return {
-        snippets = {
-          gen_loader.from_lang(),
-        },
-        expand = {
-          select = function(snippets, insert)
-            local select = MiniSnippets.default_select
-            select(snippets, insert)
-          end,
-        },
-      }
-    end,
-    config = function(_, opts)
-      local snippets = require("mini.snippets")
-      snippets.setup(opts)
-      vim.api.nvim_create_autocmd("User", {
-        pattern = "MiniSnippetsSessionJump",
-        callback = function(args)
-          if args.data.tabstop_to == "0" then
-            MiniSnippets.session.stop()
-          end
-        end,
-      })
-    end,
-  },
 }
