@@ -18,16 +18,13 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
     os.exit(1)
   end
 end
+
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   spec = {
     { "folke/lazy.nvim", version = "*" },
-    { import = "plugins.core" },
-    { import = "plugins.ui" },
-    { import = "plugins.ai" },
-    { import = "plugins.misc" },
-    { import = "plugins.lang" },
+    { import = "plugins" },
   },
   install = {
     colorscheme = { colorscheme },

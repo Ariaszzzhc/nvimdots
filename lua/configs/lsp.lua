@@ -29,13 +29,6 @@ local actions = setmetatable({}, {
 local function lsp_keymaps(client, bufnr)
   local keymap = vim.keymap.set
 
-  keymap("n", "<leader>cl", "<cmd>LspInfo<cr>", {
-    buffer = bufnr,
-    desc = "Lsp Info",
-    noremap = true,
-    silent = true,
-  })
-
   keymap("n", "K", function()
     return vim.lsp.buf.hover()
   end, {
@@ -106,10 +99,7 @@ local function lsp_keymaps(client, bufnr)
   end
 
   if client:supports_method("textDocument/rename") then
-    keymap("n", "<leader>cr", function()
-      local inc_rename = require("inc_rename")
-      return ":" .. inc_rename.config.cmd_name .. " " .. vim.fn.expand("<cword>")
-    end, {
+    keymap("n", "<leader>cr", vim.lsp.buf.rename, {
       buffer = bufnr,
       desc = "Rename",
       noremap = true,
@@ -260,6 +250,10 @@ on_supports_method("textDocument/codeLens", function(_, bufnr)
   })
 end)
 
+on_supports_method("textDocument/documentColor", function(_, bufnr)
+  vim.lsp.document_color.enable(true, bufnr, { style = " " })
+end)
+
 vim.diagnostic.config({
   underline = true,
   update_in_insert = false,
@@ -283,9 +277,9 @@ vim.diagnostic.config({
   signs = {
     text = {
       [vim.diagnostic.severity.ERROR] = icons.diagnostics.Error,
-      [vim.diagnostic.severity.WARN] = icons.diagnostics.Warning,
+      [vim.diagnostic.severity.WARN] = icons.diagnostics.Warn,
       [vim.diagnostic.severity.HINT] = icons.diagnostics.Hint,
-      [vim.diagnostic.severity.INFO] = icons.diagnostics.Information,
+      [vim.diagnostic.severity.INFO] = icons.diagnostics.Info,
     },
   },
 })
