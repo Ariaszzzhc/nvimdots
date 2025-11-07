@@ -73,5 +73,5 @@ return {
     },
   },
   workspace_required = true,
-  root_markers = { "tsconfig.json", "jsconfig.json", "package.json" },
+  root_markers = { "package.json" },
 }

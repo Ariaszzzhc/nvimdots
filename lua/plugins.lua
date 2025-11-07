@@ -996,6 +996,15 @@ return {
   },
   {
     "L3MON4D3/LuaSnip",
+    build = (function()
+      -- Build Step is needed for regex support in snippets.
+      -- This step is not supported in many windows environments.
+      -- Remove the below condition to re-enable on windows.
+      if vim.fn.has("win32") == 1 or vim.fn.executable("make") == 0 then
+        return
+      end
+      return "make install_jsregexp"
+    end)(),
     version = "v2.*",
     dependencies = {
       {
@@ -1030,19 +1039,30 @@ return {
       },
       formatters_by_ft = {
         lua = { "stylua" },
-        javascript = { "prettier" },
-        javascriptreact = { "prettier" },
-        typescript = { "prettier" },
-        typescriptreact = { "prettier" },
-        json = { "prettier" },
-        yaml = { "prettier" },
-        html = { "prettier" },
-        css = { "prettier" },
+        javascript = { "deno_fmt", "prettier" },
+        javascriptreact = { "deno_fmt", "prettier" },
+        typescript = { "deno_fmt", "prettier" },
+        typescriptreact = { "deno_fmt", "prettier" },
+        json = { "deno_fmt", "prettier" },
+        yaml = { "deno_fmt", "prettier" },
+        html = { "deno_fmt", "prettier" },
+        css = { "deno_fmt", "prettier" },
       },
+      stop_after_first = true,
       formatters = {
-        prettier = {
-          command = "npx",
-          args = { "prettier", "--stdin-filepath", "$FILENAME" },
+        -- prettier = {
+        --   command = "npx",
+        --   args = { "prettier", "--stdin-filepath", "$FILENAME" },
+        -- },
+        deno_fmt = {
+          condition = function(ctx)
+            local found = vim.fs.find({ "deno.json", "deno.jsonc" }, {
+              path = ctx.dirname,
+              upward = true,
+            })
+
+            return #found > 0
+          end,
         },
       },
       default_format_opts = {
