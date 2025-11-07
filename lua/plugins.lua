@@ -383,13 +383,6 @@ return {
       },
       notifier = {
         enabled = true,
-        icons = {
-          error = icons.diagnostics.Error,
-          warn = icons.diagnostics.Warn,
-          info = icons.diagnostics.Info,
-          debug = icons.diagnostics.Debug,
-          trace = icons.diagnostics.Trace,
-        },
       },
       picker = {
         enabled = true,
@@ -952,9 +945,6 @@ return {
           },
         },
       },
-      appearance = {
-        kind_icons = icons.kinds,
-      },
       completion = {
         menu = {
           draw = {
@@ -1106,16 +1096,15 @@ return {
     opts = {},
   },
   {
+    "folke/todo-comments.nvim",
+    event = "VimEnter",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    opts = { signs = false },
+  },
+  {
     "Bekaboo/dropbar.nvim",
     event = "BufReadPre",
     opts = {
-      icons = {
-        kinds = {
-          dir_icon = icons.kinds.Folder,
-          file_icon = icons.kinds.File,
-          symbols = icons.kinds,
-        },
-      },
       menu = {
         preview = false,
       },
@@ -1307,6 +1296,9 @@ return {
         markdown = true,
         help = true,
       },
+    },
+    dependencies = {
+      "copilotlsp-nvim/copilot-lsp",
     },
   },
 }
