@@ -30,6 +30,7 @@ return {
     "rose-pine/neovim",
     name = "rose-pine",
   },
+  { "folke/tokyonight.nvim", lazy = false, priority = 1000, opts = {} },
   {
     "folke/snacks.nvim",
     lazy = false,
@@ -603,7 +604,7 @@ return {
 
       misc.setup(opts)
 
-      misc.setup_auto_root({ ".git", "package.json" })
+      misc.setup_auto_root({ ".git" })
     end,
   },
   {
@@ -1029,14 +1030,14 @@ return {
       },
       formatters_by_ft = {
         lua = { "stylua" },
-        javascript = { "deno_fmt", "prettier" },
-        javascriptreact = { "deno_fmt", "prettier" },
-        typescript = { "deno_fmt", "prettier" },
-        typescriptreact = { "deno_fmt", "prettier" },
-        json = { "deno_fmt", "prettier" },
-        yaml = { "deno_fmt", "prettier" },
-        html = { "deno_fmt", "prettier" },
-        css = { "deno_fmt", "prettier" },
+        javascript = { "deno_fmt", "biome", "prettier" },
+        javascriptreact = { "deno_fmt", "biome", "prettier" },
+        typescript = { "deno_fmt", "biome", "prettier" },
+        typescriptreact = { "deno_fmt", "biome", "prettier" },
+        json = { "deno_fmt", "biome", "prettier" },
+        yaml = { "deno_fmt", "biome", "prettier" },
+        html = { "deno_fmt", "biome", "prettier" },
+        css = { "deno_fmt", "biome", "prettier" },
       },
       stop_after_first = true,
       formatters = {
@@ -1047,6 +1048,16 @@ return {
         deno_fmt = {
           condition = function(ctx)
             local found = vim.fs.find({ "deno.json", "deno.jsonc" }, {
+              path = ctx.dirname,
+              upward = true,
+            })
+
+            return #found > 0
+          end,
+        },
+        biome = {
+          condition = function(ctx)
+            local found = vim.fs.find({ "biome.json", "biome.jsonc" }, {
               path = ctx.dirname,
               upward = true,
             })

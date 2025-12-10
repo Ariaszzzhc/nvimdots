@@ -297,4 +297,5 @@ vim.lsp.enable({
   "jsonls",
   "lua_ls",
   "wgsl_analyzer",
+  "neocmake",
 })
