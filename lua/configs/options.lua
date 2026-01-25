@@ -36,6 +36,8 @@ vim.opt.splitright = true
 vim.opt.splitbelow = true
 vim.opt.fillchars:append({ eob = " " })
 vim.opt.laststatus = 3
+vim.opt.winborder = "single"
+vim.opt.ignorecase = true
 
 vim.g.netrw_banner = 0
 vim.g.netrw_mouse = 2

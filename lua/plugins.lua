@@ -28,20 +28,81 @@ return {
   },
   {
     "rose-pine/neovim",
+    priority = 1000,
     name = "rose-pine",
   },
-  { "folke/tokyonight.nvim", lazy = false, priority = 1000, opts = {} },
+  {
+    "folke/tokyonight.nvim",
+    lazy = false,
+    priority = 1000,
+    opts = {},
+  },
+  {
+    "ellisonleao/gruvbox.nvim",
+    lazy = false,
+    priority = 1000,
+  },
   {
     "folke/snacks.nvim",
     lazy = false,
     priority = 1000,
     keys = {
       {
+        "<leader><space>",
+        function()
+          Snacks.picker.smart()
+        end,
+        desc = "Smart Find Files",
+      },
+      {
+        "<leader>,",
+        function()
+          Snacks.picker.buffers()
+        end,
+        desc = "Buffers",
+      },
+      {
+        "<leader>/",
+        function()
+          Snacks.picker.grep()
+        end,
+        desc = "Grep",
+      },
+      {
+        "<leader>:",
+        function()
+          Snacks.picker.command_history()
+        end,
+        desc = "Command History",
+      },
+      {
+        "<leader>n",
+        function()
+          Snacks.picker.notifications()
+        end,
+        desc = "Notification History",
+      },
+      {
+        "<leader>e",
+        function()
+          Snacks.explorer()
+        end,
+        desc = "File Explorer",
+      },
+      -- find
+      {
         "<leader>fb",
         function()
           Snacks.picker.buffers()
         end,
         desc = "Buffers",
+      },
+      {
+        "<leader>fc",
+        function()
+          Snacks.picker.files({ cwd = vim.fn.stdpath("config") })
+        end,
+        desc = "Find Config File",
       },
       {
         "<leader>ff",
@@ -72,12 +133,6 @@ return {
         desc = "Recent",
       },
       -- git
-      {
-        "<leader>gg",
-        function()
-          Snacks.lazygit()
-        end,
-      },
       {
         "<leader>gb",
         function()
@@ -127,6 +182,36 @@ return {
         end,
         desc = "Git Log File",
       },
+      -- gh
+      {
+        "<leader>gi",
+        function()
+          Snacks.picker.gh_issue()
+        end,
+        desc = "GitHub Issues (open)",
+      },
+      {
+        "<leader>gI",
+        function()
+          Snacks.picker.gh_issue({ state = "all" })
+        end,
+        desc = "GitHub Issues (all)",
+      },
+      {
+        "<leader>gp",
+        function()
+          Snacks.picker.gh_pr()
+        end,
+        desc = "GitHub Pull Requests (open)",
+      },
+      {
+        "<leader>gP",
+        function()
+          Snacks.picker.gh_pr({ state = "all" })
+        end,
+        desc = "GitHub Pull Requests (all)",
+      },
+      -- Grep
       {
         "<leader>sb",
         function()
@@ -304,20 +389,7 @@ return {
         end,
         desc = "Colorschemes",
       },
-      {
-        "<leader>ss",
-        function()
-          Snacks.picker.lsp_symbols()
-        end,
-        desc = "LSP Symbols",
-      },
-      {
-        "<leader>sS",
-        function()
-          Snacks.picker.lsp_workspace_symbols()
-        end,
-        desc = "LSP Workspace Symbols",
-      },
+      -- LSP
       {
         "gd",
         function()
@@ -355,16 +427,52 @@ return {
         desc = "Goto T[y]pe Definition",
       },
       {
+        "gai",
+        function()
+          Snacks.picker.lsp_incoming_calls()
+        end,
+        desc = "C[a]lls Incoming",
+      },
+      {
+        "gao",
+        function()
+          Snacks.picker.lsp_outgoing_calls()
+        end,
+        desc = "C[a]lls Outgoing",
+      },
+      {
         "<leader>ss",
         function()
           Snacks.picker.lsp_symbols()
         end,
         desc = "LSP Symbols",
       },
+      {
+        "<leader>sS",
+        function()
+          Snacks.picker.lsp_workspace_symbols()
+        end,
+        desc = "LSP Workspace Symbols",
+      },
+      {
+        "<leader>st",
+        function()
+          Snacks.picker.todo_comments()
+        end,
+        desc = "Todo",
+      },
+      {
+        "<leader>sT",
+        function()
+          Snacks.picker.todo_comments({ keywords = { "TODO", "FIX", "FIXME" } })
+        end,
+        desc = "Todo/Fix/Fixme",
+      },
     },
     --- @type snacks.Config
     opts = {
       bigfile = { enabled = true },
+      quickfile = { enabled = true },
       dashboard = {
         enabled = true,
         sections = {
@@ -514,6 +622,11 @@ return {
       },
       image = {
         enabled = true,
+      },
+      explorer = {
+        enabled = true,
+        replace_netrw = true,
+        trash = true,
       },
       zen = {
         toggles = {
@@ -804,100 +917,6 @@ return {
       },
     },
   },
-  -- {
-  --   "nvim-mini/mini.hipatterns",
-  --   version = false,
-  --   event = { "BufReadPost", "BufNewFile", "BufWritePre" },
-  --   cond = not vim.g.vscode,
-  --   opts = function()
-  --     local hi = require("mini.hipatterns")
-  --
-  --     return {
-  --       highlighters = {
-  --         -- hex_color = hi.gen_highlighter.hex_color({ priority = 2000 }),
-  --         -- shorthand = {
-  --         --   pattern = "()#%x%x%x()%f[^%x%w]",
-  --         --   group = function(_, _, data)
-  --         --     ---@type string
-  --         --     local match = data.full_match
-  --         --     local r, g, b = match:sub(2, 2), match:sub(3, 3), match:sub(4, 4)
-  --         --     local hex_color = "#" .. r .. r .. g .. g .. b .. b
-  --         --
-  --         --     return hi.compute_hex_color_group(hex_color, "bg")
-  --         --   end,
-  --         --   extmark_opts = { priority = 2000 },
-  --         -- },
-  --         tailwind = {
-  --           pattern = function()
-  --             if
-  --               not vim.tbl_contains({
-  --                 "astro",
-  --                 "css",
-  --                 "heex",
-  --                 "html",
-  --                 "html-eex",
-  --                 "javascript",
-  --                 "javascriptreact",
-  --                 "rust",
-  --                 "svelte",
-  --                 "typescript",
-  --                 "typescriptreact",
-  --                 "vue",
-  --               }, vim.bo.filetype)
-  --             then
-  --               return
-  --             end
-  --             return "%f[%w:-]()[%w:-]+%-[a-z%-]+%-%d+()%f[^%w:-]"
-  --           end,
-  --           group = function(_, _, m)
-  --             ---@type string
-  --             local match = m.full_match
-  --             ---@type string, number
-  --             local color, shade = match:match("[%w-]+%-([a-z%-]+)%-(%d+)")
-  --             shade = tonumber(shade) or 0
-  --             local bg = vim.tbl_get(_colors, color, shade)
-  --             if bg then
-  --               local hl = "MiniHipatternsTailwind" .. color .. shade
-  --               if not _hl[hl] then
-  --                 _hl[hl] = true
-  --                 local bg_shade = shade == 500 and 950 or shade < 500 and 900 or 100
-  --                 local fg = vim.tbl_get(_colors, color, bg_shade)
-  --                 vim.api.nvim_set_hl(0, hl, { fg = "#" .. bg })
-  --               end
-  --               return hl
-  --             end
-  --           end,
-  --           extmark_opts = function(_, _, m)
-  --             ---@type string
-  --             local match = m.full_match
-  --             ---@type string, number
-  --             local color, shade = match:match("[%w-]+%-([a-z%-]+)%-(%d+)")
-  --             shade = tonumber(shade) or 0
-  --             local bg = vim.tbl_get(_colors, color, shade)
-  --             if bg then
-  --               local hl = "MiniHipatternsTailwind" .. color .. shade
-  --               return {
-  --                 virt_text = { { "■ ", hl } }, -- 小方块
-  --                 virt_text_pos = "inline",
-  --                 priority = 2000,
-  --               }
-  --             end
-  --           end,
-  --         },
-  --       },
-  --     }
-  --   end,
-  --   config = function(_, opts)
-  --     vim.api.nvim_create_autocmd("ColorScheme", {
-  --       callback = function()
-  --         _hl = {}
-  --       end,
-  --     })
-  --
-  --     local hi = require("mini.hipatterns")
-  --     hi.setup(opts)
-  --   end,
-  -- },
   {
     "saghen/blink.cmp",
     version = "1.*",
@@ -948,6 +967,7 @@ return {
       },
       completion = {
         menu = {
+          border = "none",
           draw = {
             -- We don't need label_description now because label and label_description are already
             -- combined together in label by colorful-menu.nvim.
@@ -1150,37 +1170,6 @@ return {
     },
   },
   {
-    "nvim-neo-tree/neo-tree.nvim",
-    branch = "v3.x",
-    lazy = false,
-    dependencies = {
-      { "nvim-lua/plenary.nvim" },
-      { "MunifTanjim/nui.nvim" },
-    },
-    keys = {
-      {
-        "<leader>e",
-        "<Cmd>Neotree reveal toggle position=right<CR>",
-        mode = "n",
-        desc = "Explorer",
-      },
-    },
-    opts = function()
-      local function on_move(data)
-        Snacks.rename.on_rename_file(data.source, data.destination)
-      end
-      local events = require("neo-tree.events")
-      return {
-        close_if_last_window = true,
-        popup_border_style = "",
-        event_handlers = {
-          { event = events.FILE_MOVED, handler = on_move },
-          { event = events.FILE_RENAMED, handler = on_move },
-        },
-      }
-    end,
-  },
-  {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
     opts = {
@@ -1259,8 +1248,6 @@ return {
     opts = {
       library = {
         { path = "${3rd}/luv/library", words = { "vim%.uv" } },
-        { path = "snacks.nvim", words = { "Snacks" } },
-        { path = "lazy.nvim", words = { "LazyVim" } },
       },
     },
   },

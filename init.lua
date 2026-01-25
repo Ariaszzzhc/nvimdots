@@ -1,4 +1,4 @@
-local colorscheme = "rose-pine"
+local colorscheme = "gruvbox"
 
 require("configs.mappings")
 require("configs.options")

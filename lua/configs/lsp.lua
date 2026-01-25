@@ -298,4 +298,5 @@ vim.lsp.enable({
   "lua_ls",
   "wgsl_analyzer",
   "neocmake",
+  "cpp2ls",
 })
