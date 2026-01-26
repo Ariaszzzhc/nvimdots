@@ -1,9 +1,17 @@
 return {
   misc = {
-    dots = "󰇘",
+    Dots = "󰇘",
+  },
+  files = {
+    Dir = "󰉋 ",
+    DirOpen = "󰝰 ",
+    File = "󰈔 ",
+  },
+  keymaps = {
+    Nowait = "󰓅 "
   },
   ft = {
-    octo = "",
+    Octo = "",
   },
   dap = {
     Stopped = { "󰁕 ", "DiagnosticWarn", "DapStoppedLine" },
@@ -11,6 +19,12 @@ return {
     BreakpointCondition = " ",
     BreakpointRejected = { " ", "DiagnosticError" },
     LogPoint = ".>",
+  },
+  lsp = {
+    Unavailable = "",
+    Enabled = " ",
+    Disabled = " ",
+    Attached = "󰖩 "
   },
   diagnostics = {
     Error = " ",
@@ -21,9 +35,9 @@ return {
     Trace = " ",
   },
   git = {
-    added = " ",
-    modified = " ",
-    removed = " ",
+    Added = " ",
+    Modified = " ",
+    Removed = " ",
   },
   kinds = {
     Array = " ",

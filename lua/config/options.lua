@@ -38,6 +38,8 @@ vim.opt.fillchars:append({ eob = " " })
 vim.opt.laststatus = 3
 vim.opt.winborder = "single"
 vim.opt.ignorecase = true
+vim.opt.whichwrap:append("<,>,[,],h,l")
+vim.opt.iskeyword:append("-")
 
 vim.g.netrw_banner = 0
 vim.g.netrw_mouse = 2
@@ -48,8 +50,3 @@ vim.g.loaded_node_provider = 0
 vim.g.loaded_python3_provider = 0
 vim.g.mapleader = " "
 
-vim.opt.guifont = "OperatorMonoSSmLig Nerd Font:h15:w1"
-
-if vim.g.neovide then
-  vim.g.neovide_remember_window_size = true
-end
