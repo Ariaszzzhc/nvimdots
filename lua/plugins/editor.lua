@@ -25,6 +25,69 @@ plugin.add({
     { "<leader>bD", "<Cmd>bd<CR>", desc = "Delete Buffer and Window" },
   },
 }, {
+  "nvim-mini/mini.files",
+  event = "VeryLazy",
+  dependencies = {
+    "nvim-tree/nvim-web-devicons",
+  },
+  opts = {
+    mappings = {
+      go_in = "L",
+      go_in_plus = "l",
+    },
+    options = {
+      permanent_delete = false,
+      use_as_default_explorer = true,
+    },
+    windows = {
+      preview = true,
+    },
+  },
+  keys = {
+    {
+      "<leader>e",
+      function()
+        local files = require("mini.files")
+        local path = vim.api.nvim_buf_get_name(0)
+        if path == "" then
+          path = vim.fn.getcwd()
+        end
+
+        if not files.close() then
+          files.open(path, false)
+        end
+      end,
+      desc = "Explorer Current File",
+    },
+    {
+      "<leader>E",
+      function()
+        local files = require("mini.files")
+
+        if not files.close() then
+          files.open(vim.fn.getcwd(), true)
+        end
+      end,
+      desc = "Explorer Cwd",
+    },
+  },
+  config = function(opts)
+    require("mini.files").setup(opts)
+
+    vim.api.nvim_create_autocmd("User", {
+      group = vim.api.nvim_create_augroup("MiniFilesLspRename", { clear = true }),
+      pattern = { "MiniFilesActionRename", "MiniFilesActionMove" },
+      callback = function(args)
+        local data = args.data
+        if data == nil or data.from == nil or data.to == nil then
+          return
+        end
+
+        require("features.rename").on_rename_file(data.from, data.to)
+      end,
+    })
+  end,
+}, {
   "nvim-mini/mini.surround",
   event = "VeryLazy",
   opts = {
