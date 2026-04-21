@@ -1,52 +1,59 @@
-vim.opt.backup = false
-vim.opt.clipboard = "unnamedplus"
-vim.opt.confirm = true
-vim.opt.conceallevel = 2
-vim.opt.ignorecase = true
-vim.opt.smartcase = true
-vim.opt.mouse = "a"
-vim.opt.showmode = false
-vim.opt.number = true
-vim.opt.relativenumber = true
-vim.opt.cursorline = true
-vim.opt.swapfile = false
-vim.opt.autoindent = true
-vim.opt.smartindent = true
-vim.opt.timeoutlen = 300
-vim.opt.updatetime = 200
-vim.opt.writebackup = false
-vim.opt.undofile = true
-vim.opt.expandtab = true
-vim.opt.shiftwidth = 4
-vim.opt.tabstop = 4
-vim.opt.wrap = false
-vim.opt.scrolloff = 10
-vim.opt.sidescrolloff = 8
-vim.opt.title = true
-vim.opt.virtualedit = "block"
-vim.opt.winminwidth = 5
-vim.opt.foldlevel = 99
-vim.opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp", "folds" }
-vim.opt.shiftround = true
-vim.opt.shortmess:append({ W = true, I = true, c = true, C = true })
-vim.opt.termguicolors = true
-vim.opt.signcolumn = "yes"
-vim.opt.foldcolumn = "auto"
-vim.opt.splitright = true
-vim.opt.splitbelow = true
-vim.opt.fillchars:append({ eob = " " })
-vim.opt.laststatus = 3
-vim.opt.winborder = "single"
-vim.opt.ignorecase = true
-vim.opt.whichwrap:append("<,>,[,],h,l")
-vim.opt.iskeyword:append("-")
+local opt = vim.opt
 
-vim.g.netrw_banner = 0
-vim.g.netrw_mouse = 2
-vim.g.markdown_recommended_style = 0
-vim.g.loaded_ruby_provider = 0
-vim.g.loaded_perl_provider = 0
-vim.g.loaded_node_provider = 0
-vim.g.loaded_python3_provider = 0
-vim.g.mapleader = " "
+opt.guicursor =
+  "n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor,sm:block-blinkwait175-blinkoff150-blinkon175"
+opt.termguicolors = true
+opt.number = true
+opt.relativenumber = true
+opt.cursorline = true
+opt.wrap = false
+opt.scrolloff = 15
+opt.sidescrolloff = 15
 
+opt.tabstop = 4
+opt.shiftwidth = 4
+opt.softtabstop = 4
+opt.expandtab = true
+opt.smartindent = true
+opt.autoindent = true
+
+opt.ignorecase = true
+opt.smartcase = true
+opt.hlsearch = true
+opt.incsearch = true
+
+opt.signcolumn = "yes"
+opt.cmdheight = 1
+opt.showmode = false
+opt.completeopt = "menuone,noinsert,noselect"
+opt.conceallevel = 2
+opt.synmaxcol = 300
+opt.fillchars:append({ eob = " " })
+
+local undo_dir = vim.fn.expand("~/.nvim/undo")
+if vim.fn.isdirectory(undo_dir) == 0 then
+  vim.fn.mkdir(undo_dir, "p")
+end
+
+opt.backup = false
+opt.writebackup = false
+opt.swapfile = false
+opt.undofile = true
+opt.undodir = undo_dir
+opt.updatetime = 300
+opt.timeoutlen = 500
+opt.autoread = true
+opt.autowrite = false
+
+opt.hidden = true
+opt.errorbells = false
+opt.iskeyword:append("-")
+opt.mouse = "a"
+opt.clipboard:append("unnamedplus")
+opt.foldmethod = "expr"
+opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+opt.foldcolumn = "auto"
+opt.foldlevel = 99
+
+opt.diffopt:append("linematch:60")
+opt.maxmempattern = 20000

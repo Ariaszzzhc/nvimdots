@@ -1,0 +1,4 @@
+require("plugins.langs.lua")
+require("plugins.langs.web")
+require("plugins.langs.markdown")
+require("plugins.langs.c")

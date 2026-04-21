@@ -8,7 +8,7 @@ return {
     File = "󰈔 ",
   },
   keymaps = {
-    Nowait = "󰓅 "
+    Nowait = "󰓅 ",
   },
   ft = {
     Octo = "",
@@ -24,7 +24,7 @@ return {
     Unavailable = "",
     Enabled = " ",
     Disabled = " ",
-    Attached = "󰖩 "
+    Attached = "󰖩 ",
   },
   diagnostics = {
     Error = " ",

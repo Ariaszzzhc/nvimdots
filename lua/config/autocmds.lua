@@ -1,93 +1,42 @@
-local function augroup(name)
-  return vim.api.nvim_create_augroup("lazyvim_" .. name, { clear = true })
-end
+local create_augroup = vim.api.nvim_create_augroup
+local create_autocmd = vim.api.nvim_create_autocmd
 
-vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
-  group = augroup("checktime"),
+local augroup = create_augroup("UserAutoCmd", { clear = true })
+
+-- highlight yanked text
+create_autocmd("TextYankPost", {
+  group = augroup,
   callback = function()
-    if vim.o.buftype ~= "nofile" then
-      vim.cmd("checktime")
-    end
+    vim.hl.on_yank()
   end,
 })
 
-vim.api.nvim_create_autocmd("TextYankPost", {
-  group = augroup("highlight_yank"),
+create_autocmd("BufReadPost", {
+  group = augroup,
+  desc = "Restore last cursor position",
   callback = function()
-    vim.highlight.on_yank()
-  end,
-})
-
-vim.api.nvim_create_autocmd("BufReadPost", {
-  group = augroup("last_loc"),
-  callback = function(event)
-    local exclude = { "gitcommit" }
-    local buf = event.buf
-    if vim.tbl_contains(exclude, vim.bo[buf].filetype) or vim.b[buf].lazyvim_last_loc then
+    if vim.o.diff then
       return
     end
-    vim.b[buf].lazyvim_last_loc = true
-    local mark = vim.api.nvim_buf_get_mark(buf, '"')
-    local lcount = vim.api.nvim_buf_line_count(buf)
-    if mark[1] > 0 and mark[1] <= lcount then
-      pcall(vim.api.nvim_win_set_cursor, 0, mark)
+
+    local last_pos = vim.api.nvim_buf_get_mark(0, '"')
+    local last_line = vim.api.nvim_buf_line_count(0)
+
+    local row = last_pos[1]
+    if row < 1 or row > last_line then
+      return
     end
+
+    pcall(vim.api.nvim_win_set_cursor, 0, last_pos)
   end,
 })
 
-vim.api.nvim_create_autocmd("FileType", {
-  group = augroup("close_with_q"),
-  pattern = {
-    "PlenaryTestPopup",
-    "help",
-    "lspinfo",
-    "notify",
-    "qf",
-    "spectre_panel",
-    "startuptime",
-    "tsplayground",
-    "neotest-output",
-    "checkhealth",
-    "neotest-summary",
-    "neotest-output-panel",
-  },
-  callback = function(event)
-    vim.bo[event.buf].buflisted = false
-    vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
-  end,
-})
-
-vim.api.nvim_create_autocmd("FileType", {
-  group = augroup("wrap_spell"),
-  pattern = { "gitcommit", "markdown" },
+create_autocmd("FileType", {
+  group = augroup,
+  pattern = { "markdown", "text", "gitcommit" },
   callback = function()
     vim.opt_local.wrap = true
+    vim.opt_local.linebreak = true
     vim.opt_local.spell = true
-  end,
-})
-
-vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-  group = augroup("auto_create_dir"),
-  callback = function(event)
-    if event.match:match("^%w%w+:[\\/][\\/]") then
-      return
-    end
-    local file = vim.uv.fs_realpath(event.match) or event.match
-    vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
-  end,
-})
-
-vim.api.nvim_create_autocmd("VimLeave", {
-  group = augroup("restore_cursor"),
-  callback = function()
-    vim.opt.guicursor = ""
-    vim.api.nvim_chan_send(vim.v.stderr, "\x1b[ q")
-  end,
-})
-
-vim.api.nvim_create_autocmd("BufWinEnter", {
-  group = augroup("fix_formatoptions"),
-  callback = function()
-    vim.opt.formatoptions:remove({ "c", "r", "o" })
   end,
 })

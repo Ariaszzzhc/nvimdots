@@ -1,0 +1,7 @@
+require("config.options")
+require("config.keymaps")
+require("config.autocmds")
+require("features.statuscolumn")
+require("features.indent")
+require("config.lsp")
+require("plugins")

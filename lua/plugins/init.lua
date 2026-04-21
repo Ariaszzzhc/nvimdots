@@ -1,0 +1,10 @@
+require("plugins.editor")
+require("plugins.treesitter")
+require("plugins.picker")
+require("plugins.ui")
+require("plugins.git")
+require("plugins.todos")
+require("plugins.coding")
+require("plugins.langs")
+
+require("config.plugin").flush()
