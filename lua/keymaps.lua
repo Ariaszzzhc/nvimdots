@@ -46,3 +46,5 @@ keymap("v", "<", "<gv", { desc = "Indent left" })
 keymap("v", ">", ">gv", { desc = "Indent right" })
 
 keymap("n", "J", "mzJ`z", { desc = "Join lines and keep cursor position" })
+
+require("utils.indent")

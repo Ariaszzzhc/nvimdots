@@ -51,8 +51,10 @@ opt.mouse = "a"
 opt.clipboard:append("unnamedplus")
 opt.foldmethod = "expr"
 opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+opt.foldcolumn = "auto"
 opt.foldlevel = 99
 
 opt.diffopt:append("linematch:60")
 opt.maxmempattern = 20000
 
+require("utils.statuscolumn")
