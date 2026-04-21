@@ -1,6 +1,7 @@
-local opt = vim.opt;
+local opt = vim.opt
 
-opt.guicursor="n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor,sm:block-blinkwait175-blinkoff150-blinkon175"
+opt.guicursor =
+  "n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor,sm:block-blinkwait175-blinkoff150-blinkon175"
 opt.termguicolors = true
 opt.number = true
 opt.relativenumber = true
@@ -31,7 +32,7 @@ opt.fillchars:append({ eob = " " })
 
 local undo_dir = vim.fn.expand("~/.nvim/undo")
 if vim.fn.isdirectory(undo_dir) == 0 then
-    vim.fn.mkdir(undo_dir, "p")
+  vim.fn.mkdir(undo_dir, "p")
 end
 
 opt.backup = false
@@ -56,5 +57,3 @@ opt.foldlevel = 99
 
 opt.diffopt:append("linematch:60")
 opt.maxmempattern = 20000
-
-require("utils.statuscolumn")

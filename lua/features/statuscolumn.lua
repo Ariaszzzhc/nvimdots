@@ -290,7 +290,7 @@ function M._get()
     components[3] = ""
   end
 
-  return "%@v:lua.require'utils.statuscolumn'.click_fold@" .. table.concat(components, "") .. "%T"
+  return "%@v:lua.require'features.statuscolumn'.click_fold@" .. table.concat(components, "") .. "%T"
 end
 
 function M.get()
@@ -338,7 +338,7 @@ function M.setup(opts)
 
   did_setup = true
   vim.api.nvim_set_hl(0, "ConfigStatusColumnMark", { link = "DiagnosticHint", default = true })
-  vim.o.statuscolumn = "%!v:lua.require'utils.statuscolumn'.get()"
+  vim.o.statuscolumn = "%!v:lua.require'features.statuscolumn'.get()"
 
   local timer = assert((vim.uv or vim.loop).new_timer())
   timer:start(config.refresh, config.refresh, clear_cache)

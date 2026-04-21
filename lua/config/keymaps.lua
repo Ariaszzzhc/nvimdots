@@ -11,7 +11,6 @@ keymap({ "n", "x" }, "<Down>", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", exp
 keymap({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true })
 keymap({ "n", "x" }, "<Up>", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true })
 
-
 keymap({ "i", "n" }, "<esc>", "<cmd>nohlsearch<cr><esc>", { desc = "Clear search highlights" })
 keymap("n", "n", "nzzzv", { desc = "Next search result (centered)" })
 keymap("n", "N", "Nzzzv", { desc = "Previous search result (centered)" })
@@ -46,5 +45,3 @@ keymap("v", "<", "<gv", { desc = "Indent left" })
 keymap("v", ">", ">gv", { desc = "Indent right" })
 
 keymap("n", "J", "mzJ`z", { desc = "Join lines and keep cursor position" })
-
-require("utils.indent")

@@ -97,10 +97,7 @@ end
 
 local function notify_error(name, phase, err)
   vim.schedule(function()
-    vim.notify(
-      ("plugin %s failed during %s:\n%s"):format(name, phase, err),
-      vim.log.levels.ERROR
-    )
+    vim.notify(("plugin %s failed during %s:\n%s"):format(name, phase, err), vim.log.levels.ERROR)
   end)
 end
 
@@ -148,17 +145,10 @@ local function lua_build_file(path, file)
 end
 
 local function shell_build(path, command)
-  local result = vim.system(
-    { vim.o.shell, vim.o.shellcmdflag, command },
-    { cwd = path, text = true }
-  ):wait()
+  local result = vim.system({ vim.o.shell, vim.o.shellcmdflag, command }, { cwd = path, text = true }):wait()
 
   if result.code ~= 0 then
-    error(("shell command failed: %s\n%s%s"):format(
-      command,
-      result.stderr or "",
-      result.stdout or ""
-    ))
+    error(("shell command failed: %s\n%s%s"):format(command, result.stderr or "", result.stdout or ""))
   end
 end
 
@@ -348,8 +338,7 @@ local function autocmd_opts(spec, pattern)
 end
 
 local function command_from_rhs(rhs)
-  return rhs:match("^<[Cc][Mm][Dd]>(.*)<[Cc][Rr]>$")
-    or rhs:match("^:(.*)<[Cc][Rr]>$")
+  return rhs:match("^<[Cc][Mm][Dd]>(.*)<[Cc][Rr]>$") or rhs:match("^:(.*)<[Cc][Rr]>$")
 end
 
 local function run_rhs(rhs)
@@ -525,7 +514,10 @@ local function register_event(spec)
         init_plugin(spec)
       else
         local autocmd_event, autocmd_pattern = event_autocmd(event)
-        table.insert(spec.event_autocmds, vim.api.nvim_create_autocmd(autocmd_event, autocmd_opts(spec, autocmd_pattern)))
+        table.insert(
+          spec.event_autocmds,
+          vim.api.nvim_create_autocmd(autocmd_event, autocmd_opts(spec, autocmd_pattern))
+        )
 
         if event == "VeryLazy" then
           has_very_lazy = true
@@ -719,7 +711,8 @@ local function merge_plugin(spec, opts)
   end
 
   if explicit(spec.raw, "build") then
-    if spec.build ~= nil
+    if
+      spec.build ~= nil
       and type(spec.build) ~= "function"
       and type(spec.build) ~= "string"
       and not (type(spec.build) == "table" and vim.islist(spec.build))
@@ -791,7 +784,13 @@ local function flush()
       run_startup_init(spec)
       register_keys(spec)
 
-      if not register_event(spec) and spec.event == nil and #spec.keys == 0 and spec.top_level and should_run_config(spec) then
+      if
+        not register_event(spec)
+        and spec.event == nil
+        and #spec.keys == 0
+        and spec.top_level
+        and should_run_config(spec)
+      then
         init_plugin(spec)
       end
     end

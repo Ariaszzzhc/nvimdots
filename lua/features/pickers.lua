@@ -85,7 +85,7 @@ function M.gh(kind, state)
 end
 
 function M.icons()
-  local icons = require("icons")
+  local icons = require("config.icons")
   local entries = {}
 
   local function collect(prefix, tbl)
@@ -131,7 +131,7 @@ function M.plugin_specs()
     cwd = vim.fn.stdpath("config"),
     search = [[^\s*["'][A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+]],
     no_esc = true,
-    rg_opts = [[--column --line-number --no-heading --color=always --smart-case -g lua/plugins.lua -e]],
+    rg_opts = [[--column --line-number --no-heading --color=always --smart-case -g lua/plugins/**/*.lua -e]],
   })
 end
 

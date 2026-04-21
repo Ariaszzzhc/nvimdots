@@ -28,7 +28,7 @@ create_autocmd("BufReadPost", {
     end
 
     pcall(vim.api.nvim_win_set_cursor, 0, last_pos)
-  end
+  end,
 })
 
 create_autocmd("FileType", {
@@ -38,5 +38,5 @@ create_autocmd("FileType", {
     vim.opt_local.wrap = true
     vim.opt_local.linebreak = true
     vim.opt_local.spell = true
-  end
+  end,
 })
