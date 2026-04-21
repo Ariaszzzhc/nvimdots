@@ -1,12 +1,7 @@
-local icons = require("config.icons")
+local icons = require("icons")
+local words = require("utils.words")
 
-return {
-  {
-    "neovim/nvim-lspconfig",
-    event = { "BufReadPost", "BufWritePost", "BufNewFile" },
-    opts = {},
-    config = vim.schedule_wrap(function(_, opts)
-      local function lsp_on_attach(on_attach, name)
+local function lsp_on_attach(on_attach, name)
         return vim.api.nvim_create_autocmd("LspAttach", {
           callback = function(args)
             local buffer = args.buf ---@type number
@@ -16,7 +11,7 @@ return {
             end
           end,
         })
-      end
+end
 
       local actions = setmetatable({}, {
         __index = function(_, action)
@@ -31,6 +26,34 @@ return {
           end
         end,
       })
+
+      local codelens_enabled = {}
+
+      local function notify_toggle(name, enabled)
+        vim.notify(("%s %s"):format(name, enabled and "enabled" or "disabled"), vim.log.levels.INFO)
+      end
+
+      local function toggle_inlay_hints(bufnr)
+        local enabled = not vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr })
+        vim.lsp.inlay_hint.enable(enabled, { bufnr = bufnr })
+        notify_toggle("Inlay hints", enabled)
+      end
+
+      local function enable_codelens(bufnr)
+        if codelens_enabled[bufnr] == false then
+          return
+        end
+
+        codelens_enabled[bufnr] = true
+        vim.lsp.codelens.enable(true, { bufnr = bufnr })
+      end
+
+      local function toggle_codelens(bufnr)
+        local enabled = not vim.lsp.codelens.is_enabled({ bufnr = bufnr })
+        codelens_enabled[bufnr] = enabled
+        vim.lsp.codelens.enable(enabled, { bufnr = bufnr })
+        notify_toggle("Codelens", enabled)
+      end
 
       local function lsp_keymaps(client, bufnr)
         local keymap = vim.keymap.set
@@ -81,9 +104,21 @@ return {
             silent = true,
           })
 
-          keymap("n", "<leader>cC", vim.lsp.codelens.refresh, {
+          keymap("n", "<leader>cC", function()
+            codelens_enabled[bufnr] = true
+            vim.lsp.codelens.enable(true, { bufnr = bufnr })
+          end, {
             buffer = bufnr,
             desc = "Refresh & Display Codelens",
+            noremap = true,
+            silent = true,
+          })
+
+          keymap("n", "<leader>uc", function()
+            toggle_codelens(bufnr)
+          end, {
+            buffer = bufnr,
+            desc = "Toggle Codelens",
             noremap = true,
             silent = true,
           })
@@ -93,7 +128,9 @@ return {
           client:supports_method("workspace/didRenameFiles") or client:supports_method("workspace/willRenameFiles")
         then
           keymap("n", "<leader>cR", function()
-            Snacks.rename.rename_file()
+            local rename_file = require("utils/rename")
+
+            rename_file()
           end, {
             buffer = bufnr,
             desc = "Rename File",
@@ -103,7 +140,14 @@ return {
         end
 
         if client:supports_method("textDocument/inlayHint") then
-          Snacks.toggle.inlay_hints():map("<leader>uh")
+          keymap("n", "<leader>uh", function()
+            toggle_inlay_hints(bufnr)
+          end, {
+            buffer = bufnr,
+            desc = "Toggle Inlay Hints",
+            noremap = true,
+            silent = true,
+          })
         end
 
         if client:supports_method("textDocument/rename") then
@@ -125,9 +169,9 @@ return {
           })
         end
 
-        if client:supports_method("textDocument/documentHighlight") and Snacks.words.is_enabled() then
+        if client:supports_method("textDocument/documentHighlight") then
           keymap("n", "]]", function()
-            Snacks.words.jump(vim.v.count1)
+            words.jump(vim.v.count1)
           end, {
             buffer = bufnr,
             desc = "Next Reference",
@@ -136,7 +180,7 @@ return {
           })
 
           keymap("n", "[[", function()
-            Snacks.words.jump(-vim.v.count1)
+            words.jump(-vim.v.count1)
           end, {
             buffer = bufnr,
             desc = "Prev Reference",
@@ -144,7 +188,7 @@ return {
             silent = true,
           })
           keymap("n", "<a-n>", function()
-            Snacks.words.jump(vim.v.count1, true)
+            words.jump(vim.v.count1, true)
           end, {
             buffer = bufnr,
             desc = "Next Reference",
@@ -152,7 +196,7 @@ return {
             silent = true,
           })
           keymap("n", "<a-p>", function()
-            Snacks.words.jump(-vim.v.count1, true)
+            words.jump(-vim.v.count1, true)
           end, {
             buffer = bufnr,
             desc = "Prev Reference",
@@ -251,15 +295,11 @@ return {
       on_dynamic_capability(lsp_keymaps)
 
       on_supports_method("textDocument/codeLens", function(_, bufnr)
-        vim.lsp.codelens.refresh()
-        vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave" }, {
-          buffer = bufnr,
-          callback = vim.lsp.codelens.refresh,
-        })
+        enable_codelens(bufnr)
       end)
 
       on_supports_method("textDocument/documentColor", function(_, bufnr)
-        vim.lsp.document_color.enable(true, bufnr, { style = " " })
+        vim.lsp.document_color.enable(true, { bufnr = bufnr }, { style = " " })
       end)
       vim.diagnostic.config({
         underline = true,
@@ -290,13 +330,3 @@ return {
           },
         },
       })
-
-      local servers = {}
-      for server, config in pairs(opts) do
-        vim.lsp.config(server, config)
-        table.insert(servers, server)
-      end
-      vim.lsp.enable(servers)
-    end),
-  },
-}
