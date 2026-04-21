@@ -244,7 +244,7 @@ local function should_run_config(spec)
   return has_config(spec) or has_opts(spec)
 end
 
-local function run_startup_init(spec)
+local function run_init_once(spec)
   if spec.init == nil or spec._init_ran then
     return
   end
@@ -325,13 +325,26 @@ init_plugin = function(spec)
   return true
 end
 
-local function autocmd_opts(spec, pattern)
+local defer_event_init = {
+  BufRead = true,
+  BufReadPost = true,
+  BufNewFile = true,
+}
+
+local function autocmd_opts(spec, event, pattern)
   return {
     group = augroup,
     pattern = pattern,
     desc = "Initialize " .. spec.name,
     once = true,
     callback = function()
+      if defer_event_init[event] then
+        vim.schedule(function()
+          init_plugin(spec)
+        end)
+        return
+      end
+
       init_plugin(spec)
     end,
   }
@@ -493,12 +506,6 @@ local function register_event(spec)
     return false
   end
 
-  if spec.event == "startup" and not has_ft then
-    clear_events(spec)
-    init_plugin(spec)
-    return true
-  end
-
   local signature = event_signature(spec)
   if spec.event_autocmds ~= nil and vim.deep_equal(spec.event_signature, signature) then
     return true
@@ -510,24 +517,23 @@ local function register_event(spec)
   local has_very_lazy = false
   if has_event then
     for _, event in ipairs(names(spec.event, "event")) do
-      if event == "startup" then
-        init_plugin(spec)
-      else
-        local autocmd_event, autocmd_pattern = event_autocmd(event)
-        table.insert(
-          spec.event_autocmds,
-          vim.api.nvim_create_autocmd(autocmd_event, autocmd_opts(spec, autocmd_pattern))
-        )
+      local autocmd_event, autocmd_pattern = event_autocmd(event)
+      table.insert(
+        spec.event_autocmds,
+        vim.api.nvim_create_autocmd(autocmd_event, autocmd_opts(spec, autocmd_event, autocmd_pattern))
+      )
 
-        if event == "VeryLazy" then
-          has_very_lazy = true
-        end
+      if event == "VeryLazy" then
+        has_very_lazy = true
       end
     end
   end
 
   if has_ft then
-    table.insert(spec.event_autocmds, vim.api.nvim_create_autocmd("FileType", autocmd_opts(spec, names(spec.ft, "ft"))))
+    table.insert(
+      spec.event_autocmds,
+      vim.api.nvim_create_autocmd("FileType", autocmd_opts(spec, "FileType", names(spec.ft, "ft")))
+    )
   end
 
   spec.event_signature = signature
@@ -781,7 +787,7 @@ local function flush()
     if is_disabled(spec) then
       clear_events(spec)
     else
-      run_startup_init(spec)
+      run_init_once(spec)
       register_keys(spec)
 
       if

@@ -13,7 +13,8 @@ plugin.add({
       fd_opts = "--color=never --type f --hidden --follow --exclude .git",
     },
     grep = {
-      rg_opts = "--column --line-number --no-heading --color=always --smart-case --hidden --glob '!.git/*' -e",
+      rg_opts = [[--column --line-number --no-heading --color=always --smart-case --hidden --glob "!.git/*" -e]],
+      search_paths = { "." },
     },
     oldfiles = {
       include_current_session = true,
@@ -23,8 +24,10 @@ plugin.add({
       width = 0.85,
       row = 0.5,
       col = 0.5,
+      border = "single",
       preview = {
         default = "bat",
+        border = "single",
         layout = "flex",
         vertical = "down:45%",
         horizontal = "right:55%",

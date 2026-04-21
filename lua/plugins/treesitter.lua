@@ -2,7 +2,6 @@ local plugin = require("config.plugin")
 
 plugin.add({
   "nvim-treesitter/nvim-treesitter",
-  event = "startup",
   build = ":TSUpdate",
   dependencies = {
     "nvim-treesitter/nvim-treesitter-textobjects",

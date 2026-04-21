@@ -200,8 +200,14 @@ plugin.add({
 }, {
   "rcarriga/nvim-notify",
   event = "VeryLazy",
-  opts = {},
-  config = function()
-    vim.notify = require("notify")
+  opts = {
+    on_open = function(win)
+      vim.api.nvim_win_set_config(win, { border = "single" })
+    end,
+  },
+  config = function(opts)
+    local notify = require("notify")
+    notify.setup(opts)
+    vim.notify = notify
   end,
 })
