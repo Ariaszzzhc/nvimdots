@@ -110,37 +110,39 @@ local function lazygit()
 end
 
 plugin.add({
-  "akinsho/toggleterm.nvim",
-  event = "VeryLazy",
-  opts = {
-    size = terminal_size,
-    direction = "float",
-    hide_numbers = true,
-    start_in_insert = true,
-    persist_size = true,
-    persist_mode = true,
-    close_on_exit = true,
-    auto_scroll = true,
-    float_opts = {
-      border = "single",
-      width = float_width,
-      height = float_height,
-      title_pos = "center",
+  {
+    "akinsho/toggleterm.nvim",
+    event = "VeryLazy",
+    opts = {
+      size = terminal_size,
+      direction = "float",
+      hide_numbers = true,
+      start_in_insert = true,
+      persist_size = true,
+      persist_mode = true,
+      close_on_exit = true,
+      auto_scroll = true,
+      float_opts = {
+        border = "single",
+        width = float_width,
+        height = float_height,
+        title_pos = "center",
+      },
+      on_open = set_terminal_keymaps,
     },
-    on_open = set_terminal_keymaps,
-  },
-  config = function(opts)
-    require("toggleterm").setup(opts)
+    config = function(opts)
+      require("toggleterm").setup(opts)
 
-    vim.api.nvim_create_user_command("LazyGit", lazygit, {
-      desc = "Open lazygit in a floating terminal",
-    })
-  end,
-  keys = {
-    { "<leader>tt", "<Cmd>ToggleTerm direction=float<CR>", desc = "Toggle floating terminal" },
-    { "<leader>th", "<Cmd>ToggleTerm direction=horizontal<CR>", desc = "Toggle horizontal terminal" },
-    { "<leader>tv", "<Cmd>ToggleTerm direction=vertical<CR>", desc = "Toggle vertical terminal" },
-    { "<leader>ts", "<Cmd>TermSelect<CR>", desc = "Select terminal" },
-    { "<leader>gg", lazygit, desc = "LazyGit" },
+      vim.api.nvim_create_user_command("LazyGit", lazygit, {
+        desc = "Open lazygit in a floating terminal",
+      })
+    end,
+    keys = {
+      { "<leader>tt", "<Cmd>ToggleTerm direction=float<CR>", desc = "Toggle floating terminal" },
+      { "<leader>th", "<Cmd>ToggleTerm direction=horizontal<CR>", desc = "Toggle horizontal terminal" },
+      { "<leader>tv", "<Cmd>ToggleTerm direction=vertical<CR>", desc = "Toggle vertical terminal" },
+      { "<leader>ts", "<Cmd>TermSelect<CR>", desc = "Select terminal" },
+      { "<leader>gg", lazygit, desc = "LazyGit" },
+    },
   },
 })

@@ -803,8 +803,12 @@ local function flush()
   end
 end
 
-function M.add(...)
-  for _, spec in ipairs({ ... }) do
+function M.add(specs)
+  if type(specs) ~= "table" or not vim.islist(specs) then
+    error("plugin.add expects a list of plugin specs", 2)
+  end
+
+  for _, spec in ipairs(specs) do
     merge_plugin(normalize_spec(spec), { top_level = true })
   end
 
@@ -818,7 +822,7 @@ function M.flush()
 end
 
 function M.setup(specs)
-  M.add(unpack(specs))
+  M.add(specs)
   M.flush()
 end
 
